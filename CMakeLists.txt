@@ -3,4 +3,4 @@ project(bac_a_sable_2 C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(bac_a_sable_2 main.c)
+add_executable(bac_a_sable_2 main.c test_1.c test_1.h)
