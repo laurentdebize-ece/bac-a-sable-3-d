@@ -4,7 +4,7 @@
 #define RESOLUTION_X 1024
 #define RESOLUTION_Y 768
 
-//void afficher_fenetre();
+void afficher_fenetre();
 void afficher_la_grille(Jeu* jeu);
 
 
