@@ -1,16 +1,8 @@
 #include "affichage.h"
+#include "Macros.h"
 #include "Jeu.h"
 
-#define MAP_TILE_SIZE    20
-#define PLAYER_SIZE      16
-
-#define MOUSE_SCALE_MARK_SIZE   12
-
-bool mouseScaleReady = false;
-bool mouseScaleMode = false;
-
-
-void afficher_fenetre(){
+void afficher_fenetre_test(){
     InitWindow(RESOLUTION_X, RESOLUTION_Y, "bonjour je suis un test");
     SetWindowState(FLAG_WINDOW_RESIZABLE);
     SetWindowPosition(0, 50);
@@ -32,6 +24,8 @@ void afficher_la_grille(Jeu* jeu){
         printf("\n");
     }
 }
+
+
 
 void afficherJeu(Jeu* jeu){
     InitWindow(RESOLUTION_X, RESOLUTION_Y, "ECE-CITY BETA/ALPHA de L'OMEGA |||||PROTOTYPE|||||");
@@ -99,5 +93,4 @@ void afficherJeu(Jeu* jeu){
     free(map.tileFog);
     CloseWindow();
 }
-
 
