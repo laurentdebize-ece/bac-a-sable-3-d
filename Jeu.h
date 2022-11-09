@@ -20,13 +20,14 @@ typedef struct Batiment{
 }Batiment;
 
 typedef struct Jeu{
+    char* fichier;
     int** terrain;
     Coordonnee ordre;
     int nb_habitants_tot;
     int argent;
     int production_eau_restante;
     int production_elec_restante;
-    Batiment* batiments;
+    Batiment* batiments[nbBatiments];
 }Jeu;
 
 

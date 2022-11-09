@@ -24,8 +24,8 @@ Jeu *lire_graphe(char *nomFichier) {
             fscanf(ifs, " %d", &grille->terrain[i][j]);
         }
     }
-
-    grille->ordre_en_x = ordre_x;
-    grille->ordre_en_y = ordre_y;
+    grille->fichier = nomFichier;
+    grille->ordre.x = ordre_x;
+    grille->ordre.y = ordre_y;
     return grille;
 }
