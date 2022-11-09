@@ -1,5 +1,6 @@
-//
-// Created by sacho on 09/11/2022.
-//
-
 #include "COULEURS.h"
+
+void color(int couleurDuTexte, int couleurDeFond) {
+    HANDLE H = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(H, couleurDeFond * 16 + couleurDuTexte);
+}

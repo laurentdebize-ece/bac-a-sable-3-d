@@ -1,5 +1,7 @@
 #include "affichage.h"
 #include "Jeu.h"
+#include "COULEURS.h"
+
 
 void afficher_la_grille(Jeu* jeu){
     for (int y = 0; y < jeu->ordre_en_y; y++) {
@@ -11,6 +13,15 @@ void afficher_la_grille(Jeu* jeu){
 }
 
 void afficher_menu_console(Jeu* jeu){
-    printf("");
+    int choix = 0;
+    color(1, 0);
+    printf("-------BIENVENUE DANS ECE-CITY CONSOLE -------- (v.APLHA)\n");
+    color(15, 0);
+    printf("\nMenu :\n\n");
+    printf("1 : Lancer une partie\n");
+    printf("2 : Sauvegarde \n");
+    printf("3 : Charger une partie\n");
+    printf("4 : Quitter\n");
+    scanf(" %d", &choix);
 
 }
