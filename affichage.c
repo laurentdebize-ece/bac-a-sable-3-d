@@ -30,9 +30,13 @@ void afficher_menu_console(Jeu* jeu){
             break;
         }
         case 2:{
+            printf("\non a pas code\n");
+            afficher_menu_console(jeu);
             break;
         }
         case 3:{
+            printf("\non a pas code\n");
+            afficher_menu_console(jeu);
             break;
         }
         case 4:{
