@@ -12,7 +12,7 @@
 
 
 // dimensions batiments
-#define TAILLE_MAISON 3
+#define TAILLE_TERRAIN_VAGUE 3
 #define TAILLE_ROUTE 1
 #define TAILLE_VIDE 1
 #define LONGUEUR_USINE 6
@@ -21,5 +21,12 @@
 // capacité
 #define CAPACITE_MAISON 1000
 #define CAPACITE_USINE 5000
+
+
+// prix
+#define PRIX_TERRAIN_VAGUE 1000
+#define PRIX_CENTRALE 100000
+#define PRIX_CHATEAU_EAU 100000
+#define PRIX_ROUTE 10
 
 #endif //TEMPLATE_RAYLIB_MACROS_H

@@ -4,7 +4,7 @@
 //#include <raylib.h>
 #include <stdlib.h>
 
-enum {vide, reseau, maison, chateau_deau, usine_electrique, nbBatiments};
+enum {vide, route, terrain_vague, chateau_deau, centrale, nbBatiments};
 
 typedef struct Coordonnee {
     int x;
@@ -28,7 +28,7 @@ typedef struct Jeu{
     int argent;
     int production_eau_restante;
     int production_elec_restante;
-    Batiment* batiments[nbBatiments];
+    Batiment batiments[nbBatiments];
 }Jeu;
 
 
