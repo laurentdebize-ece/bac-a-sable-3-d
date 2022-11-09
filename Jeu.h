@@ -13,7 +13,8 @@ typedef struct Coordonnee {
 
 typedef struct Batiment{
     Coordonnee taille;
-    Coordonnee** cases;
+    Coordonnee* cases_adjacentes;
+    Coordonnee* cases;
     char* nom;
     int capacite;
     int nb_habitants;
