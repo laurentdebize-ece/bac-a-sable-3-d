@@ -14,6 +14,7 @@ typedef struct Batiment{
 
 typedef struct Jeu{
     int** terrain;
+    int fenetre;
     int ordre_en_x;
     int ordre_en_y;
     int nb_habitants_tot;
