@@ -6,7 +6,14 @@
 
 enum {vide, reseau, maison, chateau_deau, usine_electrique, nbBatiments};
 
+typedef struct Coordonnee {
+    int x;
+    int y;
+}Coordonnee;
+
 typedef struct Batiment{
+    Coordonnee taille;
+    Coordonnee** cases;
     char* nom;
     int capacite;
     int nb_habitants;
@@ -14,9 +21,7 @@ typedef struct Batiment{
 
 typedef struct Jeu{
     int** terrain;
-    int fenetre;
-    int ordre_en_x;
-    int ordre_en_y;
+    Coordonnee ordre;
     int nb_habitants_tot;
     int argent;
     int production_eau_restante;
