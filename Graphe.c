@@ -29,3 +29,7 @@ Jeu *lire_graphe(char *nomFichier) {
     grille->ordre.y = ordre_y;
     return grille;
 }
+
+void ajout_Batiment(Jeu* jeu, int nomDuBatiment, int co_x, int co_y){
+
+}

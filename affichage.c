@@ -2,6 +2,9 @@
 #include "Jeu.h"
 #include "COULEURS.h"
 
+void afficher_Choix_Joueur(Jeu* jeu){
+
+}
 
 void afficher_la_grille(Jeu* jeu){
     for (int y = 0; y < jeu->ordre.y; y++) {
@@ -10,7 +13,10 @@ void afficher_la_grille(Jeu* jeu){
         }
         printf("\n");
     }
+    afficher_Choix_Joueur(jeu);
 }
+
+
 
 void afficher_menu_console(Jeu* jeu){
     int choix = 0;
