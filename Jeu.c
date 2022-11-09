@@ -1,14 +1,15 @@
 #include "Jeu.h"
 
-void initialise(char* nomFichier,Jeu* j){
-
-    FILE *ifs = fopen(nomFichier, "r");
-
-    if (!ifs) {
-        printf("Erreur de lecture fichier\n");
-        exit(-1);
-    }
-
+Jeu* initialisation(){
+    Jeu* j;
+    remove(NOM_DU_FICHIER);
+    j = lire_graphe();
     j->argent = 500000;
+
+    //afficher_fenetre();
+
+    return j;
 }
+
+
 

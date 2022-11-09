@@ -1,5 +1,11 @@
 #ifndef TEMPLATE_RAYLIB_MACROS_H
 #define TEMPLATE_RAYLIB_MACROS_H
+
+#define ORDRE_EN_X 45
+#define ORDRE_EN_Y 35
+
+#define NOM_DU_FICHIER "Grille_de_jeu.txt"
+
 //Affichage
 #define LARGEUR_FENETRE 920
 #define LONGUEUR_FENETRE 780
@@ -12,11 +18,11 @@
 
 
 // dimensions batiments
-#define TAILLE_MAISON 3
-#define TAILLE_ROUTE 1
-#define TAILLE_VIDE 1
-#define LONGUEUR_USINE 6
-#define LARGEUR_USINE 4
+#define TAILLE_MAISON 1
+#define TAILLE_ROUTE 0
+#define TAILLE_VIDE 0
+#define LONGUEUR_USINE 2
+#define LARGEUR_USINE 1
 
 // capacité
 #define CAPACITE_MAISON 1000

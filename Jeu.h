@@ -1,8 +1,11 @@
 #ifndef TEMPLATE_RAYLIB_JEU_H
 #define TEMPLATE_RAYLIB_JEU_H
 #include <stdio.h>
-//#include <raylib.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <stdbool.h>
+
+//#include <raylib.h>
 
 enum {vide, reseau, maison, chateau_deau, usine_electrique, nbBatiments};
 
@@ -20,7 +23,7 @@ typedef struct Batiment{
 }Batiment;
 
 typedef struct Jeu{
-    char* fichier;
+    bool fichier;
     int** terrain;
     Coordonnee ordre;
     int nb_habitants_tot;
@@ -30,5 +33,15 @@ typedef struct Jeu{
     Batiment* batiments[nbBatiments];
 }Jeu;
 
+// TODO: NE PAS CHANGER LORDRE DES INCLUDES IMPORTANT !!!
 
-#endif //TEMPLATE_RAYLIB_JEU_H
+//mettez vos includes ici :)
+#include "Macros.h"
+#include "affichage.h"
+#include "Graphe.h"
+#include "COULEURS.h"
+
+Jeu* initialisation();
+
+
+#endif
