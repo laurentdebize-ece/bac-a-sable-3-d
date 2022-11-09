@@ -24,4 +24,21 @@ void afficher_menu_console(Jeu* jeu){
     printf("4 : Quitter\n");
     scanf(" %d", &choix);
 
+    switch(choix){
+        case 1:{
+            afficher_la_grille(jeu);
+            break;
+        }
+        case 2:{
+            break;
+        }
+        case 3:{
+            break;
+        }
+        case 4:{
+            exit(0);
+        }
+    }
 }
+
+
