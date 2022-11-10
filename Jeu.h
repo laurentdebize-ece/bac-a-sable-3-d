@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <stdbool.h>
 
+//TODO: LISTE CHAINE POUR BATIMENTS
 //#include <raylib.h>
 
 enum {vide, reseau, maison, chateau_deau, usine_electrique, nbBatiments};
@@ -20,6 +21,7 @@ typedef struct Batiment{
     char* nom;
     int capacite;
     int nb_habitants;
+    struct Batiment* next;
 }Batiment;
 
 typedef struct Jeu{
@@ -30,7 +32,7 @@ typedef struct Jeu{
     int argent;
     int production_eau_restante;
     int production_elec_restante;
-    Batiment* batiments[nbBatiments];
+    Batiment batiments[nbBatiments];
 }Jeu;
 
 // TODO: NE PAS CHANGER LORDRE DES INCLUDES IMPORTANT !!!

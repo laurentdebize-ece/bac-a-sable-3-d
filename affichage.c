@@ -58,8 +58,9 @@ void afficher_choix_joueur(Jeu* jeu){
     int choix = 0, co_x = 0, co_y = 0;
     afficher_la_grille(jeu);
     color(12, 0);
-    printf("\t\t\t\t------------------- ECE - CITY -------------------\n");
+    printf("\t\t\t\t------------------- ECE - CITY -------------------\t\t\t\t");
     color(15, 0);
+    printf("Temps : \n");
     printf("argent : %d\t\t\t", jeu->argent);
     color(11, 0);
     printf("eau total restant : %d\t\t\t", jeu->production_eau_restante);
@@ -130,6 +131,14 @@ void afficher_la_grille(Jeu* jeu){
             printf("%d ", jeu->terrain[y][x]);
         }
         printf("\n");
+    }
+}
+
+
+void ohdi(Jeu* j) {
+    int i =0;
+    while (    j->batiments[maison][] != NULL){
+
     }
 }
 
