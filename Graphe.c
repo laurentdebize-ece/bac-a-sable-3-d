@@ -24,8 +24,21 @@ Jeu *lire_graphe(char *nomFichier) {
             fscanf(ifs, " %d", &grille->terrain[i][j]);
         }
     }
-
-    grille->ordre_en_x = ordre_x;
-    grille->ordre_en_y = ordre_y;
+    grille->fichier = nomFichier;
+    grille->ordre.x = ordre_x;
+    grille->ordre.y = ordre_y;
     return grille;
 }
+
+
+// creer graphe en fonction de la matrice (Sommet : case du jeu  et Aretes : poids de 1 liaison entre les cases)
+
+// bfs pour chercher les chemins entre usine et habitation (en utilisant les routes (reseau))    cherche la distance
+
+//creer graphe avec liste d'adjacence avec la distance entre les usines et les maisons en parcourant la route (dijstra)
+
+//modifier graphe (meme liste d'adjacence) avec des flots pour l'alimentation des habitations
+
+
+
+
