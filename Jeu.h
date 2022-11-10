@@ -44,6 +44,7 @@ typedef struct Jeu{
 #include "COULEURS.h"
 
 Jeu* initialisation();
+void initialisation_CONSTANTE(Jeu* j);
 
 
 #endif

@@ -78,10 +78,11 @@ void enregistrer_Grille(Jeu* jeu){
 }
 
 void ajout_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y){
-    jeu->terrain[co_x][co_y] = nomDuBatiment;
-    /*for (int i = 0; i < jeu->batiments[nomDuBatiment][0].taille.x ; i++) {
-        jeu->terrain[co_x + jeu->batiments[nomDuBatiment][0].taille.x - i][co_y] = nomDuBatiment;
-    }*/
+    for (int i = 0; i < jeu->batiments[nomDuBatiment].taille.y ; i++) {
+        for (int j = 0; j < jeu->batiments[nomDuBatiment].taille.x; j++) {
+            jeu->terrain[co_y][co_x + j] = nomDuBatiment;
+        }co_y += i;
+    }
 }
 
 
