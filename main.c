@@ -3,6 +3,7 @@
 #include "initialisation.h"
 
 int main() {
+
     Jeu* j = lire_graphe("Grille_de_jeu.txt");
     initialiser_jeu(j);
     afficher_la_grille(j);

@@ -32,8 +32,8 @@ void afficherJeu(Jeu* jeu){
     SetWindowPosition(0, 50);
 
     Map map = { 0 };
-    map.tilesX = jeu->ordre_en_x;
-    map.tilesY = jeu->ordre_en_y;
+    map.tilesX = jeu->ordre.x;
+    map.tilesY = jeu->ordre.y;
     map.tileIds = (unsigned char *)calloc(map.tilesX*map.tilesY, sizeof(unsigned char));
     map.tileFog = (unsigned char *)calloc(map.tilesX*map.tilesY, sizeof(unsigned char));
 
