@@ -45,7 +45,5 @@ typedef struct Jeu{
 
 Jeu* initialisation();
 
-void initialise(char* nomFichier,Jeu* j);
-void sauvegarder(char* nomFichier,Jeu* j);
-void modifier(char* nomFichier,Jeu* j);
+
 #endif
