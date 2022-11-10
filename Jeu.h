@@ -43,6 +43,7 @@ typedef struct Jeu{
 #include "Graphe.h"
 #include "COULEURS.h"
 
+int difference_entre_2_nombres_VALEURABSOLUE(int a, int b);
 Jeu* initialisation();
 void initialisation_CONSTANTE(Jeu* j);
 

@@ -20,7 +20,7 @@
 // dimensions batiments
 #define TAILLE_MAISON 3
 #define TAILLE_ROUTE 1
-#define TAILLE_VIDE 0
+#define TAILLE_VIDE 1
 #define LONGUEUR_BATIMENTS 6
 #define LARGEUR_BATIMENTS 4
 

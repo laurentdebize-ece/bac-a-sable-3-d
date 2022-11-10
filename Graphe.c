@@ -77,11 +77,72 @@ void enregistrer_Grille(Jeu* jeu){
     fclose(ifs);
 }
 
-void ajout_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y){
-    for (int i = 0; i < jeu->batiments[nomDuBatiment].taille.y ; i++) {
-        for (int j = 0; j < jeu->batiments[nomDuBatiment].taille.x; j++) {
-            jeu->terrain[co_y][co_x + j] = nomDuBatiment;
-        }co_y += i;
+void ajout_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y, int co_xroute, int co_yroute){
+    bool obstacle = FALSE;
+    int y_temporaire = co_y;
+    if (co_xroute !=0 || co_yroute !=0){
+        int x_temporaire = co_x;
+        int x_distance=difference_entre_2_nombres_VALEURABSOLUE(co_x, co_xroute), y_distance=difference_entre_2_nombres_VALEURABSOLUE(co_y, co_yroute);
+        for (int i = 0; i < x_distance ; i++) {
+            if (jeu->terrain[co_y][co_x] != 0){
+                obstacle = TRUE;
+                break;
+            }
+            co_x++;
+        }
+        for (int i = 0; i < y_distance ; i++) {
+            if (jeu->terrain[co_y][co_x] != 0){
+                obstacle = TRUE;
+                break;
+            }
+            co_y++;
+        }
+        co_x = x_temporaire;
+        co_y = y_temporaire;
+        if (obstacle == FALSE){
+            for (int i = 0; i < x_distance ; i++) {
+                jeu->terrain[co_y][co_x] = nomDuBatiment;
+                co_x++;
+            }
+            for (int i = 0; i < y_distance ; i++) {
+                jeu->terrain[co_y][co_x] = nomDuBatiment;
+                co_y++;
+            }
+            color(1, 0);
+            printf("La construction : %s, est un succes !\n", jeu->batiments[nomDuBatiment].nom);
+            color(15, 0);
+        } else {
+            color(5, 0);
+            printf("Vous ne pouvez pas construire ici, un obstacle vous en empeche !\n");
+            color(15, 0);
+        }
+    }else{
+        for (int i = 0; i < jeu->batiments[nomDuBatiment].taille.y ; i++) {
+            for (int j = 0; j < jeu->batiments[nomDuBatiment].taille.x; j++) {
+                if (jeu->terrain[co_y][co_x + j] != 0){
+                    obstacle = TRUE;
+                    break;
+                }
+            }
+            if (obstacle == TRUE){
+                break;
+            }
+            y_temporaire ++;
+        }
+        if (obstacle == FALSE){
+            for (int i = 0; i < jeu->batiments[nomDuBatiment].taille.y ; i++) {
+                for (int j = 0; j < jeu->batiments[nomDuBatiment].taille.x; j++) {
+                    jeu->terrain[co_y][co_x + j] = nomDuBatiment;
+                }co_y ++;
+            }
+            color(1, 0);
+            printf("La construction : %s, est un succes !\n", jeu->batiments[nomDuBatiment].nom);
+            color(15, 0);
+        } else {
+            color(5, 0);
+            printf("Vous ne pouvez pas construire ici, un obstacle vous en empeche !\n");
+            color(15, 0);
+        }
     }
 }
 

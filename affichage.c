@@ -36,6 +36,7 @@ void afficher_menu_console(Jeu* jeu){
             printf("CHARGEMENT EN COURS...\n");
             jeu = lire_graphe(jeu);
             sleep(1);
+            initialisation_CONSTANTE(jeu);
             printf("CHARGEMENT TERMINE !\n");
             afficher_choix_joueur(jeu);
             break;
@@ -55,7 +56,8 @@ void afficher_menu_console(Jeu* jeu){
 }
 
 void afficher_choix_joueur(Jeu* jeu){
-    int choix = 0, co_x = 0, co_y = 0;
+    int choix = 0;
+    int co_x=0, co_y=0, co_x1=0, co_y1=0;
     afficher_la_grille(jeu);
     color(12, 0);
     printf("\t\t\t\t------------------- ECE - CITY -------------------\t\t\t\t");
@@ -80,11 +82,12 @@ void afficher_choix_joueur(Jeu* jeu){
         }
         case reseau:{
             color(10, 0);
-            printf("\nCoordonnees ? (x / y)\n");
-            color(15, 0);
+            printf("\nCoordonnees du point initiale? (x / y)\n");
             scanf(" %d %d", &co_x, &co_y);
-            ajout_Batiment_Grille(jeu, reseau, co_x, co_y);
-            printf("Ajout d'une route ...\n");
+            printf("\nCoordonnees du point final? (x / y)\n");
+            color(15, 0);
+            scanf(" %d %d", &co_x1, &co_y1);
+            ajout_Batiment_Grille(jeu, reseau, co_x, co_y, co_x1, co_y1);
             sleep(1);
             break;
         }
@@ -93,8 +96,7 @@ void afficher_choix_joueur(Jeu* jeu){
             printf("\nCoordonnees ? (x / y)\n");
             color(15, 0);
             scanf(" %d %d", &co_x, &co_y);
-            ajout_Batiment_Grille(jeu, maison, co_x, co_y);
-            printf("Ajout d'une maison ...\n");
+            ajout_Batiment_Grille(jeu, maison, co_x, co_y, co_x1, co_y1);
             sleep(1);
             break;
         }
@@ -103,8 +105,7 @@ void afficher_choix_joueur(Jeu* jeu){
             printf("\nCoordonnees ? (x / y)\n");
             color(15, 0);
             scanf(" %d %d", &co_x, &co_y);
-            ajout_Batiment_Grille(jeu, chateau_deau, co_x, co_y);
-            printf("Ajout d'un chateau d'eau ...\n");
+            ajout_Batiment_Grille(jeu, chateau_deau, co_x, co_y, co_x1, co_y1);
             sleep(1);
             break;
         }
@@ -113,8 +114,7 @@ void afficher_choix_joueur(Jeu* jeu){
             printf("\nCoordonnees ? (x / y)\n");
             color(15, 0);
             scanf(" %d %d", &co_x, &co_y);
-            ajout_Batiment_Grille(jeu, usine_electrique, co_x, co_y);
-            printf("Ajout d'une usine electrique ...\n");
+            ajout_Batiment_Grille(jeu, usine_electrique, co_x, co_y, co_x1, co_y1);
             sleep(1);
             break;
         }
