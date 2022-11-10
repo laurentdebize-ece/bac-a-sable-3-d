@@ -134,11 +134,3 @@ void afficher_la_grille(Jeu* jeu){
     }
 }
 
-
-void ohdi(Jeu* j) {
-    int i =0;
-    while (    j->batiments[maison][] != NULL){
-
-    }
-}
-
