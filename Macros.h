@@ -18,11 +18,11 @@
 
 
 // dimensions batiments
-#define TAILLE_MAISON 1
-#define TAILLE_ROUTE 0
+#define TAILLE_MAISON 3
+#define TAILLE_ROUTE 1
 #define TAILLE_VIDE 0
-#define LONGUEUR_USINE 2
-#define LARGEUR_USINE 1
+#define LONGUEUR_USINE 6
+#define LARGEUR_USINE 4
 
 // capacité
 #define CAPACITE_MAISON 1000
