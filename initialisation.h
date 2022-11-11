@@ -2,8 +2,9 @@
 #define BAC_A_SABLE_2_INITIALISATION_H
 
 #include "Jeu.h"
-#include "Macros.h"
 
+
+void initialisation_Images(Jeu* jeu);
 void ajouter_batiment(Jeu* jeu);
 void initialiser_jeu(Jeu* jeu);
 

@@ -1,19 +1,26 @@
 #include "affichage.h"
-#include "Macros.h"
-#include "Jeu.h"
 
-void afficher_fenetre_menu(){
+
+
+void afficher_fenetre_menu(Jeu* jeu){
     InitWindow(RESOLUTION_X, RESOLUTION_Y, "~~~~~~~~~~ bonjour je suis un MENU ~~~~~~~~~~");
     SetWindowState(FLAG_WINDOW_RESIZABLE);
     SetWindowPosition(0, 50);
     SetTargetFPS(60);
+    Texture2D boutton_off = LoadTexture("off-button.png");
+    Texture2D texture = LoadTexture("resources/raylib_logo.png");
     while (!WindowShouldClose()) {
-        float f = (float)GetScreenWidth() / (float)GetScreenHeight();
         BeginDrawing();
-        ClearBackground(BLACK);
+            ClearBackground(RAYWHITE);
+            DrawTexture(texture, RESOLUTION_X/2 - RESOLUTION_X/2, RESOLUTION_Y/2 - texture.height/2, WHITE);
+            DrawTexture(texture, 0, 0, WHITE);
+
+        //DrawTexture(jeu->TabImages[boutonoff], 0, 0, WHITE);
 
         EndDrawing();
     }
+    UnloadTexture(jeu->TabImages[boutonoff]);
+    CloseWindow();
 }
 
 void afficher_la_grille(Jeu* jeu){

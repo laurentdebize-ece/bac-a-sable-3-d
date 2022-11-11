@@ -1,5 +1,17 @@
 #include "initialisation.h"
 
+
+void initialisation_Images(Jeu* jeu){
+    Texture2D boutton_off = LoadTexture("textures/off-button.png");
+    jeu->TabImages[boutonoff] = boutton_off;
+    int frameWidth = boutton_off.width/6;
+    int frameHeight = boutton_off.height/6;
+    Rectangle sourceRec = { 0.0f, 0.0f, (float)frameWidth, (float)frameHeight };
+    Rectangle destRec = { RESOLUTION_X/2.0f, RESOLUTION_Y/2.0f, frameWidth*2.0f, frameHeight*2.0f };
+    Vector2 origin = { (float)frameWidth, (float)frameHeight };
+}
+
+
 void initialiser_jeu(Jeu* jeu){
 
     // Initialiser compteurs
