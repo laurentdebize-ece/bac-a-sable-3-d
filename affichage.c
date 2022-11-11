@@ -1,5 +1,9 @@
 #include "Jeu.h"
-
+void print_message_error_construire_hors_map(){
+    color (12, 0);
+    printf("\n VOUS NE POUVEZ PAS CONSTRUIRE EN DEHORS DES LIMITES DE LA MAP !!!\n\n");
+    color(15, 0);
+}
 
 void afficher_menu_console(Jeu* jeu){
     int choix = 0;
@@ -99,9 +103,7 @@ void afficher_choix_joueur(Jeu* jeu){
             color(15, 0);
             scanf(" %d %d", &co_x1, &co_y1);
             if (co_x<0 || co_y<0 || co_x1<0 || co_y1<0 || co_x>ORDRE_EN_X || co_y>ORDRE_EN_Y || co_x1>ORDRE_EN_X || co_y1>ORDRE_EN_Y){
-                color (12, 0);
-                printf("\n VOUS NE POUVEZ PAS CONSTRUIRE EN DEHORS DES LIMITES DE LA MAP !!!\n\n");
-                color(15, 0);
+                print_message_error_construire_hors_map();
                 break;
             }
             ajout_Batiment_Grille(jeu, reseau, co_x, co_y, co_x1, co_y1);
@@ -113,6 +115,10 @@ void afficher_choix_joueur(Jeu* jeu){
             printf("\nCoordonnees ? (x / y)\n");
             color(15, 0);
             scanf(" %d %d", &co_x, &co_y);
+            if (co_x<0 || co_y<0 ||  co_x>ORDRE_EN_X || co_y>ORDRE_EN_Y){
+                print_message_error_construire_hors_map();
+                break;
+            }
             ajout_Batiment_Grille(jeu, maison, co_x, co_y, co_x1, co_y1);
             sleep(1);
             break;
@@ -122,6 +128,10 @@ void afficher_choix_joueur(Jeu* jeu){
             printf("\nCoordonnees ? (x / y)\n");
             color(15, 0);
             scanf(" %d %d", &co_x, &co_y);
+            if (co_x<0 || co_y<0 ||  co_x>ORDRE_EN_X || co_y>ORDRE_EN_Y){
+                print_message_error_construire_hors_map();
+                break;
+            }
             ajout_Batiment_Grille(jeu, chateau_deau, co_x, co_y, co_x1, co_y1);
             sleep(1);
             break;
@@ -131,6 +141,10 @@ void afficher_choix_joueur(Jeu* jeu){
             printf("\nCoordonnees ? (x / y)\n");
             color(15, 0);
             scanf(" %d %d", &co_x, &co_y);
+            if (co_x<0 || co_y<0 ||  co_x>ORDRE_EN_X || co_y>ORDRE_EN_Y){
+                print_message_error_construire_hors_map();
+                break;
+            }
             ajout_Batiment_Grille(jeu, usine_electrique, co_x, co_y, co_x1, co_y1);
             sleep(1);
             break;
@@ -144,14 +158,26 @@ void afficher_choix_joueur(Jeu* jeu){
     afficher_choix_joueur(jeu);
 }
 
-
-
 void afficher_la_grille(Jeu* jeu){
     for (int y = 0; y < jeu->ordre.y; y++) {
         for (int x = 0; x < jeu->ordre.x; x++) {
+            if (jeu->terrain[y][x] == vide){
+                color(0, 0);
+            }else if(jeu->terrain[y][x] == reseau){
+                color(8, 0);
+            }else if(jeu->terrain[y][x] == maison){
+                color(12, 0);
+            }else if(jeu->terrain[y][x] == chateau_deau){
+                color(11, 0);
+            }else if(jeu->terrain[y][x] == usine_electrique){
+                color(14, 0);
+            }
             printf("%d ", jeu->terrain[y][x]);
+            color(15, 0);
         }
         printf("\n");
     }
 }
+
+
 
