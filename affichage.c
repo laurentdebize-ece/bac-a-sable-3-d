@@ -2,7 +2,7 @@
 #include "Macros.h"
 #include "Jeu.h"
 
-void afficher_fenetre_test(){
+void afficher_fenetre_menu(){
     InitWindow(RESOLUTION_X, RESOLUTION_Y, "bonjour je suis un test");
     SetWindowState(FLAG_WINDOW_RESIZABLE);
     SetWindowPosition(0, 50);
@@ -11,7 +11,7 @@ void afficher_fenetre_test(){
         float f = (float)GetScreenWidth() / (float)GetScreenHeight();
         BeginDrawing();
         ClearBackground(BLACK);
-        DrawText("la co de l'ecole est eclatee", 12 * f, 12 * f, 20 * f, WHITE);
+
         EndDrawing();
     }
 }
