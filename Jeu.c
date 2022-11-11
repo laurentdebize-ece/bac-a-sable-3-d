@@ -6,12 +6,16 @@ int difference_entre_2_nombres_VALEURABSOLUE(int a, int b){
     }else return a-b;
 }
 
+
 Jeu* initialisation(){
     Jeu* j;
+    color(8, 0);
+    printf("Destruction de votre ancien fichier de sauvegarde (si vous en aviez un)\n");
+    color(15, 0);
     remove(NOM_DU_FICHIER);
     j = lire_graphe();
 
-    j->argent = 500000;
+    j->argent = ARGENT_DE_DEBUT;
     j->production_eau_restante = 0;
     j->production_elec_restante = 0;
     initialisation_CONSTANTE(j);

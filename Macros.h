@@ -1,10 +1,16 @@
 #ifndef TEMPLATE_RAYLIB_MACROS_H
 #define TEMPLATE_RAYLIB_MACROS_H
 
+
+
+//PARAMETRAGE DU JEU
+
 #define ORDRE_EN_X 45
 #define ORDRE_EN_Y 35
 
 #define NOM_DU_FICHIER "Grille_de_jeu.txt"
+
+#define ARGENT_DE_DEBUT 500000
 
 //Affichage
 #define LARGEUR_FENETRE 920
