@@ -11,7 +11,7 @@ void initialiser_jeu(Jeu* jeu){
 
     // Initialiser batiments
 
-    jeu->batiments[vide].taille.x = TAILLE_VIDE;
+    /*jeu->batiments[vide].taille.x = TAILLE_VIDE;
     jeu->batiments[vide].taille.y = TAILLE_VIDE;
     jeu->batiments[vide].nom = "Vide";
 
@@ -34,6 +34,6 @@ void initialiser_jeu(Jeu* jeu){
     jeu->batiments[terrain_vague].taille.y = TAILLE_TERRAIN_VAGUE;
     jeu->batiments[terrain_vague].nom = "Terrain vague";
     jeu->batiments[terrain_vague].capacite = CAPACITE_MAISON;
-    jeu->batiments[terrain_vague].nb_habitants = 0;
+    jeu->batiments[terrain_vague].nb_habitants = 0;*/
 }
 

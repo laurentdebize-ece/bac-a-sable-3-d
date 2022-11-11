@@ -3,7 +3,7 @@
 #include "Jeu.h"
 
 void afficher_fenetre_menu(){
-    InitWindow(RESOLUTION_X, RESOLUTION_Y, "bonjour je suis un test");
+    InitWindow(RESOLUTION_X, RESOLUTION_Y, "~~~~~~~~~~ bonjour je suis un MENU ~~~~~~~~~~");
     SetWindowState(FLAG_WINDOW_RESIZABLE);
     SetWindowPosition(0, 50);
     SetTargetFPS(60);
