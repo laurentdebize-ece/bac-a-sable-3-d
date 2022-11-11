@@ -89,7 +89,7 @@ void ajout_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y, int 
     if (co_xroute !=-1 || co_yroute != -1){
         int x_temporaire = co_x;
         int x_distance=difference_entre_2_nombres_VALEURABSOLUE(co_x, co_xroute), y_distance=difference_entre_2_nombres_VALEURABSOLUE(co_y, co_yroute);
-        for (int i = 0; i < x_distance ; i++) {
+        for (int i = 0; i <= x_distance ; i++) {
             if (jeu->terrain[co_y][x_temporaire] != 0){
                 obstacle = TRUE;
                 break;
@@ -98,7 +98,7 @@ void ajout_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y, int 
                 x_temporaire++;
             }else x_temporaire--;
         }
-        for (int i = 0; i < y_distance ; i++) {
+        for (int i = 0; i <= y_distance ; i++) {
             if (jeu->terrain[y_temporaire][co_x] != 0){
                 obstacle = TRUE;
                 break;
@@ -110,13 +110,13 @@ void ajout_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y, int 
         x_temporaire = co_x;
         y_temporaire = co_y;
         if (obstacle == FALSE){
-            for (int i = 0; i < x_distance ; i++) {
+            for (int i = 0; i <= x_distance ; i++) {
                 jeu->terrain[co_y][co_x] = nomDuBatiment;
                 if (co_x < co_xroute){
                     co_x++;
                 }else co_x--;
             }
-            for (int i = 0; i < y_distance ; i++) {
+            for (int i = 0; i <= y_distance ; i++) {
                 jeu->terrain[co_y][co_x] = nomDuBatiment;
                 if (co_y < co_yroute){
                     co_y++;

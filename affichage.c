@@ -158,8 +158,17 @@ void afficher_choix_joueur(Jeu* jeu){
     afficher_choix_joueur(jeu);
 }
 
-void afficher_la_grille(Jeu* jeu){
+void afficher_la_grille(Jeu* jeu){  ///la fonction ici presente est tres relou parceque j ai voulu faire les marquages en x et en y mais on ne peut pas bien afficher l'echelle car nous sommes dans la console dcp j ai fais au mieux :)
+    printf("   ");
+    for (int i=0; i < jeu->ordre.x -3; i++) { //si tu comprends pas pourquoi je fais -3 demande à sacha il a fait ça c normal
+        printf("%d ",i);
+    }
+    printf("\n");
     for (int y = 0; y < jeu->ordre.y; y++) {
+        if (y < 10){
+            printf(" ");
+        }
+        printf("%d ", y);
         for (int x = 0; x < jeu->ordre.x; x++) {
             if (jeu->terrain[y][x] == vide){
                 color(0, 0);
