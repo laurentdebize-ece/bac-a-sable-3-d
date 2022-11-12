@@ -161,3 +161,6 @@ void ajout_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y, int 
 }
 
 
+void suppression_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y, int co_xroute, int co_yroute){
+    //il me faut les co des batiments deja place (x,y) grace au liste chaine donc j'att...
+}

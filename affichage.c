@@ -173,7 +173,7 @@ void afficher_la_grille(Jeu* jeu){  ///la fonction ici presente est tres relou p
             if (jeu->terrain[y][x] == vide){
                 color(0, 0);
             }else if(jeu->terrain[y][x] == reseau){
-                color(8, 0);
+                color(7, 0);
             }else if(jeu->terrain[y][x] == maison){
                 color(12, 0);
             }else if(jeu->terrain[y][x] == chateau_deau){
