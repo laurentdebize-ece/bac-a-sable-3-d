@@ -3,6 +3,7 @@
 
 
 int main() {
+    ChangeDirectory("../IMAGES");
     Jeu* j = lire_graphe("Grille_de_jeu.txt");
     //initialisation_Images(j);
     //afficher_la_grille(j);

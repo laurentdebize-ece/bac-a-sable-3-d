@@ -4,6 +4,8 @@
 #define LARGEUR_FENETRE 920
 #define LONGUEUR_FENETRE 780
 
+//IMAGES
+
 #define MOUSE_SCALE_MARK_SIZE   12
 
 #define MAP_TILE_SIZE    32         // Tiles size 32x32 pixels

@@ -2,7 +2,7 @@
 
 
 void initialisation_Images(Jeu* jeu){
-    Texture2D boutton_off = LoadTexture("textures/off-button.png");
+    Texture2D boutton_off = LoadTexture("");
     jeu->TabImages[boutonoff] = boutton_off;
     int frameWidth = boutton_off.width/6;
     int frameHeight = boutton_off.height/6;
