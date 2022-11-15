@@ -7,5 +7,5 @@
 void initialisation_Images(Jeu* jeu);
 void ajouter_batiment(Jeu* jeu);
 void initialiser_jeu(Jeu* jeu);
-
+void unload_Images(Jeu* jeu);
 #endif //BAC_A_SABLE_2_INITIALISATION_H

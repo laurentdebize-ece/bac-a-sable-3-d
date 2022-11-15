@@ -7,6 +7,15 @@
 enum {vide, reseau, maison, chateau_deau, usine_electrique, nbBatiments};
 enum {boutonoff, nbImages};
 
+typedef struct S_Image{
+    char* chemin;
+    Texture2D texture2D;
+    Image image2D;
+    Rectangle
+    int x;
+    int y;
+}S_Image;
+
 typedef struct Batiment{
     char* nom;
     int capacite;
@@ -21,14 +30,15 @@ typedef struct Jeu{
     int argent;
     int production_eau_restante;
     int production_elec_restante;
-    Batiment* batiments;
-    Texture2D TabImages[nbImages];
+    Batiment batiments[nbBatiments];
+    S_Image TabImages[nbImages];
 }Jeu;
 
 
 #include "Macros.h"
 #include "initialisation.h"
 #include "affichage.h"
+#include "raylib.h"
 #include "Graphe.h"
 
 

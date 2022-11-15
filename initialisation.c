@@ -2,13 +2,25 @@
 
 
 void initialisation_Images(Jeu* jeu){
-    Texture2D boutton_off = LoadTexture("");
-    jeu->TabImages[boutonoff] = boutton_off;
-    int frameWidth = boutton_off.width/6;
-    int frameHeight = boutton_off.height/6;
-    Rectangle sourceRec = { 0.0f, 0.0f, (float)frameWidth, (float)frameHeight };
-    Rectangle destRec = { RESOLUTION_X/2.0f, RESOLUTION_Y/2.0f, frameWidth*2.0f, frameHeight*2.0f };
-    Vector2 origin = { (float)frameWidth, (float)frameHeight };
+    jeu->TabImages[boutonoff].image2D = LoadImage("off-button.png");
+    int x = jeu->TabImages[boutonoff].image2D.width;
+    int y = jeu->TabImages[boutonoff].image2D.height;
+    ImageCrop(&jeu->TabImages[boutonoff].image2D, (Rectangle){0, 0, x / 1.5, y / 1.5 });
+    ImageResize(&jeu->TabImages[boutonoff].image2D, jeu->TabImages[boutonoff].x = x / 11, jeu->TabImages[boutonoff].y = y / 11);
+    jeu->TabImages[boutonoff].texture2D = LoadTextureFromImage(jeu->TabImages[boutonoff].image2D);
+
+
+
+
+    for (int i = 0; i < nbImages; i++) {
+        UnloadImage(jeu->TabImages[i].image2D);
+    }
+}
+
+void unload_Images(Jeu* jeu){
+    for (int i = 0; i < nbImages; i++) {
+        UnloadTexture(jeu->TabImages[i].texture2D);
+    }
 }
 
 

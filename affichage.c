@@ -4,22 +4,17 @@
 
 void afficher_fenetre_menu(Jeu* jeu){
     InitWindow(RESOLUTION_X, RESOLUTION_Y, "~~~~~~~~~~ bonjour je suis un MENU ~~~~~~~~~~");
-    SetWindowState(FLAG_WINDOW_RESIZABLE);
-    SetWindowPosition(0, 50);
+    SetWindowPosition(0, 25);
     SetTargetFPS(60);
-    Texture2D boutton_off = LoadTexture("off-button.png");
-    Texture2D texture = LoadTexture("resources/raylib_logo.png");
+    initialisation_Images(jeu);
     while (!WindowShouldClose()) {
         BeginDrawing();
-            ClearBackground(RAYWHITE);
-            DrawTexture(texture, RESOLUTION_X/2 - RESOLUTION_X/2, RESOLUTION_Y/2 - texture.height/2, WHITE);
-            DrawTexture(texture, 0, 0, WHITE);
-
-        //DrawTexture(jeu->TabImages[boutonoff], 0, 0, WHITE);
-
+        ClearBackground(BLACK);
+        DrawTexture(jeu->TabImages[boutonoff].texture2D, RESOLUTION_X - jeu->TabImages[boutonoff].x + 75, RESOLUTION_Y-jeu->TabImages[boutonoff].y, WHITE);
+        //if (GetMousePosition() == )
         EndDrawing();
     }
-    UnloadTexture(jeu->TabImages[boutonoff]);
+    unload_Images(jeu);
     CloseWindow();
 }
 
