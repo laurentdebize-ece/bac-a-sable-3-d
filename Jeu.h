@@ -4,7 +4,7 @@
 #include <raylib.h>
 #include <stdlib.h>
 enum {animation_Lancement, menu_principale, en_jeu, regles, credis, nbPages};
-enum {img_menu, img_boutonoff, img_boutonJouer, nbImages};
+enum {img_menu, img_boutonoff, img_boutonJouer, img_boutonRegles, img_boutonCredits, nbImages};
 
 enum {vide, reseau, maison, chateau_deau, usine_electrique, nbBatiments};
 
@@ -20,6 +20,7 @@ typedef struct S_Image{
     int y;
     float frame_hauteur;
     float frame_longueur;
+    bool action_sur_click;
 }S_Image;
 
 typedef struct Batiment{
@@ -29,6 +30,7 @@ typedef struct Batiment{
 }Batiment;
 
 typedef struct Jeu{
+    bool quitter;
     int page_actuel;
     int** terrain;
     int ordre_en_x;
