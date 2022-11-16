@@ -30,14 +30,133 @@ Jeu *lire_graphe(char *nomFichier) {
     return grille;
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////CREATION MATRICE//////////////////////////////////////////////////////////////
 
-// creer graphe en fonction de la matrice (Sommet : case du jeu  et Aretes : poids de 1 liaison entre les cases)
+void creer_matrice_centrale(int nb_centrale, int nb_maison){
+    if (nb_centrale != 0 && nb_maison != 0){
+        int** matrice_centrale = (int**) calloc(nb_maison,sizeof(int*));
+        for (int i = 0; i < nb_maison; i++) {
+            matrice_centrale[i] = (int*) calloc(nb_centrale, sizeof(int));
+        }
+    }
+}
 
-// bfs pour chercher les chemins entre usine et habitation (en utilisant les routes (reseau))    cherche la distance
+void actualiser_matrice_adjacence(Jeu jeu, int** matrice_centrale, int batiment_action){
+    //BFS POUR REMPLIR LA MATRICE D'ADJACENCE
+    /*  M1 M2 M3
+     C1
+     C2
+     C3
+     */
+}
 
-//creer graphe avec liste d'adjacence avec la distance entre les usines et les maisons en parcourant la route (dijstra)
 
-//modifier graphe (meme liste d'adjacence) avec des flots pour l'alimentation des habitations
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////MODIFICATION TAILLE MATRICE///////////////////////////////////////////////////
+
+
+int** destruction_centrale_matrice(Jeu jeu, int** matrice_centrale, int nb_maison, int nb_centrale, int num_centrale){
+    int** new_matrice_centrale = (int**) calloc(nb_maison, sizeof(int*));
+    for (int i = 0; i < nb_maison; i++) {
+        new_matrice_centrale[i] = (int*) calloc(nb_centrale - 1, sizeof(int));
+    }
+
+    for (int i = 0; i < nb_maison; i++){
+        for (int j = 0; j < nb_centrale; j++) {
+            if ( j < num_centrale) {
+                new_matrice_centrale[i][j] = matrice_centrale[i][j];
+            }
+            else if  (j > num_centrale){
+                new_matrice_centrale[i][j-1] = matrice_centrale[i][j];
+            }
+        }
+    }
+    for (int i = 0; i < nb_maison; i++) {
+        free(matrice_centrale[i]);
+    }
+    free(matrice_centrale);
+    return new_matrice_centrale;
+}
+
+int** construction_centrale_matrice(Jeu jeu, int** matrice_centrale, int nb_maison, int nb_centrale){
+    int** new_matrice_centrale = (int**) calloc(nb_maison, sizeof(int*));
+    for (int i = 0; i < nb_maison; i++) {
+        new_matrice_centrale[i] = (int*) calloc(nb_centrale + 1, sizeof(int));
+    }
+
+    for (int i = 0; i < nb_maison; i++){
+        for (int j = 0; j < nb_centrale; j++) {
+            new_matrice_centrale[i][j] = matrice_centrale[i][j];
+        }
+    }
+    for (int i = 0; i < nb_maison; i++) {
+        free(matrice_centrale[i]);
+    }
+    free(matrice_centrale);
+    return new_matrice_centrale;
+}
+
+int** destruction_maison_matrice(Jeu jeu, int** matrice_centrale, int nb_maison, int nb_centrale, int num_maison){
+    int** new_matrice_centrale = (int**) calloc(nb_maison - 1, sizeof(int*));
+    for (int i = 0; i < nb_maison; i++) {
+        new_matrice_centrale[i] = (int*) calloc(nb_centrale, sizeof(int));
+    }
+
+    for (int i = 0; i < nb_maison; i++){
+        for (int j = 0; j < nb_centrale; j++) {
+            if ( i < num_maison) {
+                new_matrice_centrale[i][j] = matrice_centrale[i][j];
+            }
+            else if  (i > num_maison){
+                new_matrice_centrale[i-1][j] = matrice_centrale[i][j];
+            }
+        }
+    }
+    for (int i = 0; i < nb_maison; i++) {
+        free(matrice_centrale[i]);
+    }
+    free(matrice_centrale);
+    return new_matrice_centrale;
+}
+
+int** construction_maison_matrice(Jeu jeu, int** matrice_centrale, int nb_maison, int nb_centrale){
+    int** new_matrice_centrale = (int**) calloc(nb_maison + 1, sizeof(int*));
+    for (int i = 0; i < nb_maison; i++) {
+        new_matrice_centrale[i] = (int*) calloc(nb_centrale, sizeof(int));
+    }
+
+    for (int i = 0; i < nb_maison; i++){
+        for (int j = 0; j < nb_centrale; j++) {
+            new_matrice_centrale[i][j] = matrice_centrale[i][j];
+        }
+    }
+    for (int i = 0; i < nb_maison; i++) {
+        free(matrice_centrale[i]);
+    }
+    free(matrice_centrale);
+    return new_matrice_centrale;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////MODIFICATION CONTENU MATRICE///////////////////////////////////////////////////
+
+
+
+
+
+
+
+// bfs pour chercher les chemins entre usine et habitation (en utilisant les routes (reseau))   cherche la distance entre les deux
+//a partir du fichier texte
+
+//creer matrice d'adjacence
+
+// pour les centrales pas de poids
+
+// pour les chateau deau avec poids = distance
+
 
 
 

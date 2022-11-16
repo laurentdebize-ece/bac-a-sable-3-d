@@ -3,6 +3,7 @@
 #include <stdio.h>
 //#include <raylib.h>
 #include <stdlib.h>
+#include "Graphe.h"
 
 enum {vide, route, terrain_vague, chateau_deau, centrale, nbBatiments};
 
