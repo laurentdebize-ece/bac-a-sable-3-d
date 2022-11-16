@@ -7,7 +7,7 @@
 #define LONGUEUR_FENETRE 1080
 
 //IMAGES
-
+#define NB_FRAMES_BOUTON  3       // Nombre de frame pour le Bouton
 #define MOUSE_SCALE_MARK_SIZE   12
 
 #define MAP_TILE_SIZE    32         // Tiles size 32x32 pixels

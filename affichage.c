@@ -1,21 +1,33 @@
 #include "affichage.h"
 
-
-
-void afficher_fenetre_menu(Jeu* jeu){
-    InitWindow(RESOLUTION_X, RESOLUTION_Y, "~~~~~~~~~~ bonjour je suis un MENU ~~~~~~~~~~");
+void affichage_Boucle_G(Jeu* jeu){
+    InitWindow(RESOLUTION_X, RESOLUTION_Y, "ECE-CITY BETA/ALPHA de L'OMEGA");
+    InitAudioDevice();      // Initialise le haut-parleur
+    initialisation_Images(jeu);
+    initialisation_Sons(jeu);
     SetWindowPosition(0, 25);
     SetTargetFPS(60);
-    initialisation_Images(jeu);
     while (!WindowShouldClose()) {
-        BeginDrawing();
-        ClearBackground(BLACK);
-        DrawTexture(jeu->TabImages[boutonoff].texture2D, RESOLUTION_X - jeu->TabImages[boutonoff].x + 75, RESOLUTION_Y-jeu->TabImages[boutonoff].y, WHITE);
-        //if (GetMousePosition() == )
-        EndDrawing();
+        Vector2 pos_Souris = GetMousePosition();
+        jeu->page_actuel = menu_principale;
+        afficher_fenetre_menu(jeu, pos_Souris);
     }
-    unload_Images(jeu);
+    unload_all(jeu);
+    CloseAudioDevice();
     CloseWindow();
+}
+
+void afficher_fenetre_menu(Jeu* jeu, Vector2 pos_Souris){
+    BeginDrawing();
+    if(IsSoundPlaying(jeu->tabSon[son_menu])==0){
+        PlaySound(jeu->tabSon[son_menu]);
+    }
+    ClearBackground(BLACK);
+    DrawTexture(jeu->tabImages[menu_principale][img_menu].texture2D, 0, 0, WHITE);
+    affi_bouton(jeu, jeu->page_actuel, img_boutonJouer, pos_Souris);
+    affi_bouton(jeu, jeu->page_actuel, img_boutonoff, pos_Souris);
+
+    EndDrawing();
 }
 
 void afficher_la_grille(Jeu* jeu){
@@ -26,6 +38,26 @@ void afficher_la_grille(Jeu* jeu){
         printf("\n");
     }
 }
+
+void affi_bouton(Jeu* jeu, int page, int image, Vector2 mousePoint){
+    int btnState;
+    bool btnAction;
+    btnAction = false;
+    if (CheckCollisionPointRec(mousePoint, jeu->tabImages[page][image].pos_Rec))
+    {
+        if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) btnState = 2;
+        else btnState = 1;
+        if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) btnAction = true;
+    }
+    else btnState = 0;
+    if (btnAction)
+    {
+        PlaySound(jeu->tabSon[son_Bouton]); // +ce qu'on souhaite faire en appuyant sur l'image
+    }
+    jeu->tabImages[page][image].source_Rec.y = btnState * jeu->tabImages[page][image].frame_hauteur;
+    DrawTextureRec(jeu->tabImages[page][image].texture2D, jeu->tabImages[page][image].source_Rec, (Vector2){jeu->tabImages[page][image].pos_Rec.x, jeu->tabImages[page][image].pos_Rec.y }, WHITE);
+}
+
 
 
 

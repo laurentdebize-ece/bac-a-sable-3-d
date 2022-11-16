@@ -3,17 +3,23 @@
 #include <stdio.h>
 #include <raylib.h>
 #include <stdlib.h>
+enum {animation_Lancement, menu_principale, en_jeu, regles, credis, nbPages};
+enum {img_menu, img_boutonoff, img_boutonJouer, nbImages};
 
 enum {vide, reseau, maison, chateau_deau, usine_electrique, nbBatiments};
-enum {boutonoff, nbImages};
+
+enum {son_Bouton, son_menu, nbSons};
 
 typedef struct S_Image{
-    char* chemin;
+    bool charge;
     Texture2D texture2D;
     Image image2D;
-    Rectangle
+    Rectangle source_Rec;
+    Rectangle pos_Rec;
     int x;
     int y;
+    float frame_hauteur;
+    float frame_longueur;
 }S_Image;
 
 typedef struct Batiment{
@@ -23,6 +29,7 @@ typedef struct Batiment{
 }Batiment;
 
 typedef struct Jeu{
+    int page_actuel;
     int** terrain;
     int ordre_en_x;
     int ordre_en_y;
@@ -31,7 +38,8 @@ typedef struct Jeu{
     int production_eau_restante;
     int production_elec_restante;
     Batiment batiments[nbBatiments];
-    S_Image TabImages[nbImages];
+    S_Image tabImages[nbPages][nbImages];
+    Sound tabSon[nbSons];
 }Jeu;
 
 

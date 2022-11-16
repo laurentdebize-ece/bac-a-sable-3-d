@@ -2,24 +2,68 @@
 
 
 void initialisation_Images(Jeu* jeu){
-    jeu->TabImages[boutonoff].image2D = LoadImage("off-button.png");
-    int x = jeu->TabImages[boutonoff].image2D.width;
-    int y = jeu->TabImages[boutonoff].image2D.height;
-    ImageCrop(&jeu->TabImages[boutonoff].image2D, (Rectangle){0, 0, x / 1.5, y / 1.5 });
-    ImageResize(&jeu->TabImages[boutonoff].image2D, jeu->TabImages[boutonoff].x = x / 11, jeu->TabImages[boutonoff].y = y / 11);
-    jeu->TabImages[boutonoff].texture2D = LoadTextureFromImage(jeu->TabImages[boutonoff].image2D);
+    // TODO: NE PAS OUBLIER DE Unload des imgs apres les avoir mises en texture /!\
+    //  AVEC CA :  UnloadImage(jeu->tabImages[NOMDELIMAGE].image2D);
+
+    //exemple d'init img et redimension
+    /*jeu->tabImages[boutonoff].image2D = LoadImage("off-button.png");
+    int x = jeu->tabImages[boutonoff].image2D.width;
+    int y = jeu->tabImages[boutonoff].image2D.height;
+    ImageCrop(&jeu->tabImages[boutonoff].image2D, (Rectangle){0, 0, x / 1.5, y / 1.5 });
+    ImageResize(&jeu->tabImages[boutonoff].image2D, jeu->tabImages[boutonoff].x = x / 11, jeu->tabImages[boutonoff].y = y / 11);
+    jeu->tabImages[boutonoff].texture2D = LoadTextureFromImage(jeu->tabImages[boutonoff].image2D);*/
+
+    //pour init une img en boutton
+    ini_bouton(jeu);
+    jeu->tabImages[menu_principale][img_menu].texture2D = LoadTexture("Menu.png");
+    jeu->tabImages[menu_principale][img_menu].charge = 1;
 
 
-
-
-    for (int i = 0; i < nbImages; i++) {
-        UnloadImage(jeu->TabImages[i].image2D);
-    }
 }
 
-void unload_Images(Jeu* jeu){
-    for (int i = 0; i < nbImages; i++) {
-        UnloadTexture(jeu->TabImages[i].texture2D);
+void initialisation_Sons(Jeu* jeu){
+    jeu->tabSon[son_Bouton] = LoadSound("bouton_son.mp3");
+    SetSoundVolume(jeu->tabSon[img_boutonoff], 0.4);
+
+    jeu->tabSon[son_menu] = LoadSound("musique_ambiance_menu.mp3");
+    SetSoundVolume(jeu->tabSon[son_menu], 0.6);
+}
+
+void ini_bouton(Jeu* jeu){
+    jeu->tabImages[menu_principale][img_boutonoff].charge = 1;
+
+    //Bouton QUITTER
+    Texture2D bouton_texture =LoadTexture("button.png");
+    float frame_hauteur= (float)bouton_texture.height / NB_FRAMES_BOUTON;
+    jeu->tabImages[menu_principale][img_boutonoff].texture2D = bouton_texture; // Load button texture
+    jeu->tabImages[menu_principale][img_boutonoff].frame_hauteur = frame_hauteur;
+    Rectangle sourceRec = {0, 0, (float)jeu->tabImages[menu_principale][img_boutonoff].texture2D.width, jeu->tabImages[menu_principale][img_boutonoff].frame_hauteur };
+    jeu->tabImages[menu_principale][img_boutonoff].source_Rec = sourceRec;
+    // Definie l emplacement du boutton sur ecran (la ou l'on veut l afficher)
+    Rectangle pos1 = {RESOLUTION_X / 2.0f - bouton_texture.width / 2.0f, RESOLUTION_Y / 2.0f - bouton_texture.height / NB_FRAMES_BOUTON, (float)bouton_texture.width, frame_hauteur };
+    jeu->tabImages[menu_principale][img_boutonoff].pos_Rec = pos1;
+
+
+
+    //Bouton JOUER
+    jeu->tabImages[menu_principale][img_boutonJouer].texture2D = bouton_texture; // Load button texture
+    jeu->tabImages[menu_principale][img_boutonJouer].frame_hauteur = frame_hauteur;
+    jeu->tabImages[menu_principale][img_boutonJouer].source_Rec = sourceRec;
+    // Definie l emplacement du boutton sur ecran (la ou l'on veut l afficher)
+    Rectangle pos2 = {RESOLUTION_X / 2.0f - bouton_texture.width / 2.0f, RESOLUTION_Y / 2.0f - bouton_texture.height / NB_FRAMES_BOUTON + (frame_hauteur + 5), (float)bouton_texture.width, frame_hauteur };
+    jeu->tabImages[menu_principale][img_boutonJouer].pos_Rec = pos2;
+}
+void unload_all(Jeu* jeu){
+    for (int i = 0; i < nbPages; i++) {
+        for (int j = 0; j < nbImages; j++) {
+            if(jeu->tabImages[i][j].charge==1){
+                UnloadTexture(jeu->tabImages[i][j].texture2D);
+            }
+        }
+
+    }
+    for (int i = 0; i < nbSons; i++) {
+        UnloadSound(jeu->tabSon[i]);
     }
 }
 

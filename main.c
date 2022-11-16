@@ -3,12 +3,12 @@
 
 int main() {
     ChangeDirectory(GetApplicationDirectory());
-    ChangeDirectory("../IMAGES");
+    ChangeDirectory("../FILE");
     Jeu* j = lire_graphe("Grille_de_jeu.txt");
 
 
     //afficher_la_grille(j);
-    afficher_fenetre_menu(j);
+    affichage_Boucle_G(j);
     //afficherJeu(j);
 
     return 0;
