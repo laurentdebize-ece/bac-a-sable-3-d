@@ -48,6 +48,7 @@ typedef struct Jeu{
 #include "affichage.h"
 #include "raylib.h"
 #include "Graphe.h"
+#include "reasings.h"
 
 
 #endif //TEMPLATE_RAYLIB_JEU_H

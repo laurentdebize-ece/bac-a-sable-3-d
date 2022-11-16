@@ -5,6 +5,7 @@ int main() {
     ChangeDirectory(GetApplicationDirectory());
     ChangeDirectory("../FILE");
     Jeu* j = lire_graphe("Grille_de_jeu.txt");
+    j->page_actuel = animation_Lancement;
 
 
     //afficher_la_grille(j);

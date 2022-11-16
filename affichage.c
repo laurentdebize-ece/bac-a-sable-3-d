@@ -5,19 +5,28 @@ void affichage_Boucle_G(Jeu* jeu){
     InitAudioDevice();      // Initialise le haut-parleur
     initialisation_Images(jeu);
     initialisation_Sons(jeu);
+
+    int ballPositionX = -100;
+    int ballRadius = 20;
+    float ballAlpha = 0.0f;
+    int state = 0;
+    int timer = 0;
+    float fade = 1;
+
     SetWindowPosition(0, 25);
     SetTargetFPS(60);
     while (!WindowShouldClose()) {
         Vector2 pos_Souris = GetMousePosition();
-        jeu->page_actuel = menu_principale;
-        afficher_fenetre_menu(jeu, pos_Souris);
+        if(jeu->page_actuel == animation_Lancement) afficher_animation(jeu, &ballPositionX, &ballRadius, &ballAlpha, &state, &timer);
+        else if(jeu->page_actuel == menu_principale) afficher_fenetre_menu(jeu, pos_Souris, &timer,&fade);
+        timer++;
     }
     unload_all(jeu);
     CloseAudioDevice();
     CloseWindow();
 }
 
-void afficher_fenetre_menu(Jeu* jeu, Vector2 pos_Souris){
+void afficher_fenetre_menu(Jeu* jeu, Vector2 pos_Souris, int* timer, float* rectAplha){
     BeginDrawing();
     if(IsSoundPlaying(jeu->tabSon[son_menu])==0){
         PlaySound(jeu->tabSon[son_menu]);
@@ -26,8 +35,61 @@ void afficher_fenetre_menu(Jeu* jeu, Vector2 pos_Souris){
     DrawTexture(jeu->tabImages[menu_principale][img_menu].texture2D, 0, 0, WHITE);
     affi_bouton(jeu, jeu->page_actuel, img_boutonJouer, pos_Souris);
     affi_bouton(jeu, jeu->page_actuel, img_boutonoff, pos_Souris);
+    if (*timer <=250){
+        *rectAplha -= 0.01f;
+        DrawRectangle(0, 0, RESOLUTION_X, RESOLUTION_Y, Fade(BLACK, *rectAplha));
+    }
 
     EndDrawing();
+}
+
+void afficher_animation(Jeu* jeu, int* ballPositionX, int* ballRadius, float* ballAlpha, int* state, int* framesCounter){
+    if (*state == 0)
+    {
+        *ballPositionX = (int)EaseElasticOut((float)*framesCounter, -100, RESOLUTION_X / 2.0f + 100, 120);
+
+        if (*framesCounter >= 120)
+        {
+            *framesCounter = 0;
+            *state = 1;
+        }
+    }
+    else if (*state == 1)
+    {
+        *ballRadius = (int)EaseElasticIn((float)*framesCounter, 20, 5000, 200);
+
+        if (*framesCounter >= 200)
+        {
+            *framesCounter = 0;
+            *state = 2;
+        }
+    }
+    else if (*state == 2)        // Change ball alpha with easing (background color blending)
+    {
+        *ballAlpha = EaseCubicOut((float)*framesCounter, 0.0f, 1.0f, 200);
+
+        if (*framesCounter >= 150)
+        {
+            *framesCounter = 0;
+            *state = 3;
+        }
+    }
+    BeginDrawing();
+
+    ClearBackground(RAYWHITE);
+    if (*state >= 2) {
+        DrawRectangle(0, 0, RESOLUTION_X, RESOLUTION_Y, BLACK);
+        DrawText("ECE - CITY", RESOLUTION_X/2, RESOLUTION_Y/2, 30, BLUE);
+    }
+    DrawCircle(*ballPositionX, RESOLUTION_Y/2, (float)*ballRadius, Fade(RED, 1.0f - *ballAlpha));
+
+    if (*state == 3) {
+        *framesCounter = 0;
+        jeu->page_actuel = menu_principale;
+    }
+
+    EndDrawing();
+
 }
 
 void afficher_la_grille(Jeu* jeu){
