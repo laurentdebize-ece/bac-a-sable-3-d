@@ -31,5 +31,5 @@ typedef struct Jeu{
     Batiment batiments[nbBatiments];
 }Jeu;
 
-
+Coordonnee* initialisation_case_ajacentes(Coordonnee coordonnee_batiment,int longueur, int hauteur );
 #endif //TEMPLATE_RAYLIB_JEU_H

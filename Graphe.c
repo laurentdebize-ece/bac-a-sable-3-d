@@ -42,6 +42,26 @@ void creer_matrice_centrale(int nb_centrale, int nb_maison){
     }
 }
 
+/*Coordonnee* cases_adjacentes(Coordonnee case_actuelle){
+    Coordonnee tab_adjacence_case[4];
+    tab_adjacence_case[0].x = case_actuelle.x - 1;
+    tab_adjacence_case[1].x = case_actuelle.x;
+    tab_adjacence_case[2].x = case_actuelle.x + 1;
+    tab_adjacence_case[3].x = case_actuelle.x;
+    tab_adjacence_case[0].y = case_actuelle.y;
+    tab_adjacence_case[1].y = case_actuelle.y + 1;
+    tab_adjacence_case[2].y = case_actuelle.y;
+    tab_adjacence_case[3].y = case_actuelle.y - 1;
+    return tab_adjacence_case;
+}*/
+
+void actualiser_matrice_adjacence_centrale_construction_maison(Jeu jeu, int** matrice_centrale, int nb_maison){
+    Coordonnee case_actuelle;
+    Coordonnee* tab_adjacence_case = initialisation_case_ajacentes(case_actuelle,1,1);
+
+}
+
+
 void actualiser_matrice_adjacence(Jeu jeu, int** matrice_centrale, int batiment_action){
     //BFS POUR REMPLIR LA MATRICE D'ADJACENCE
     /*  M1 M2 M3
