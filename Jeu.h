@@ -3,13 +3,18 @@
 #include <stdio.h>
 #include <raylib.h>
 #include <stdlib.h>
+#include <stdbool.h>
 enum {animation_Lancement, menu_principale, en_jeu, regles, credis, nbPages};
-enum {img_menu, img_boutonoff, img_boutonJouer, img_boutonSauvegarder, img_boutonRegles, img_boutonCredits, nbImages};
+enum {img_menu, img_boutonoff, img_boutonJouer, img_boutonSauvegarder, img_boutonRegles, img_boutonCredits, img_suppSave, nbImages};
 
 enum {vide, reseau, maison, chateau_deau, usine_electrique, nbBatiments};
 
 enum {son_Bouton, son_menu, nbSons};
 
+typedef struct Coordonnee {
+    int x;
+    int y;
+}Coordonnee;
 typedef struct S_Image{
     bool charge;
     Texture2D texture2D;
@@ -24,17 +29,21 @@ typedef struct S_Image{
 }S_Image;
 
 typedef struct Batiment{
+    Coordonnee taille;
+    Coordonnee cases;
     char* nom;
     int capacite;
     int nb_habitants;
+    struct Batiment* next;
 }Batiment;
 
 typedef struct Jeu{
+    bool en_cours;
+    bool fichier;
     bool quitter;
     int page_actuel;
     int** terrain;
-    int ordre_en_x;
-    int ordre_en_y;
+    Coordonnee ordre;
     int nb_habitants_tot;
     int argent;
     int production_eau_restante;
@@ -44,6 +53,7 @@ typedef struct Jeu{
     Sound tabSon[nbSons];
 }Jeu;
 
+// TODO: NE PAS CHANGER LORDRE DES INCLUDES IMPORTANT !!!
 
 #include "Macros.h"
 #include "initialisation.h"
@@ -51,6 +61,11 @@ typedef struct Jeu{
 #include "raylib.h"
 #include "Graphe.h"
 #include "reasings.h"
+
+
+int difference_entre_2_nombres_VALEURABSOLUE(int a, int b);
+Jeu* initialisation();
+void initialisation_CONSTANTE(Jeu* j);
 
 
 #endif //TEMPLATE_RAYLIB_JEU_H

@@ -10,8 +10,8 @@ void affi_bouton(Jeu* jeu, int page, int image, Vector2 mousePoint, char* nom);
 void afficherJeu(Jeu* jeu);
 
 typedef struct Map {
-    unsigned int tilesX;            // Number of tiles in X axis
-    unsigned int tilesY;            // Number of tiles in Y axis
+    unsigned int x;            // Number of tiles in X axis
+    unsigned int y;            // Number of tiles in Y axis
     unsigned char *tileIds;         // Tile ids (tilesX*tilesY), defines type of tile to draw
     unsigned char *tileFog;         // Tile fog state (tilesX*tilesY), defines if a tile has fog or half-fog
 } Map;

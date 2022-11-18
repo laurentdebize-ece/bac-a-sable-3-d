@@ -41,7 +41,7 @@ void ini_bouton(Jeu* jeu){
     Rectangle sourceRec = {0, 0, (float)jeu->tabImages[menu_principale][img_boutonoff].texture2D.width, jeu->tabImages[menu_principale][img_boutonoff].frame_hauteur };
     jeu->tabImages[menu_principale][img_boutonoff].source_Rec = sourceRec;
     // Definie l emplacement du boutton sur ecran (la ou l'on veut l afficher)
-    Rectangle pos1 = {RESOLUTION_X / 2.0f - bouton_texture.width / 2.0f, RESOLUTION_Y / 2.0f - bouton_texture.height / NB_FRAMES_BOUTON + 3*(frame_hauteur + 5), (float)bouton_texture.width, frame_hauteur };
+    Rectangle pos1 = {RESOLUTION_X / 2.0f - bouton_texture.width / 2.0f, RESOLUTION_Y / 2.0f - bouton_texture.height / NB_FRAMES_BOUTON + 4*(frame_hauteur + 5), (float)bouton_texture.width, frame_hauteur };
     jeu->tabImages[menu_principale][img_boutonoff].pos_Rec = pos1;
 
     //Bouton JOUER
@@ -75,6 +75,14 @@ void ini_bouton(Jeu* jeu){
     // Definie l emplacement du boutton sur ecran (la ou l'on veut l afficher)
     Rectangle pos4 = {RESOLUTION_X / 2.0f - bouton_texture.width / 2.0f, RESOLUTION_Y / 2.0f - bouton_texture.height / NB_FRAMES_BOUTON + 2*(frame_hauteur + 5), (float)bouton_texture.width, frame_hauteur };
     jeu->tabImages[menu_principale][img_boutonCredits].pos_Rec = pos4;
+
+    //Bouton RESET
+    jeu->tabImages[menu_principale][img_suppSave].texture2D = bouton_texture; // Load button texture
+    jeu->tabImages[menu_principale][img_suppSave].frame_hauteur = frame_hauteur;
+    jeu->tabImages[menu_principale][img_suppSave].source_Rec = sourceRec;
+    // Definie l emplacement du boutton sur ecran (la ou l'on veut l afficher)
+    Rectangle pos6 = {RESOLUTION_X / 2.0f - bouton_texture.width / 2.0f, RESOLUTION_Y / 2.0f - bouton_texture.height / NB_FRAMES_BOUTON + 3*(frame_hauteur + 5), (float)bouton_texture.width, frame_hauteur };
+    jeu->tabImages[menu_principale][img_suppSave].pos_Rec = pos6;
 }
 void unload_all(Jeu* jeu){
     for (int i = 0; i < nbPages; i++) {
@@ -93,10 +101,30 @@ void unload_all(Jeu* jeu){
 
 void initialiser_jeu(Jeu* jeu){
 
+    jeu->batiments[vide].taille.x = TAILLE_VIDE;
+    jeu->batiments[vide].taille.y = TAILLE_VIDE;
+    jeu->batiments[vide].nom = "Vide";
+
+    jeu->batiments[reseau].taille.x = TAILLE_ROUTE;
+    jeu->batiments[reseau].taille.y = TAILLE_ROUTE;
+    jeu->batiments[reseau].nom = "Route";
+
+    jeu->batiments[maison].taille.x = TAILLE_MAISON;
+    jeu->batiments[maison].taille.y = TAILLE_MAISON;
+    jeu->batiments[maison].nom = "Maison";
+
+    jeu->batiments[chateau_deau].taille.x = LONGUEUR_BATIMENTS;
+    jeu->batiments[chateau_deau].taille.y = LARGEUR_BATIMENTS;
+    jeu->batiments[chateau_deau].nom = "Chateau d'eau";
+
+    jeu->batiments[usine_electrique].taille.x = LONGUEUR_BATIMENTS;
+    jeu->batiments[usine_electrique].taille.y = LARGEUR_BATIMENTS;
+    jeu->batiments[usine_electrique].nom = "Usine electrique";
+
     // Initialiser compteurs
 
     jeu->nb_habitants_tot = 0;
-    jeu->argent = 500000;
+    jeu->argent = ARGENT_DE_DEBUT;
     jeu->production_eau_restante = 0;
     jeu->production_elec_restante = 0;
 

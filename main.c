@@ -4,13 +4,13 @@
 int main() {
     ChangeDirectory(GetApplicationDirectory());
     ChangeDirectory("../FILE");
-    Jeu* j = lire_graphe("Grille_de_jeu.txt");
+    Jeu* j = (Jeu *) malloc(sizeof(Jeu));
+    j->en_cours = 0;
+    lire_graphe(j);
     j->page_actuel = animation_Lancement;
 
 
-    //afficher_la_grille(j);
     affichage_Boucle_G(j);
-    //afficherJeu(j);
 
     return 0;
 }
