@@ -38,13 +38,14 @@ void afficher_fenetre_menu(Jeu* jeu, Vector2 pos_Souris, int* timer, float* rect
     ClearBackground(BLACK);
     DrawTexture(jeu->tabImages[menu_principale][img_menu].texture2D, 0, 0, WHITE);
     affi_bouton(jeu, jeu->page_actuel, img_boutonCredits, pos_Souris, "CREDITS");
-    affi_bouton(jeu, jeu->page_actuel, img_boutonRegles, pos_Souris, "REGLES");
+    affi_bouton(jeu, jeu->page_actuel, img_boutonRegles, pos_Souris, "RULES");
     affi_bouton(jeu, jeu->page_actuel, img_boutonJouer, pos_Souris, "START");
+    affi_bouton(jeu, jeu->page_actuel, img_boutonSauvegarder, pos_Souris, "SAVE");
     affi_bouton(jeu, jeu->page_actuel, img_boutonoff, pos_Souris, "EXIT");
     if (*timer <=300){
         *rectAplha -= 0.01f;
-        *sonAlpha += 0.01f;
-        if(*sonAlpha < 0.06f){
+        *sonAlpha += 0.035f;
+        if(*sonAlpha < 0.6f){
             SetSoundVolume(jeu->tabSon[son_menu], *sonAlpha);
         }
         DrawRectangle(0, 0, RESOLUTION_X, RESOLUTION_Y, Fade(BLACK, *rectAplha));

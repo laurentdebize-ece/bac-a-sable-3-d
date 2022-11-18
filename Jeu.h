@@ -4,7 +4,7 @@
 #include <raylib.h>
 #include <stdlib.h>
 enum {animation_Lancement, menu_principale, en_jeu, regles, credis, nbPages};
-enum {img_menu, img_boutonoff, img_boutonJouer, img_boutonRegles, img_boutonCredits, nbImages};
+enum {img_menu, img_boutonoff, img_boutonJouer, img_boutonSauvegarder, img_boutonRegles, img_boutonCredits, nbImages};
 
 enum {vide, reseau, maison, chateau_deau, usine_electrique, nbBatiments};
 

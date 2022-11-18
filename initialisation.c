@@ -41,25 +41,31 @@ void ini_bouton(Jeu* jeu){
     Rectangle sourceRec = {0, 0, (float)jeu->tabImages[menu_principale][img_boutonoff].texture2D.width, jeu->tabImages[menu_principale][img_boutonoff].frame_hauteur };
     jeu->tabImages[menu_principale][img_boutonoff].source_Rec = sourceRec;
     // Definie l emplacement du boutton sur ecran (la ou l'on veut l afficher)
-    Rectangle pos1 = {RESOLUTION_X / 2.0f - bouton_texture.width / 2.0f, RESOLUTION_Y / 2.0f - bouton_texture.height / NB_FRAMES_BOUTON + 2*(frame_hauteur + 5), (float)bouton_texture.width, frame_hauteur };
+    Rectangle pos1 = {RESOLUTION_X / 2.0f - bouton_texture.width / 2.0f, RESOLUTION_Y / 2.0f - bouton_texture.height / NB_FRAMES_BOUTON + 3*(frame_hauteur + 5), (float)bouton_texture.width, frame_hauteur };
     jeu->tabImages[menu_principale][img_boutonoff].pos_Rec = pos1;
-
-
 
     //Bouton JOUER
     jeu->tabImages[menu_principale][img_boutonJouer].texture2D = bouton_texture; // Load button texture
     jeu->tabImages[menu_principale][img_boutonJouer].frame_hauteur = frame_hauteur;
     jeu->tabImages[menu_principale][img_boutonJouer].source_Rec = sourceRec;
     // Definie l emplacement du boutton sur ecran (la ou l'on veut l afficher)
-    Rectangle pos2 = {RESOLUTION_X / 2.0f - bouton_texture.width / 2.0f, RESOLUTION_Y / 2.0f - bouton_texture.height / NB_FRAMES_BOUTON - 2*(frame_hauteur + 5), (float)bouton_texture.width, frame_hauteur };
+    Rectangle pos2 = {RESOLUTION_X / 2.0f - bouton_texture.width / 2.0f, RESOLUTION_Y / 2.0f - bouton_texture.height / NB_FRAMES_BOUTON - (frame_hauteur + 5), (float)bouton_texture.width, frame_hauteur };
     jeu->tabImages[menu_principale][img_boutonJouer].pos_Rec = pos2;
+
+    //Bouton SAUVEGARDER
+    jeu->tabImages[menu_principale][img_boutonSauvegarder].texture2D = bouton_texture; // Load button texture
+    jeu->tabImages[menu_principale][img_boutonSauvegarder].frame_hauteur = frame_hauteur;
+    jeu->tabImages[menu_principale][img_boutonSauvegarder].source_Rec = sourceRec;
+    // Definie l emplacement du boutton sur ecran (la ou l'on veut l afficher)
+    Rectangle pos5 = {RESOLUTION_X / 2.0f - bouton_texture.width / 2.0f, RESOLUTION_Y / 2.0f - bouton_texture.height / NB_FRAMES_BOUTON , (float)bouton_texture.width, frame_hauteur };
+    jeu->tabImages[menu_principale][img_boutonSauvegarder].pos_Rec = pos5;
 
     //Bouton Regles
     jeu->tabImages[menu_principale][img_boutonRegles].texture2D = bouton_texture; // Load button texture
     jeu->tabImages[menu_principale][img_boutonRegles].frame_hauteur = frame_hauteur;
     jeu->tabImages[menu_principale][img_boutonRegles].source_Rec = sourceRec;
     // Definie l emplacement du boutton sur ecran (la ou l'on veut l afficher)
-    Rectangle pos3 = {RESOLUTION_X / 2.0f - bouton_texture.width / 2.0f, RESOLUTION_Y / 2.0f - bouton_texture.height / NB_FRAMES_BOUTON - (frame_hauteur + 5), (float)bouton_texture.width, frame_hauteur };
+    Rectangle pos3 = {RESOLUTION_X / 2.0f - bouton_texture.width / 2.0f, RESOLUTION_Y / 2.0f - bouton_texture.height / NB_FRAMES_BOUTON + (frame_hauteur + 5), (float)bouton_texture.width, frame_hauteur };
     jeu->tabImages[menu_principale][img_boutonRegles].pos_Rec = pos3;
 
     //Bouton Credits
@@ -67,7 +73,7 @@ void ini_bouton(Jeu* jeu){
     jeu->tabImages[menu_principale][img_boutonCredits].frame_hauteur = frame_hauteur;
     jeu->tabImages[menu_principale][img_boutonCredits].source_Rec = sourceRec;
     // Definie l emplacement du boutton sur ecran (la ou l'on veut l afficher)
-    Rectangle pos4 = {RESOLUTION_X / 2.0f - bouton_texture.width / 2.0f, RESOLUTION_Y / 2.0f - bouton_texture.height / NB_FRAMES_BOUTON + (frame_hauteur + 5), (float)bouton_texture.width, frame_hauteur };
+    Rectangle pos4 = {RESOLUTION_X / 2.0f - bouton_texture.width / 2.0f, RESOLUTION_Y / 2.0f - bouton_texture.height / NB_FRAMES_BOUTON + 2*(frame_hauteur + 5), (float)bouton_texture.width, frame_hauteur };
     jeu->tabImages[menu_principale][img_boutonCredits].pos_Rec = pos4;
 }
 void unload_all(Jeu* jeu){
