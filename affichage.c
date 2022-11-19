@@ -3,6 +3,10 @@
 
 void afficher_menu_console(Jeu* jeu){
     int choix = 0;
+    Batiment* listeMaison = NULL;
+    Batiment* listeChateauEau = NULL;
+    Batiment* listeUsineElectrique = NULL;
+
     color(1, 0);
     printf("-------BIENVENUE DANS ECE-CITY CONSOLE -------- (v.APLHA)\n");
     color(15, 0);
@@ -16,7 +20,9 @@ void afficher_menu_console(Jeu* jeu){
     switch(choix){
         case 1:{
             jeu = initialisation();
-            afficher_choix_joueur(jeu);
+            //time_t timestamp = time( NULL );
+            //struct tm * timeInfos = localtime( & timestamp );
+            afficher_choix_joueur(jeu,listeMaison,listeChateauEau,listeUsineElectrique);
             break;
         }
         case 2:{
@@ -37,7 +43,8 @@ void afficher_menu_console(Jeu* jeu){
             jeu = lire_graphe(jeu);
             sleep(1);
             printf("CHARGEMENT TERMINE !\n");
-            afficher_choix_joueur(jeu);
+            chargeBatiment(&listeMaison,&listeChateauEau,&listeUsineElectrique);
+            afficher_choix_joueur(jeu,listeMaison,listeChateauEau,listeUsineElectrique);
             break;
 
         }
@@ -54,7 +61,7 @@ void afficher_menu_console(Jeu* jeu){
     afficher_menu_console(jeu);
 }
 
-void afficher_choix_joueur(Jeu* jeu){
+void afficher_choix_joueur(Jeu* jeu,Batiment* listeMaison,Batiment* listeChateauEau,Batiment* listeUsineElectrique){
     int choix = 0, co_x = 0, co_y = 0;
     afficher_la_grille(jeu);
     color(12, 0);
@@ -73,9 +80,13 @@ void afficher_choix_joueur(Jeu* jeu){
     printf("2 : placer une maison\n");
     printf("3 : placer un chateau d eau\n");
     printf("4 : placer une usine elec\n");
+    printf("5 : afficher\n");
+    printf("6 : Detruire batiment\n");
     scanf(" %d", &choix);
     switch (choix) {
         case 0:{
+            sauvBatiment(listeMaison,listeChateauEau,listeUsineElectrique);
+            liberationListe(&listeMaison,&listeChateauEau,&listeUsineElectrique);
             afficher_menu_console(jeu);
         }
         case reseau:{
@@ -94,6 +105,7 @@ void afficher_choix_joueur(Jeu* jeu){
             color(15, 0);
             scanf(" %d %d", &co_x, &co_y);
             ajout_Batiment_Grille(jeu, maison, co_x, co_y);
+            ajouterBatiment(&listeMaison,&listeChateauEau,&listeUsineElectrique,co_x,co_y,choix);
             printf("Ajout d'une maison ...\n");
             sleep(1);
             break;
@@ -104,6 +116,7 @@ void afficher_choix_joueur(Jeu* jeu){
             color(15, 0);
             scanf(" %d %d", &co_x, &co_y);
             ajout_Batiment_Grille(jeu, chateau_deau, co_x, co_y);
+            ajouterBatiment(&listeMaison,&listeChateauEau,&listeUsineElectrique,co_x,co_y,choix);
             printf("Ajout d'un chateau d'eau ...\n");
             sleep(1);
             break;
@@ -114,13 +127,39 @@ void afficher_choix_joueur(Jeu* jeu){
             color(15, 0);
             scanf(" %d %d", &co_x, &co_y);
             ajout_Batiment_Grille(jeu, usine_electrique, co_x, co_y);
+            ajouterBatiment(&listeMaison,&listeChateauEau,&listeUsineElectrique,co_x,co_y,choix);
             printf("Ajout d'une usine electrique ...\n");
             sleep(1);
             break;
         }
+        case 5:{
+            afficherM(listeMaison);
+            break;
+        }
+        case 6:{
+            int x = 0,y = 0,type = 0;
+            printf("Type?\n");
+            scanf("%d",&type);
+            printf("Coordonnee:\n");
+            scanf("%d  %d",&x,&y);
+            switch(type){
+                case 2:{
+                    detruireBatiment(&listeMaison,&listeChateauEau,&listeUsineElectrique,x,y,maison,jeu);
+                    break;
+                }
+                case 3:{
+                    detruireBatiment(&listeMaison,&listeChateauEau,&listeUsineElectrique,x,y,chateau_deau,jeu);
+                    break;
+                }
+                case 4:{
+                    detruireBatiment(&listeMaison,&listeChateauEau,&listeUsineElectrique,x,y,usine_electrique,jeu);
+                    break;
+                }
+            }
 
+        }
     }
-    afficher_choix_joueur(jeu);
+    afficher_choix_joueur(jeu,listeMaison,listeChateauEau,listeUsineElectrique);
 }
 
 
@@ -137,8 +176,8 @@ void afficher_la_grille(Jeu* jeu){
 
 void ohdi(Jeu* j) {
     int i =0;
-    while (    j->batiments[maison][] != NULL){
+    //while (    j->batiments[maison][] != NULL){
 
-    }
+    //}
 }
 

@@ -19,6 +19,7 @@ typedef struct Batiment{
     Coordonnee taille;
     Coordonnee** cases;
     char* nom;
+    int x,y;
     int capacite;
     int nb_habitants;
     struct Batiment* next;
@@ -35,6 +36,16 @@ typedef struct Jeu{
     Batiment batiments[nbBatiments];
 }Jeu;
 
+
+void ajouterBatiment(Batiment** listeMaison,Batiment** listeChateauEau,Batiment** listeUsineElectrique,int x,int y,int choix);
+void afficherM(Batiment* listeMaison);
+void detruireBatiment(Batiment** listeMaison,Batiment** listeChateauEau,Batiment** listeUsineElectrique,int x,int y,int choix,Jeu* jeu);
+void sauvBatiment(Batiment* listeMaison,Batiment* listeChateauEau,Batiment* listeUsineElectrique);
+void chargeBatiment(Batiment** listeMaison,Batiment** listeChateauEau,Batiment** listeUsineElectrique);
+void liberationListe(Batiment** listeMaison,Batiment** listeChateauEau,Batiment** listeUsineElectrique);
+void tempsTour();
+void changementHeure(bool shift);
+
 // TODO: NE PAS CHANGER LORDRE DES INCLUDES IMPORTANT !!!
 
 //mettez vos includes ici :)
@@ -44,6 +55,5 @@ typedef struct Jeu{
 #include "COULEURS.h"
 
 Jeu* initialisation();
-
 
 #endif
