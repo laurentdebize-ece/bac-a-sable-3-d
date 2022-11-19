@@ -5,6 +5,7 @@ Jeu *lire_graphe() {
     FILE *ifs = fopen(NOM_DU_FICHIER, "r");
     int ordre_x;
     int ordre_y;
+    int argent;
 
     if (!ifs) {
         color(5, 0);
@@ -16,15 +17,16 @@ Jeu *lire_graphe() {
 
     fscanf(ifs, "%d", &ordre_x);
     fscanf(ifs, "%d", &ordre_y);
+    fscanf(ifs, "%d", &argent);
 
     grille = (Jeu *) malloc(sizeof(Jeu));
     grille->terrain = (int**) malloc(ordre_y * sizeof(int*));
 
-    for (int i = 0; i < ordre_y; i++) {
+    for (int i = 0; i <= ordre_y; i++) {
         grille->terrain[i] = (int*) malloc(ordre_x * sizeof(int));
     }
-    for (int i = 0; i < ordre_y; i++) {
-        for (int j = 0; j < ordre_x; j++) {
+    for (int i = 0; i <= ordre_y; i++) {
+        for (int j = 0; j <= ordre_x; j++) {
             fscanf(ifs, " %d", &grille->terrain[i][j]);
         }
     }
@@ -39,6 +41,7 @@ Jeu *lire_graphe() {
     }*/
     grille->ordre.x = ordre_x;
     grille->ordre.y = ordre_y;
+    grille->argent = argent;
     fclose(ifs);
     return grille;
 }
@@ -46,13 +49,15 @@ Jeu *lire_graphe() {
 void initialisation_Grille(){
     color(14, 0);
     printf("Creation d'un graphe ... ...\n");
+    sleep(1);
     color(15, 0);
     FILE *ifs = fopen(NOM_DU_FICHIER, "w");
     fprintf(ifs, "%d\n", ORDRE_EN_X);
     fprintf(ifs, "%d\n", ORDRE_EN_Y);
-    for (int i = 0; i < ORDRE_EN_Y; i++) {
-        for (int j = 0; j < ORDRE_EN_X; j++) {
-            fprintf(ifs, "%d ", 0);
+    fprintf(ifs, "%d\n", ARGENT_DE_DEBUT);
+    for (int i = 0; i <= ORDRE_EN_Y; i++) {
+        for (int j = 0; j <= ORDRE_EN_X; j++) {
+            fprintf(ifs, "%d ", vide);
         }
         fprintf(ifs, "\n");
     }
@@ -68,8 +73,9 @@ void enregistrer_Grille(Jeu* jeu){
     }
     fprintf(ifs, "%d\n",jeu->ordre.x);
     fprintf(ifs, "%d\n",jeu->ordre.y);
-    for (int i = 0; i < jeu->ordre.y; i++) {
-        for (int j = 0; j < jeu->ordre.x; j++) {
+    fprintf(ifs, "%d\n",jeu->argent);
+    for (int i = 0; i <= jeu->ordre.y; i++) {
+        for (int j = 0; j <= jeu->ordre.x; j++) {
             fprintf(ifs, "%d ", jeu->terrain[i][j]);
         }
         fprintf(ifs, "\n");
@@ -77,11 +83,84 @@ void enregistrer_Grille(Jeu* jeu){
     fclose(ifs);
 }
 
-void ajout_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y){
-    jeu->terrain[co_x][co_y] = nomDuBatiment;
-    /*for (int i = 0; i < jeu->batiments[nomDuBatiment][0].taille.x ; i++) {
-        jeu->terrain[co_x + jeu->batiments[nomDuBatiment][0].taille.x - i][co_y] = nomDuBatiment;
-    }*/
+void ajout_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y, int co_xroute, int co_yroute){
+    bool obstacle = FALSE;
+    int y_temporaire = co_y;
+    if (co_xroute !=-1 || co_yroute != -1){
+        int x_temporaire = co_x;
+        int x_distance=difference_entre_2_nombres_VALEURABSOLUE(co_x, co_xroute), y_distance=difference_entre_2_nombres_VALEURABSOLUE(co_y, co_yroute);
+        for (int i = 0; i < x_distance ; i++) {
+            if (jeu->terrain[co_y][x_temporaire] != 0){
+                obstacle = TRUE;
+                break;
+            }
+            if (co_x < co_xroute){
+                x_temporaire++;
+            }else x_temporaire--;
+        }
+        for (int i = 0; i <= y_distance ; i++) {
+            if (jeu->terrain[y_temporaire][co_x] != 0){
+                obstacle = TRUE;
+                break;
+            }
+            if (co_y < co_yroute){
+                y_temporaire++;
+            }else y_temporaire--;
+        }
+        x_temporaire = co_x;
+        y_temporaire = co_y;
+        if (obstacle == FALSE){
+            for (int i = 0; i < x_distance ; i++) {
+                jeu->terrain[co_y][co_x] = nomDuBatiment;
+                if (co_x < co_xroute){
+                    co_x++;
+                }else co_x--;
+            }
+            for (int i = 0; i <= y_distance ; i++) {
+                jeu->terrain[co_y][co_x] = nomDuBatiment;
+                if (co_y < co_yroute){
+                    co_y++;
+                }else co_y--;
+            }
+            color(1, 0);
+            printf("La construction : %s, est un succes !\n", jeu->batiments[nomDuBatiment].nom);
+            color(15, 0);
+        } else {
+            color(5, 0);
+            printf("Vous ne pouvez pas construire ici, un obstacle vous en empeche !\n");
+            color(15, 0);
+        }
+    }else{
+        for (int i = 0; i < jeu->batiments[nomDuBatiment].taille.y ; i++) {
+            for (int j = 0; j < jeu->batiments[nomDuBatiment].taille.x; j++) {
+                if (jeu->terrain[co_y][co_x + j] != 0){
+                    obstacle = TRUE;
+                    break;
+                }
+            }
+            if (obstacle == TRUE){
+                break;
+            }
+            y_temporaire ++;
+        }
+        if (obstacle == FALSE){
+            for (int i = 0; i < jeu->batiments[nomDuBatiment].taille.y ; i++) {
+                for (int j = 0; j < jeu->batiments[nomDuBatiment].taille.x; j++) {
+                    jeu->terrain[co_y][co_x + j] = nomDuBatiment;
+                }co_y ++;
+            }
+            color(1, 0);
+            printf("La construction : %s, est un succes !\n", jeu->batiments[nomDuBatiment].nom);
+            color(15, 0);
+        } else {
+            color(5, 0);
+            printf("Vous ne pouvez pas construire ici, un obstacle vous en empeche !\n");
+            color(15, 0);
+        }
+    }
 }
 
 
+void suppression_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y, int co_xroute, int co_yroute){
+    //il me faut les co des batiments deja place (x,y) grace au liste chaine donc j'att...
+}

@@ -17,7 +17,7 @@ typedef struct Coordonnee {
 
 typedef struct Batiment{
     Coordonnee taille;
-    Coordonnee** cases;
+    Coordonnee cases;
     char* nom;
     int x,y;
     int capacite;
@@ -26,6 +26,7 @@ typedef struct Batiment{
 }Batiment;
 
 typedef struct Jeu{
+    bool en_cours;
     bool fichier;
     int** terrain;
     Coordonnee ordre;
@@ -54,6 +55,8 @@ void changementHeure(bool shift);
 #include "Graphe.h"
 #include "COULEURS.h"
 
+int difference_entre_2_nombres_VALEURABSOLUE(int a, int b);
 Jeu* initialisation();
+void initialisation_CONSTANTE(Jeu* j);
 
 #endif
