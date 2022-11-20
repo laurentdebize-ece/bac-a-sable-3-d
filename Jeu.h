@@ -38,12 +38,12 @@ typedef struct Jeu{
 }Jeu;
 
 
-void ajouterBatiment(Batiment** listeMaison,Batiment** listeChateauEau,Batiment** listeUsineElectrique,int x,int y,int choix);
-void afficherM(Batiment* listeMaison);
-void detruireBatiment(Batiment** listeMaison,Batiment** listeChateauEau,Batiment** listeUsineElectrique,int x,int y,int choix,Jeu* jeu);
+void ajouterBatiment(Jeu* jeu,int x,int y,int choix);
+void afficherM(Jeu* jeu);
+void detruireBatiment(Jeu* jeu,int x,int y,int choix);
 void sauvBatiment(Batiment* listeMaison,Batiment* listeChateauEau,Batiment* listeUsineElectrique);
-void chargeBatiment(Batiment** listeMaison,Batiment** listeChateauEau,Batiment** listeUsineElectrique);
-void liberationListe(Batiment** listeMaison,Batiment** listeChateauEau,Batiment** listeUsineElectrique);
+void chargeBatiment(Jeu* jeu);
+void liberationListe(Jeu* jeu);
 void tempsTour();
 void changementHeure(bool shift);
 

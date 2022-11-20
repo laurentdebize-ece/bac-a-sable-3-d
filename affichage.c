@@ -7,9 +7,13 @@ void print_message_error_construire_hors_map(){
 
 void afficher_menu_console(Jeu* jeu){
     int choix = 0;
-    Batiment* listeMaison = NULL;
+
+    /*Batiment* listeMaison = NULL;
+    jeu->batiments[maison] = *listeMaison;
     Batiment* listeChateauEau = NULL;
+    jeu->batiments[chateau_deau] = *listeChateauEau;
     Batiment* listeUsineElectrique = NULL;
+    jeu->batiments[usine_electrique] = *listeUsineElectrique;*/
 
     color(1, 0);
     printf("-------BIENVENUE DANS ECE-CITY CONSOLE -------- (v.APLHA)\n");
@@ -57,8 +61,8 @@ void afficher_menu_console(Jeu* jeu){
             sleep(1);
             initialisation_CONSTANTE(jeu);
             printf("CHARGEMENT TERMINE !\n");
-            chargeBatiment(&listeMaison,&listeChateauEau,&listeUsineElectrique);
-            afficher_choix_joueur(jeu,listeMaison,listeChateauEau,listeUsineElectrique);
+            chargeBatiment(jeu);
+            afficher_choix_joueur(jeu);
             break;
 
         }
@@ -75,9 +79,9 @@ void afficher_menu_console(Jeu* jeu){
     afficher_menu_console(jeu);
 }
 
-void afficher_choix_joueur(Jeu* jeu){
+void afficher_choix_joueur(Jeu* jeu) {
     int choix = 0;
-    int co_x=0, co_y=0, co_x1=-1, co_y1=-1;
+    int co_x = 0, co_y = 0, co_x1 = -1, co_y1 = -1;
     color(12, 0);
     printf("\t\t\t\t------------------- ECE - CITY -------------------\t\t\t\t");
     color(15, 0);
@@ -99,19 +103,20 @@ void afficher_choix_joueur(Jeu* jeu){
     printf("6 : Detruire batiment\n");
     scanf(" %d", &choix);
     switch (choix) {
-        case 0:{
-            sauvBatiment(listeMaison,listeChateauEau,listeUsineElectrique);
-            liberationListe(&listeMaison,&listeChateauEau,&listeUsineElectrique);
+        case 0: {
+            //sauvBatiment(listeMaison,listeChateauEau,listeUsineElectrique);
+            liberationListe(jeu);
             afficher_menu_console(jeu);
         }
-        case reseau:{
+        case reseau: {
             color(10, 0);
             printf("\nCoordonnees du point initiale? (x / y)\n");
             scanf(" %d %d", &co_x, &co_y);
             printf("\nCoordonnees du point final? (x / y)\n");
             color(15, 0);
             scanf(" %d %d", &co_x1, &co_y1);
-            if (co_x<0 || co_y<0 || co_x1<0 || co_y1<0 || co_x>ORDRE_EN_X || co_y>ORDRE_EN_Y || co_x1>ORDRE_EN_X || co_y1>ORDRE_EN_Y){
+            if (co_x < 0 || co_y < 0 || co_x1 < 0 || co_y1 < 0 || co_x > ORDRE_EN_X || co_y > ORDRE_EN_Y ||
+                co_x1 > ORDRE_EN_X || co_y1 > ORDRE_EN_Y) {
                 print_message_error_construire_hors_map();
                 break;
             }
@@ -119,62 +124,65 @@ void afficher_choix_joueur(Jeu* jeu){
             sleep(1);
             break;
         }
-        case maison:{
+        case maison: {
+            jeu->batiments[maison].taille.x = (TAILLE_MAISON);
+            jeu->batiments[maison].taille.y = (TAILLE_MAISON);
             color(10, 0);
             printf("\nCoordonnees ? (x / y)\n");
             color(15, 0);
             scanf(" %d %d", &co_x, &co_y);
-            if (co_x<0 || co_y<0 ||  co_x>ORDRE_EN_X || co_y>ORDRE_EN_Y){
+            if (co_x < 0 || co_y < 0 || co_x > ORDRE_EN_X || co_y > ORDRE_EN_Y) {
                 print_message_error_construire_hors_map();
                 break;
             }
             ajout_Batiment_Grille(jeu, maison, co_x, co_y, co_x1, co_y1);
-            ajout_Batiment_Grille(jeu, maison, co_x, co_y);
-            ajouterBatiment(&listeMaison,&listeChateauEau,&listeUsineElectrique,co_x,co_y,choix);
+            ajouterBatiment(jeu, co_x, co_y, choix);
             printf("Ajout d'une maison ...\n");
             sleep(1);
             break;
         }
-        case chateau_deau:{
+        case chateau_deau: {
+            jeu->batiments[chateau_deau].taille.x = (LONGUEUR_BATIMENTS);
+            jeu->batiments[chateau_deau].taille.y = (LARGEUR_BATIMENTS);
             color(10, 0);
             printf("\nCoordonnees ? (x / y)\n");
             color(15, 0);
             scanf(" %d %d", &co_x, &co_y);
-            if (co_x<0 || co_y<0 ||  co_x>ORDRE_EN_X || co_y>ORDRE_EN_Y){
+            if (co_x < 0 || co_y < 0 || co_x > ORDRE_EN_X || co_y > ORDRE_EN_Y) {
                 print_message_error_construire_hors_map();
                 break;
             }
             ajout_Batiment_Grille(jeu, chateau_deau, co_x, co_y, co_x1, co_y1);
-            ajout_Batiment_Grille(jeu, chateau_deau, co_x, co_y);
-            ajouterBatiment(&listeMaison,&listeChateauEau,&listeUsineElectrique,co_x,co_y,choix);
+            ajouterBatiment(jeu, co_x, co_y, choix);
             printf("Ajout d'un chateau d'eau ...\n");
             sleep(1);
             break;
         }
-        case usine_electrique:{
+        case usine_electrique: {
+            jeu->batiments[usine_electrique].taille.x = (LONGUEUR_BATIMENTS);
+            jeu->batiments[usine_electrique].taille.y = (LARGEUR_BATIMENTS);
             color(10, 0);
             printf("\nCoordonnees ? (x / y)\n");
             color(15, 0);
             scanf(" %d %d", &co_x, &co_y);
-            if (co_x<0 || co_y<0 ||  co_x>ORDRE_EN_X || co_y>ORDRE_EN_Y){
+            if (co_x < 0 || co_y < 0 || co_x > ORDRE_EN_X || co_y > ORDRE_EN_Y) {
                 print_message_error_construire_hors_map();
                 break;
             }
             ajout_Batiment_Grille(jeu, usine_electrique, co_x, co_y, co_x1, co_y1);
-            ajout_Batiment_Grille(jeu, usine_electrique, co_x, co_y);
-            ajouterBatiment(&listeMaison,&listeChateauEau,&listeUsineElectrique,co_x,co_y,choix);
+            ajouterBatiment(jeu, co_x, co_y, choix);
             printf("Ajout d'une usine electrique ...\n");
             sleep(1);
             break;
         }
-        case 5:{
-            afficherM(listeMaison);
+        case 5: {
+            afficherM(jeu);
             break;
         }
-        case 6:{
-            int x = 0,y = 0,type = 0;
+        case 6: {
+            int x = 0, y = 0, type = 0;
             printf("Type?\n");
-            scanf("%d",&type);
+            scanf("%d", &type);
             printf("Coordonnee:\n");
             scanf("%d  %d",&x,&y);
             switch(type){
@@ -191,43 +199,42 @@ void afficher_choix_joueur(Jeu* jeu){
                     break;
                 }
             }
-        case 9:{
-            afficher_la_grille(jeu);
-            break;
-        }
-
-    }
-    afficher_choix_joueur(jeu,listeMaison,listeChateauEau,listeUsineElectrique);
-}
-
-void afficher_la_grille(Jeu* jeu){  ///la fonction ici presente est tres relou parceque j ai voulu faire les marquages en x et en y mais on ne peut pas bien afficher l'echelle car nous sommes dans la console dcp j ai fais au mieux :)
-    printf("   ");
-    for (int i=0; i <= jeu->ordre.x -4; i++) { //si tu comprends pas pourquoi je fais -3 demande à sacha il a fait ça c normal
-        printf("%d ",i);
-    }
-    printf("\n");
-    for (int y = 0; y <= jeu->ordre.y; y++) {
-        if (y < 10){
-            printf(" ");
-        }
-        printf("%d ", y);
-        for (int x = 0; x <= jeu->ordre.x; x++) {
-            if (jeu->terrain[y][x] == vide){
-                color(0, 0);
-            }else if(jeu->terrain[y][x] == reseau){
-                color(7, 0);
-            }else if(jeu->terrain[y][x] == maison){
-                color(12, 0);
-            }else if(jeu->terrain[y][x] == chateau_deau){
-                color(11, 0);
-            }else if(jeu->terrain[y][x] == usine_electrique){
-                color(14, 0);
+            case 9: {
+                afficher_la_grille(jeu);
+                break;
             }
-            printf("%d ", jeu->terrain[y][x]);
-            color(15, 0);
+
+        }
+            afficher_choix_joueur(jeu);
+    }
+}
+    void afficher_la_grille(Jeu *jeu) {  ///la fonction ici presente est tres relou parceque j ai voulu faire les marquages en x et en y mais on ne peut pas bien afficher l'echelle car nous sommes dans la console dcp j ai fais au mieux :)
+        printf("   ");
+        for (int i = 0; i <= jeu->ordre.x -
+                             4; i++) { //si tu comprends pas pourquoi je fais -3 demande à sacha il a fait ça c normal
+            printf("%d ", i);
         }
         printf("\n");
+        for (int y = 0; y <= jeu->ordre.y; y++) {
+            if (y < 10) {
+                printf(" ");
+            }
+            printf("%d ", y);
+            for (int x = 0; x <= jeu->ordre.x; x++) {
+                if (jeu->terrain[y][x] == vide) {
+                    color(0, 0);
+                } else if (jeu->terrain[y][x] == reseau) {
+                    color(7, 0);
+                } else if (jeu->terrain[y][x] == maison) {
+                    color(12, 0);
+                } else if (jeu->terrain[y][x] == chateau_deau) {
+                    color(11, 0);
+                } else if (jeu->terrain[y][x] == usine_electrique) {
+                    color(14, 0);
+                }
+                printf("%d ", jeu->terrain[y][x]);
+                color(15, 0);
+            }
+            printf("\n");
+        }
     }
-}
-
-

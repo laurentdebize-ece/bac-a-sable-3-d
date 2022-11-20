@@ -1,35 +1,62 @@
 #include "Jeu.h"
 #include "time.h"
 
+int difference_entre_2_nombres_VALEURABSOLUE(int a, int b){
+    if (a<b){
+        return b-a;
+    }else return a-b;
+}
+
+
 Jeu* initialisation(){
     Jeu* j;
+    color(8, 0);
+    printf("Destruction de votre ancien fichier de sauvegarde (si vous en aviez un)\n");
+    color(15, 0);
     remove(NOM_DU_FICHIER);
     j = lire_graphe();
 
-    j->argent = 500000;
+    j->argent = ARGENT_DE_DEBUT;
     j->production_eau_restante = 0;
     j->production_elec_restante = 0;
 
     return j;
 }
+Batiment* maj_liste_chaine(Batiment* nouveau, Batiment* tail, Batiment* liste){
+    if(liste == NULL){
+        liste = nouveau;
+        liste->next = liste;
+    }
+    else{
+        tail = liste;
+        while(tail->next != liste){
+            tail = tail->next;
+        }
+        tail->next = nouveau;
+        nouveau->next = liste;
+    }return liste;
+}
 
-void ajouterBatiment(Batiment** listeMaison,Batiment** listeChateauEau,Batiment** listeUsineElectrique,int x,int y,int choix){
 
+void ajouterBatiment(Jeu* jeu,int x,int y,int choix){
     Batiment* nouveau = NULL;
-    Batiment* parcours = NULL;
     Batiment* tail = NULL;
     Batiment* liste = NULL;
     nouveau = calloc(1,sizeof(Batiment));
     nouveau->x = x;
     nouveau->y = y;
-
     switch (choix) {
         case maison: {
-            liste = *listeMaison;
+            liste = &jeu->batiments[maison];
+            liste = maj_liste_chaine(nouveau, tail, liste);
+            jeu->batiments[maison] = *liste;
             break;
         }
         case chateau_deau: {
-            liste = *listeChateauEau;
+            liste =  &jeu->batiments[chateau_deau];
+            liste = maj_liste_chaine(nouveau, tail, liste);
+            jeu->batiments[chateau_deau] = *liste;
+
             break;
         }
         case usine_electrique: {
@@ -37,40 +64,13 @@ void ajouterBatiment(Batiment** listeMaison,Batiment** listeChateauEau,Batiment*
             break;
         }
     }
-    if(liste == NULL){
-        liste = nouveau;
-        liste->next = liste;
-    }
-    else{
-        parcours = nouveau;
-        tail = liste;
-        while(tail->next != liste){
-            tail = tail->next;
-        }
-        tail->next = parcours;
-        nouveau->next = liste;
-    }
-
-    switch (choix) {
-
-        case maison: {
-            *listeMaison = liste;
-            break;
-        }
-        case chateau_deau: {
-            *listeChateauEau = liste;
-            break;
-        }
-        case usine_electrique: {
-            *listeUsineElectrique = liste;
-            break;
-        }
-    }
 }
 
 
-void afficherM(Batiment * listeMaison){
 
+
+void afficherM(Jeu* jeu){
+    Batiment* listeMaison = &jeu->batiments[maison];
     Batiment *parcour = listeMaison;
 
     if(parcour == NULL){
@@ -91,20 +91,20 @@ void detruireBatiment(Batiment** listeMaison,Batiment** listeChateauEau,Batiment
     Batiment *liste = NULL;
     switch (choix) {
         case maison: {
-            if ((*listeMaison) != NULL) {
-                liste = (*listeMaison);
+            if ((listeMaison) != NULL) {
+                liste = (listeMaison);
             }
             break;
         }
         case chateau_deau: {
-            if ((*listeChateauEau) != NULL) {
-                liste = (*listeChateauEau);
+            if ((listeChateauEau) != NULL) {
+                liste = (listeChateauEau);
             }
             break;
         }
         case usine_electrique: {
-            if ((*listeUsineElectrique) != NULL) {
-                liste = (*listeUsineElectrique);
+            if ((listeUsineElectrique) != NULL) {
+                liste = (listeUsineElectrique);
             }
             break;
         }
@@ -118,7 +118,7 @@ void detruireBatiment(Batiment** listeMaison,Batiment** listeChateauEau,Batiment
             parcour = parcour->next;
             if (parcour->next == liste) {
                 printf("Coordonnees invalides\n");
-                afficher_choix_joueur(jeu, *listeMaison, *listeChateauEau, *listeUsineElectrique);
+                afficher_choix_joueur(jeu);
             }
         }
         while (prev->next != parcour) {
@@ -135,15 +135,15 @@ void detruireBatiment(Batiment** listeMaison,Batiment** listeChateauEau,Batiment
 
         switch (choix) {
             case maison: {
-                (*listeMaison) = liste;
+                (listeMaison) = liste;
                 break;
             }
             case chateau_deau: {
-                (*listeChateauEau) = liste;
+                (listeChateauEau) = liste;
                 break;
             }
             case usine_electrique: {
-                (*listeUsineElectrique) = liste;
+                (listeUsineElectrique) = liste;
                 break;
             }
         }
@@ -190,12 +190,14 @@ void sauvBatiment(Batiment* listeMaison,Batiment* listeChateauEau,Batiment* list
 }
 
 
-void chargeBatiment(Batiment** listeMaison,Batiment** listeChateauEau,Batiment** listeUsineElectrique){
-
+void chargeBatiment(Jeu* jeu){
+    Batiment* listeMaison = &jeu->batiments[maison];
+    Batiment* listeChateauEau = &jeu->batiments[chateau_deau];
+    Batiment* listeUsineElectrique = &jeu->batiments[usine_electrique];
     int x = 0;
     int y = 0;
     char c = 0, cPrec = 0;
-    int i = 0,j = 0,k = 0;
+
 
     /*FILE *ifs = fopen("liste.txt", "r");
     while((c != ' ' && cPrec != ' ' ) || (c != '\000' && cPrec != '\000')){
@@ -218,7 +220,7 @@ void chargeBatiment(Batiment** listeMaison,Batiment** listeChateauEau,Batiment**
         k++;
     }
     fclose(ifs);*/
-
+    int i = 0,j = 0,k = 0;
     FILE *ifs2 = fopen("liste.txt", "r");
     for(int p = 0;p<1;p++){
         fscanf(ifs2,"%d",&x);
@@ -352,56 +354,44 @@ void chargeBatiment(Batiment** listeMaison,Batiment** listeChateauEau,Batiment**
 
 }
 
-void liberationListe(Batiment** listeMaison,Batiment** listeChateauEau,Batiment** listeUsineElectrique) {
-
-    if (*listeMaison != NULL) {
-        Batiment *parcour = *listeMaison;
+void liberationListe(Jeu* jeu) {
+    Batiment* listeMaison = &jeu->batiments[maison];
+    Batiment* listeChateauEau = &jeu->batiments[chateau_deau];
+    Batiment* listeUsineElectrique = &jeu->batiments[usine_electrique];
+    if (listeMaison != NULL) {
+        Batiment *parcour = listeMaison;
         Batiment *prochain = NULL;
         do {
             prochain = parcour->next;
             free(parcour);
             parcour = prochain;
 
-        } while (parcour != *listeMaison);
+        } while (parcour != listeMaison);
         listeMaison = NULL;
     }
 
-    if (*listeChateauEau != NULL) {
-        Batiment *parcour = *listeChateauEau;
+    if (listeChateauEau != NULL) {
+        Batiment *parcour = listeChateauEau;
         Batiment *prochain = NULL;
         do {
             prochain = parcour->next;
             free(parcour);
             parcour = prochain;
 
-        } while (parcour != *listeChateauEau);
-        *listeChateauEau = NULL;
+        } while (parcour != listeChateauEau);
+        listeChateauEau = NULL;
     }
 
-    if (*listeUsineElectrique != NULL) {
-        Batiment *parcour = *listeUsineElectrique;
+    if (listeUsineElectrique != NULL) {
+        Batiment *parcour = listeUsineElectrique;
         Batiment *prochain = NULL;
         do {
             prochain = parcour->next;
             free(parcour);
             parcour = prochain;
 
-        } while (parcour != *listeUsineElectrique);
-        *listeUsineElectrique = NULL;
-    }
-}
-
-void tempsTour(){
-    bool shift = false;
-    int timer1 = 0, timer2 = 0;
-    //time_t timestamp = time( NULL );
-    //struct tm * timeInfos = localtime( & timestamp );
-    timer2 = clock()/CLOCKS_PER_SEC;
-
-    if(timer2 - timer1 >= 15){
-        shift = true;
-        changementHeure(shift);
-        timer1 = timer2;
+        } while (parcour != listeUsineElectrique);
+        listeUsineElectrique = NULL;
     }
 }
 

@@ -86,6 +86,9 @@ void enregistrer_Grille(Jeu* jeu){
 void ajout_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y, int co_xroute, int co_yroute){
     bool obstacle = FALSE;
     int y_temporaire = co_y;
+
+
+
     if (co_xroute !=-1 || co_yroute != -1){
         int x_temporaire = co_x;
         int x_distance=difference_entre_2_nombres_VALEURABSOLUE(co_x, co_xroute), y_distance=difference_entre_2_nombres_VALEURABSOLUE(co_y, co_yroute);
