@@ -35,6 +35,7 @@ void afficher_menu_console(Jeu* jeu){
                 break;
             } else{
                 afficher_choix_joueur(jeu);
+                break;
             }
         }
         case 1:{
@@ -67,6 +68,7 @@ void afficher_menu_console(Jeu* jeu){
 
         }
         case 4:{
+            liberationListe(jeu);
             exit(0);
         }
         case 9:{
@@ -98,15 +100,15 @@ void afficher_choix_joueur(Jeu* jeu) {
     printf("2 : placer une maison\n");
     printf("3 : placer un chateau d eau\n");
     printf("4 : placer une usine elec\n");
-    printf("9 : ~~~~ AFFICHER LA MAP ~~~~\n");
     printf("5 : afficher\n");
     printf("6 : Detruire batiment\n");
+    printf("9 : ~~~~ AFFICHER LA MAP ~~~~\n");
     scanf(" %d", &choix);
     switch (choix) {
         case 0: {
             //sauvBatiment(listeMaison,listeChateauEau,listeUsineElectrique);
-            liberationListe(jeu);
             afficher_menu_console(jeu);
+            break;
         }
         case reseau: {
             color(10, 0);
@@ -205,8 +207,8 @@ void afficher_choix_joueur(Jeu* jeu) {
             }
 
         }
-            afficher_choix_joueur(jeu);
     }
+    afficher_choix_joueur(jeu);
 }
     void afficher_la_grille(Jeu *jeu) {  ///la fonction ici presente est tres relou parceque j ai voulu faire les marquages en x et en y mais on ne peut pas bien afficher l'echelle car nous sommes dans la console dcp j ai fais au mieux :)
         printf("   ");
