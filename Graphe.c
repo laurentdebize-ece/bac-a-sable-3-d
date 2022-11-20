@@ -132,8 +132,8 @@ void ajout_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y, int 
             color(15, 0);
         }
     }else{
-        for (int i = 0; i < jeu->batiments[nomDuBatiment].taille.y ; i++) {
-            for (int j = 0; j < jeu->batiments[nomDuBatiment].taille.x; j++) {
+        for (int i = 0; i < jeu->batiments[nomDuBatiment]->taille.y ; i++) {
+            for (int j = 0; j < jeu->batiments[nomDuBatiment]->taille.x; j++) {
                 if (jeu->terrain[co_y][co_x + j] != 0){
                     obstacle = TRUE;
                     break;
@@ -145,13 +145,13 @@ void ajout_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y, int 
             y_temporaire ++;
         }
         if (obstacle == FALSE){
-            for (int i = 0; i < jeu->batiments[nomDuBatiment].taille.y ; i++) {
-                for (int j = 0; j < jeu->batiments[nomDuBatiment].taille.x; j++) {
+            for (int i = 0; i < jeu->batiments[nomDuBatiment]->taille.y ; i++) {
+                for (int j = 0; j < jeu->batiments[nomDuBatiment]->taille.x; j++) {
                     jeu->terrain[co_y][co_x + j] = nomDuBatiment;
                 }co_y ++;
             }
             color(1, 0);
-            printf("La construction : %s, est un succes !\n", jeu->batiments[nomDuBatiment].nom);
+            printf("La construction : %s, est un succes !\n", jeu->batiments[nomDuBatiment]->nom);
             color(15, 0);
         } else {
             color(5, 0);

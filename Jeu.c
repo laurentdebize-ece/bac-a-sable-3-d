@@ -22,30 +22,8 @@ int difference_entre_2_nombres_VALEURABSOLUE(int a, int b){
         return b-a;
     }else return a-b;
 }
-void initialisation_CONSTANTE(Jeu* j){
-    j->batiments[vide].taille.x = TAILLE_VIDE;
-    j->batiments[vide].taille.y = TAILLE_VIDE;
-    j->batiments[vide].nom = "Vide";
 
-    j->batiments[reseau].taille.x = TAILLE_ROUTE;
-    j->batiments[reseau].taille.y = TAILLE_ROUTE;
-    j->batiments[reseau].nom = "Route";
-
-    j->batiments[maison].taille.x = TAILLE_MAISON;
-    j->batiments[maison].taille.y = TAILLE_MAISON;
-    j->batiments[maison].nom = "Maison";
-
-    j->batiments[chateau_deau].taille.x = LONGUEUR_BATIMENTS;
-    j->batiments[chateau_deau].taille.y = LARGEUR_BATIMENTS;
-    j->batiments[chateau_deau].nom = "Chateau d'eau";
-
-    j->batiments[usine_electrique].taille.x = LONGUEUR_BATIMENTS;
-    j->batiments[usine_electrique].taille.y = LARGEUR_BATIMENTS;
-    j->batiments[usine_electrique].nom = "Usine electrique";
-
-}
-
-Batiment* maj_liste_chaine(Batiment* nouveau, Batiment* tail, Batiment* liste){
+Batiment* maj_liste_chaine(Batiment *nouveau,Batiment *tail,Batiment * liste){
     if(liste == NULL){
         liste = nouveau;
         liste->next = liste;
@@ -62,30 +40,29 @@ Batiment* maj_liste_chaine(Batiment* nouveau, Batiment* tail, Batiment* liste){
 
 
 void ajouterBatiment(Jeu* jeu,int x,int y,int choix){
-    Batiment* nouveau = NULL;
-    Batiment* tail = NULL;
-    Batiment* liste = NULL;
+    Batiment *nouveau = NULL;
+    Batiment * tail = NULL;
+    Batiment * liste = NULL;
     nouveau = calloc(1,sizeof(Batiment));
     nouveau->x = x;
     nouveau->y = y;
     switch (choix) {
         case maison: {
-            liste = &jeu->batiments[maison];
+            liste = jeu->batiments[maison];
             liste = maj_liste_chaine(nouveau, tail, liste);
-            jeu->batiments[maison] = *liste;
+            jeu->batiments[maison] = liste;
             break;
         }
         case chateau_deau: {
-            liste =  &jeu->batiments[chateau_deau];
+            liste =  jeu->batiments[chateau_deau];
             liste = maj_liste_chaine(nouveau, tail, liste);
-            jeu->batiments[chateau_deau] = *liste;
-
+            jeu->batiments[chateau_deau] = liste;
             break;
         }
         case usine_electrique: {
-            liste =  &jeu->batiments[usine_electrique];
+            liste =  jeu->batiments[usine_electrique];
             liste = maj_liste_chaine(nouveau, tail, liste);
-            jeu->batiments[usine_electrique] = *liste;
+            jeu->batiments[usine_electrique] = liste;
             break;
         }
     }
@@ -95,7 +72,7 @@ void ajouterBatiment(Jeu* jeu,int x,int y,int choix){
 
 
 void afficherM(Jeu* jeu){
-    Batiment* listeMaison = &jeu->batiments[maison];
+    Batiment* listeMaison = jeu->batiments[maison];
     Batiment *parcour = listeMaison;
 
     if(parcour == NULL){
@@ -111,33 +88,8 @@ void afficherM(Jeu* jeu){
     }
 }
 
-void detruireBatiment(Jeu* jeu,int x,int y,int choix) {
-    Batiment* listeMaison = &jeu->batiments[maison];
-    Batiment* listeChateauEau = &jeu->batiments[chateau_deau];
-    Batiment* listeUsineElectrique = &jeu->batiments[usine_electrique];
-    Batiment *liste = NULL;
-    switch (choix) {
-        case maison: {
-            if ((listeMaison) != NULL) {
-                liste = (listeMaison);
-            }
-            break;
-        }
-        case chateau_deau: {
-            if ((listeChateauEau) != NULL) {
-                liste = (listeChateauEau);
-            }
-            break;
-        }
-        case usine_electrique: {
-            if ((listeUsineElectrique) != NULL) {
-                liste = (listeUsineElectrique);
-            }
-            break;
-        }
-    }
-
-    if(liste != NULL) {
+Batiment* maj_destruction_maillon(Batiment* liste,int x,int y,Jeu* jeu) {
+    if (liste != NULL) {
         Batiment *parcour = liste;
         Batiment *prev = liste;
 
@@ -155,30 +107,44 @@ void detruireBatiment(Jeu* jeu,int x,int y,int choix) {
             liste = liste->next;
         }
         prev->next = parcour->next;
-        if(liste == parcour){
+        if (liste == parcour) {
             liste = NULL;
         }
         free(parcour);
-
-        switch (choix) {
-            case maison: {
-                (listeMaison) = liste;
-                break;
-            }
-            case chateau_deau: {
-                (listeChateauEau) = liste;
-                break;
-            }
-            case usine_electrique: {
-                (listeUsineElectrique) = liste;
-                break;
-            }
-        }
     }
     else{printf("Liste vide.\n");}
 }
 
-void sauvBatiment(Batiment* listeMaison,Batiment* listeChateauEau,Batiment* listeUsineElectrique){
+void detruireBatiment(Jeu* jeu,int x,int y,int choix) {
+
+    Batiment *liste = NULL;
+    switch (choix) {
+        case maison: {
+            if (jeu->batiments[maison] != NULL) {
+                liste = jeu->batiments[maison];
+                liste = maj_destruction_maillon(liste,x,y,jeu);
+                jeu->batiments[maison] = liste;
+            }
+            break;
+        }
+        case chateau_deau: {
+            if (jeu->batiments[chateau_deau] != NULL) {
+                liste = maj_destruction_maillon(liste,x,y,jeu);
+                jeu->batiments[chateau_deau] = liste;
+            }
+            break;
+        }
+        case usine_electrique: {
+            if (jeu->batiments[usine_electrique] != NULL) {
+                liste = maj_destruction_maillon(liste,x,y,jeu);
+                jeu->batiments[usine_electrique] = liste;
+            }
+            break;
+        }
+    }
+}
+
+void sauvBatiment(Coordonnee* listeMaison, Coordonnee* listeChateauEau, Coordonnee* listeUsineElectrique){
     remove("liste.txt");
     Batiment *head = listeMaison;
     Batiment *headChateau = listeChateauEau;
@@ -305,8 +271,8 @@ void chargeBatiment(Jeu* jeu){
                 else{
                     switch (type) {
                         case maison: {
-                            Batiment **head = listeMaison;
-                            Batiment **parcour = head;
+                            Coordonnee **head = listeMaison;
+                            Coordonnee **parcour = head;
                             while ((*parcour)->next != head) {
                                 if(i > 1 && j > 1) {
                                     if ((i - 1 != (*parcour)->x && j != (*parcour)->y) ||
@@ -382,43 +348,40 @@ void chargeBatiment(Jeu* jeu){
 }
 
 void liberationListe(Jeu* jeu) {
-    Batiment* listeMaison = &jeu->batiments[maison];
-    Batiment* listeChateauEau = &jeu->batiments[chateau_deau];
-    Batiment* listeUsineElectrique = &jeu->batiments[usine_electrique];
-    if (listeMaison != NULL) {
-        Batiment *parcour = listeMaison;
+    if (jeu->batiments[maison] != NULL) {
+        Batiment *parcour = jeu->batiments[maison];
         Batiment *prochain = NULL;
         do {
             prochain = parcour->next;
             free(parcour);
             parcour = prochain;
 
-        } while (parcour != listeMaison);
-        listeMaison = NULL;
+        } while (parcour != jeu->batiments[maison]);
+        jeu->batiments[maison] = NULL;
     }
 
-    if (listeChateauEau != NULL) {
-        Batiment *parcour = listeChateauEau;
+    if (jeu->batiments[chateau_deau] != NULL) {
+        Batiment *parcour = jeu->batiments[chateau_deau];
         Batiment *prochain = NULL;
         do {
             prochain = parcour->next;
             free(parcour);
             parcour = prochain;
 
-        } while (parcour != listeChateauEau);
-        listeChateauEau = NULL;
+        } while (parcour != jeu->batiments[chateau_deau]);
+        jeu->batiments[chateau_deau] = NULL;
     }
 
-    if (listeUsineElectrique != NULL) {
-        Batiment *parcour = listeUsineElectrique;
+    if (jeu->batiments[usine_electrique] != NULL) {
+        Batiment *parcour = jeu->batiments[usine_electrique];
         Batiment *prochain = NULL;
         do {
             prochain = parcour->next;
             free(parcour);
             parcour = prochain;
 
-        } while (parcour != listeUsineElectrique);
-        listeUsineElectrique = NULL;
+        } while (parcour != jeu->batiments[usine_electrique]);
+        jeu->batiments[usine_electrique] = NULL;
     }
 }
 

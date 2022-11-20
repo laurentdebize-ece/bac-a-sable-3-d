@@ -7,14 +7,6 @@ void print_message_error_construire_hors_map(){
 
 void afficher_menu_console(Jeu* jeu){
     int choix = 0;
-
-    /*Batiment* listeMaison = NULL;
-    jeu->batiments[maison] = *listeMaison;
-    Batiment* listeChateauEau = NULL;
-    jeu->batiments[chateau_deau] = *listeChateauEau;
-    Batiment* listeUsineElectrique = NULL;
-    jeu->batiments[usine_electrique] = *listeUsineElectrique;*/
-
     color(1, 0);
     printf("-------BIENVENUE DANS ECE-CITY CONSOLE -------- (v.APLHA)\n");
     color(15, 0);
@@ -39,7 +31,7 @@ void afficher_menu_console(Jeu* jeu){
             }
         }
         case 1:{
-            jeu = initialisation();
+            jeu = initialisation_sans_save();
             afficher_choix_joueur(jeu);
             break;
         }

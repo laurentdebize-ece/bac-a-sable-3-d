@@ -34,14 +34,14 @@ typedef struct Jeu{
     int argent;
     int production_eau_restante;
     int production_elec_restante;
-    Batiment batiments[nbBatiments];
+    Batiment* batiments[nbBatiments];
 }Jeu;
 
 
 void ajouterBatiment(Jeu* jeu,int x,int y,int choix);
 void afficherM(Jeu* jeu);
 void detruireBatiment(Jeu* jeu,int x,int y,int choix);
-void sauvBatiment(Batiment* listeMaison,Batiment* listeChateauEau,Batiment* listeUsineElectrique);
+void sauvBatiment(Coordonnee* listeMaison, Coordonnee* listeChateauEau, Coordonnee* listeUsineElectrique);
 void chargeBatiment(Jeu* jeu);
 void liberationListe(Jeu* jeu);
 void tempsTour();
@@ -56,7 +56,6 @@ void changementHeure(bool shift);
 #include "COULEURS.h"
 
 int difference_entre_2_nombres_VALEURABSOLUE(int a, int b);
-Jeu* initialisation();
-void initialisation_CONSTANTE(Jeu* j);
+Jeu* initialisation_sans_save();
 
 #endif
