@@ -60,7 +60,9 @@ void ajouterBatiment(Jeu* jeu,int x,int y,int choix){
             break;
         }
         case usine_electrique: {
-            liste = *listeUsineElectrique;
+            liste =  &jeu->batiments[usine_electrique];
+            liste = maj_liste_chaine(nouveau, tail, liste);
+            jeu->batiments[usine_electrique] = *liste;
             break;
         }
     }
@@ -86,8 +88,10 @@ void afficherM(Jeu* jeu){
     }
 }
 
-void detruireBatiment(Batiment** listeMaison,Batiment** listeChateauEau,Batiment** listeUsineElectrique,int x,int y,int choix,Jeu* jeu) {
-
+void detruireBatiment(Jeu* jeu,int x,int y,int choix) {
+    Batiment* listeMaison = &jeu->batiments[maison];
+    Batiment* listeChateauEau = &jeu->batiments[chateau_deau];
+    Batiment* listeUsineElectrique = &jeu->batiments[usine_electrique];
     Batiment *liste = NULL;
     switch (choix) {
         case maison: {
@@ -225,19 +229,19 @@ void chargeBatiment(Jeu* jeu){
     for(int p = 0;p<1;p++){
         fscanf(ifs2,"%d",&x);
         fscanf(ifs2,"%d",&y);
-        ajouterBatiment(listeMaison,listeChateauEau,listeUsineElectrique,x,y,maison);
+        ajouterBatiment(jeu,x,y,maison);
     }
     fscanf(ifs2,"\n");
     for(int p = 0;p<1;p++){
         fscanf(ifs2,"%d",&x);
         fscanf(ifs2,"%d",&y);
-        ajouterBatiment(listeMaison,listeChateauEau,listeUsineElectrique,x,y,chateau_deau);
+        ajouterBatiment(jeu,x,y,chateau_deau);
     }
     fscanf(ifs2,"\n");
     for(int p = 0;p<1;p++){
         fscanf(ifs2,"%d",&x);
         fscanf(ifs2,"%d",&y);
-        ajouterBatiment(listeMaison,listeChateauEau,listeUsineElectrique,x,y,usine_electrique);
+        ajouterBatiment(jeu,x,y,usine_electrique);
     }
 
 

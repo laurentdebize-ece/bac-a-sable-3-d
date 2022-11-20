@@ -184,18 +184,18 @@ void afficher_choix_joueur(Jeu* jeu) {
             printf("Type?\n");
             scanf("%d", &type);
             printf("Coordonnee:\n");
-            scanf("%d  %d",&x,&y);
-            switch(type){
-                case 2:{
-                    detruireBatiment(&listeMaison,&listeChateauEau,&listeUsineElectrique,x,y,maison,jeu);
+            scanf("%d  %d", &x, &y);
+            switch (type) {
+                case 2: {
+                    detruireBatiment(jeu, x, y, maison);
                     break;
                 }
-                case 3:{
-                    detruireBatiment(&listeMaison,&listeChateauEau,&listeUsineElectrique,x,y,chateau_deau,jeu);
+                case 3: {
+                    detruireBatiment(jeu, x, y, chateau_deau);
                     break;
                 }
-                case 4:{
-                    detruireBatiment(&listeMaison,&listeChateauEau,&listeUsineElectrique,x,y,usine_electrique,jeu);
+                case 4: {
+                    detruireBatiment(jeu, x, y, usine_electrique);
                     break;
                 }
             }
