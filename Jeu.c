@@ -1,21 +1,6 @@
 #include "Jeu.h"
 #include "time.h"
 
-Jeu* initialisation(){
-    Jeu* j;
-    color(8, 0);
-    printf("Destruction de votre ancien fichier de sauvegarde (si vous en aviez un)\n");
-    color(15, 0);
-    remove(NOM_DU_FICHIER);
-    j = lire_graphe();
-
-    j->argent = ARGENT_DE_DEBUT;
-    j->production_eau_restante = 0;
-    j->production_elec_restante = 0;
-    initialisation_CONSTANTE(j);
-
-    return j;
-}
 
 int difference_entre_2_nombres_VALEURABSOLUE(int a, int b){
     if (a<b){
@@ -40,7 +25,7 @@ Batiment* maj_liste_chaine(Batiment *nouveau,Batiment *tail,Batiment * liste){
 
 
 void ajouterBatiment(Jeu* jeu,int x,int y,int choix){
-    Batiment *nouveau = NULL;
+    Batiment * nouveau = NULL;
     Batiment * tail = NULL;
     Batiment * liste = NULL;
     nouveau = calloc(1,sizeof(Batiment));
@@ -65,6 +50,9 @@ void ajouterBatiment(Jeu* jeu,int x,int y,int choix){
             jeu->batiments[usine_electrique] = liste;
             break;
         }
+        default : {
+            break;
+        }
     }
 }
 
@@ -73,7 +61,7 @@ void ajouterBatiment(Jeu* jeu,int x,int y,int choix){
 
 void afficherM(Jeu* jeu){
     Batiment* listeMaison = jeu->batiments[maison];
-    Batiment *parcour = listeMaison;
+    Batiment* parcour = listeMaison;
 
     if(parcour == NULL){
         printf("Liste vide.\n");
@@ -141,10 +129,13 @@ void detruireBatiment(Jeu* jeu,int x,int y,int choix) {
             }
             break;
         }
+        default :{
+            break;
+        }
     }
 }
 
-void sauvBatiment(Coordonnee* listeMaison, Coordonnee* listeChateauEau, Coordonnee* listeUsineElectrique){
+void sauvBatiment(Batiment * listeMaison, Batiment * listeChateauEau, Batiment * listeUsineElectrique){
     remove("liste.txt");
     Batiment *head = listeMaison;
     Batiment *headChateau = listeChateauEau;
@@ -184,9 +175,9 @@ void sauvBatiment(Coordonnee* listeMaison, Coordonnee* listeChateauEau, Coordonn
 
 
 void chargeBatiment(Jeu* jeu){
-    Batiment* listeMaison = &jeu->batiments[maison];
-    Batiment* listeChateauEau = &jeu->batiments[chateau_deau];
-    Batiment* listeUsineElectrique = &jeu->batiments[usine_electrique];
+    Batiment* listeMaison = jeu->batiments[maison];
+    Batiment* listeChateauEau = jeu->batiments[chateau_deau];
+    Batiment* listeUsineElectrique = jeu->batiments[usine_electrique];
     int x = 0;
     int y = 0;
     char c = 0, cPrec = 0;

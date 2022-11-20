@@ -41,7 +41,7 @@ typedef struct Jeu{
 void ajouterBatiment(Jeu* jeu,int x,int y,int choix);
 void afficherM(Jeu* jeu);
 void detruireBatiment(Jeu* jeu,int x,int y,int choix);
-void sauvBatiment(Coordonnee* listeMaison, Coordonnee* listeChateauEau, Coordonnee* listeUsineElectrique);
+void sauvBatiment(Batiment * listeMaison, Batiment * listeChateauEau, Batiment * listeUsineElectrique);
 void chargeBatiment(Jeu* jeu);
 void liberationListe(Jeu* jeu);
 void tempsTour();
@@ -56,6 +56,6 @@ void changementHeure(bool shift);
 #include "COULEURS.h"
 
 int difference_entre_2_nombres_VALEURABSOLUE(int a, int b);
-Jeu* initialisation_sans_save();
+
 
 #endif

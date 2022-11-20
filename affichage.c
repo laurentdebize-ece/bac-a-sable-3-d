@@ -1,4 +1,5 @@
 #include "Jeu.h"
+
 void print_message_error_construire_hors_map(){
     color (12, 0);
     printf("\n VOUS NE POUVEZ PAS CONSTRUIRE EN DEHORS DES LIMITES DE LA MAP !!!\n\n");
@@ -50,8 +51,9 @@ void afficher_menu_console(Jeu* jeu){
         }
         case 3:{
             printf("CHARGEMENT EN COURS...\n");
-            jeu = lire_graphe(jeu);
+            jeu = lire_graphe();
             sleep(1);
+            initialisation_structure(jeu);
             initialisation_CONSTANTE(jeu);
             printf("CHARGEMENT TERMINE !\n");
             chargeBatiment(jeu);
@@ -68,6 +70,9 @@ void afficher_menu_console(Jeu* jeu){
             color (5, 0);
             printf("\nFICHIER DETRUIT\n");
             color (15, 0);
+        }
+        default :{
+            break;
         }
     }
     afficher_menu_console(jeu);
@@ -119,8 +124,8 @@ void afficher_choix_joueur(Jeu* jeu) {
             break;
         }
         case maison: {
-            jeu->batiments[maison].taille.x = (TAILLE_MAISON);
-            jeu->batiments[maison].taille.y = (TAILLE_MAISON);
+            jeu->batiments[maison]->taille.x = (TAILLE_MAISON);
+            jeu->batiments[maison]->taille.y = (TAILLE_MAISON);
             color(10, 0);
             printf("\nCoordonnees ? (x / y)\n");
             color(15, 0);
@@ -136,8 +141,8 @@ void afficher_choix_joueur(Jeu* jeu) {
             break;
         }
         case chateau_deau: {
-            jeu->batiments[chateau_deau].taille.x = (LONGUEUR_BATIMENTS);
-            jeu->batiments[chateau_deau].taille.y = (LARGEUR_BATIMENTS);
+            jeu->batiments[chateau_deau]->taille.x = (LONGUEUR_BATIMENTS);
+            jeu->batiments[chateau_deau]->taille.y = (LARGEUR_BATIMENTS);
             color(10, 0);
             printf("\nCoordonnees ? (x / y)\n");
             color(15, 0);
@@ -153,8 +158,8 @@ void afficher_choix_joueur(Jeu* jeu) {
             break;
         }
         case usine_electrique: {
-            jeu->batiments[usine_electrique].taille.x = (LONGUEUR_BATIMENTS);
-            jeu->batiments[usine_electrique].taille.y = (LARGEUR_BATIMENTS);
+            jeu->batiments[usine_electrique]->taille.x = (LONGUEUR_BATIMENTS);
+            jeu->batiments[usine_electrique]->taille.y = (LARGEUR_BATIMENTS);
             color(10, 0);
             printf("\nCoordonnees ? (x / y)\n");
             color(15, 0);
@@ -192,9 +197,15 @@ void afficher_choix_joueur(Jeu* jeu) {
                     detruireBatiment(jeu, x, y, usine_electrique);
                     break;
                 }
+                default :{
+                    break;
+                }
             }
             case 9: {
                 afficher_la_grille(jeu);
+                break;
+            }
+            default : {
                 break;
             }
 
