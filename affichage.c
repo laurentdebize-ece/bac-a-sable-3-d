@@ -200,11 +200,10 @@ void afficher_choix_joueur(Jeu* jeu) {
             }
             case 10: {
                 int a = 0, b = 0;
-                Coordonnee batiment;
                 printf("Coordonnee:\n");
                 scanf("%d  %d", &a, &b);
-                batiment = position_batiment(*jeu, a, b);
-                printf("Batiment en (%d,%d)\n", batiment.x, batiment.y);
+                position_batiment(*jeu, a, b); //retourne les coordonnées
+                break;
             }
             default : {
                 break;

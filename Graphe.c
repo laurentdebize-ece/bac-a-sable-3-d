@@ -223,23 +223,28 @@ Coordonnee position_batiment(Jeu jeu, int x, int y){
     int type_batiment = jeu.terrain[y][x];
     switch (type_batiment) {
         case vide : {
+            printf("Cette case est vide\n");
             break;
         }
         case reseau : {
             postion_batiment.x = x;
             postion_batiment.y = y;
+            printf("Cette case est une route placée en (%d,%d)\n", x, y);
             break;
         }
         case maison : {
             postion_batiment = position_maison(jeu, x, y);
+            printf("Cette case correspond a une maison placee en (%d,%d)\n", postion_batiment.x, postion_batiment.y);
             break;
         }
         case chateau_deau : {
             postion_batiment = position_usine(jeu, x, y, chateau_deau);
+            printf("Cette case correspond a un chateau d'eau place en (%d,%d)\n", postion_batiment.x, postion_batiment.y);
             break;
         }
         case usine_electrique : {
             postion_batiment = position_usine(jeu, x, y, usine_electrique);
+            printf("Cette case correspond a une centrale electrique placee en (%d,%d)\n", postion_batiment.x, postion_batiment.y);
             break;
         }
         default : {
