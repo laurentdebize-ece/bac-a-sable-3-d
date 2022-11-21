@@ -137,8 +137,6 @@ void afficher_choix_joueur(Jeu* jeu) {
             break;
         }
         case chateau_deau: {
-            jeu->batiments[chateau_deau]->taille.x = (LONGUEUR_BATIMENTS);
-            jeu->batiments[chateau_deau]->taille.y = (LARGEUR_BATIMENTS);
             color(10, 0);
             printf("\nCoordonnees ? (x / y)\n");
             color(15, 0);
@@ -154,8 +152,6 @@ void afficher_choix_joueur(Jeu* jeu) {
             break;
         }
         case usine_electrique: {
-            jeu->batiments[usine_electrique]->taille.x = (LONGUEUR_BATIMENTS);
-            jeu->batiments[usine_electrique]->taille.y = (LARGEUR_BATIMENTS);
             color(10, 0);
             printf("\nCoordonnees ? (x / y)\n");
             color(15, 0);
