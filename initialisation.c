@@ -2,18 +2,9 @@
 
 
 Jeu* initialisation_structure(Jeu* grille){
-    grille->terrain = (int**) malloc(grille->ordre.y * sizeof(int*));
 
-    for (int i = 0; i <= grille->ordre.y; i++) {
-        grille->terrain[i] = (int*) malloc(grille->ordre.x* sizeof(int));
-    }
 
-    for (int i = 0; i < nbBatiments; i++){
-        grille->batiments[i] = (Batiment*) malloc(sizeof (Batiment));
-    }
-    grille->batiments[maison] = NULL;
-    grille->batiments[chateau_deau] = NULL;
-    grille->batiments[usine_electrique] = NULL;
+    return grille;
 }
 
 void initialisation_Grille(){
@@ -50,7 +41,7 @@ Jeu* initialisation_sans_save(){
     return j;
 }
 
-Jeu* initialisation_CONSTANTE(int choix) {
+/*Jeu* initialisation_CONSTANTE(int choix) {
      Jeu *j;
 
     switch(choix) {
@@ -76,4 +67,4 @@ Jeu* initialisation_CONSTANTE(int choix) {
         }
     }
     return j;
-}
+}*/

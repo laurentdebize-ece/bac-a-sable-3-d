@@ -12,7 +12,7 @@ Jeu* initialisation(){
     j->argent = ARGENT_DE_DEBUT;
     j->production_eau_restante = 0;
     j->production_elec_restante = 0;
-    initialisation_CONSTANTE(j);
+    //initialisation_CONSTANTE(j);
 
     return j;
 }

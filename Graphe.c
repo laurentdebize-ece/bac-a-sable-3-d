@@ -30,6 +30,14 @@ Jeu *lire_graphe() {
     for (int i = 0; i <= ordre_y; i++) {
         grille->terrain[i] = (int*) malloc(ordre_x * sizeof(int));
     }
+
+    for (int i = 0; i < nbBatiments; i++){
+        grille->batiments[i] = (Batiment*) malloc(sizeof (Batiment));
+    }
+    grille->batiments[maison] = NULL;
+    grille->batiments[chateau_deau] = NULL;
+    grille->batiments[usine_electrique] = NULL;
+
     for (int i = 0; i <= ordre_y; i++) {
         for (int j = 0; j <= ordre_x; j++) {
             fscanf(ifs, " %d", &grille->terrain[i][j]);
@@ -132,6 +140,7 @@ void ajout_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y, int 
                 }
             }
             if (obstacle == TRUE){
+                //detruire maison de la liste chaine
                 break;
             }
             y_temporaire ++;

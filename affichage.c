@@ -54,7 +54,6 @@ void afficher_menu_console(Jeu* jeu){
             jeu = lire_graphe();
             sleep(1);
             initialisation_structure(jeu);
-            initialisation_CONSTANTE(jeu);
             printf("CHARGEMENT TERMINE !\n");
             afficher_choix_joueur(jeu);
             break;
@@ -122,8 +121,6 @@ void afficher_choix_joueur(Jeu* jeu) {
             break;
         }
         case maison: {
-            jeu->batiments[maison]->taille.x = (TAILLE_MAISON);
-            jeu->batiments[maison]->taille.y = (TAILLE_MAISON);
             color(10, 0);
             printf("\nCoordonnees ? (x / y)\n");
             color(15, 0);
