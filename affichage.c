@@ -1,4 +1,5 @@
 #include "Jeu.h"
+
 void print_message_error_construire_hors_map(){
     color (12, 0);
     printf("\n VOUS NE POUVEZ PAS CONSTRUIRE EN DEHORS DES LIMITES DE LA MAP !!!\n\n");
@@ -50,11 +51,11 @@ void afficher_menu_console(Jeu* jeu){
         }
         case 3:{
             printf("CHARGEMENT EN COURS...\n");
-            jeu = lire_graphe(jeu);
+            jeu = lire_graphe();
             sleep(1);
+            initialisation_structure(jeu);
             initialisation_CONSTANTE(jeu);
             printf("CHARGEMENT TERMINE !\n");
-            chargeBatiment(jeu);
             afficher_choix_joueur(jeu);
             break;
 
@@ -68,6 +69,9 @@ void afficher_menu_console(Jeu* jeu){
             color (5, 0);
             printf("\nFICHIER DETRUIT\n");
             color (15, 0);
+        }
+        default :{
+            break;
         }
     }
     afficher_menu_console(jeu);
@@ -98,7 +102,6 @@ void afficher_choix_joueur(Jeu* jeu) {
     scanf(" %d", &choix);
     switch (choix) {
         case 0: {
-            //sauvBatiment(listeMaison,listeChateauEau,listeUsineElectrique);
             afficher_menu_console(jeu);
             break;
         }
@@ -129,9 +132,10 @@ void afficher_choix_joueur(Jeu* jeu) {
                 print_message_error_construire_hors_map();
                 break;
             }
-            ajout_Batiment_Grille(jeu, maison, co_x, co_y, co_x1, co_y1);
+
             ajouterBatiment(jeu, co_x, co_y, choix);
-            printf("Ajout d'une maison ...\n");
+            ajout_Batiment_Grille(jeu, maison, co_x, co_y, co_x1, co_y1);
+            //printf("Ajout d'une maison ...\n");
             sleep(1);
             break;
         }
@@ -146,8 +150,8 @@ void afficher_choix_joueur(Jeu* jeu) {
                 print_message_error_construire_hors_map();
                 break;
             }
-            ajout_Batiment_Grille(jeu, chateau_deau, co_x, co_y, co_x1, co_y1);
             ajouterBatiment(jeu, co_x, co_y, choix);
+            ajout_Batiment_Grille(jeu, chateau_deau, co_x, co_y, co_x1, co_y1);
             printf("Ajout d'un chateau d'eau ...\n");
             sleep(1);
             break;
@@ -163,8 +167,8 @@ void afficher_choix_joueur(Jeu* jeu) {
                 print_message_error_construire_hors_map();
                 break;
             }
-            ajout_Batiment_Grille(jeu, usine_electrique, co_x, co_y, co_x1, co_y1);
             ajouterBatiment(jeu, co_x, co_y, choix);
+            ajout_Batiment_Grille(jeu, usine_electrique, co_x, co_y, co_x1, co_y1);
             printf("Ajout d'une usine electrique ...\n");
             sleep(1);
             break;
@@ -192,9 +196,15 @@ void afficher_choix_joueur(Jeu* jeu) {
                     detruireBatiment(jeu, x, y, usine_electrique);
                     break;
                 }
+                default :{
+                    break;
+                }
             }
             case 9: {
                 afficher_la_grille(jeu);
+                break;
+            }
+            default : {
                 break;
             }
 

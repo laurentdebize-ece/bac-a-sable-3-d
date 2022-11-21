@@ -7,6 +7,11 @@ Jeu *lire_graphe() {
     int ordre_y;
     int argent;
 
+    int retenueMaison = -1;
+    int retenurChateauEau = 0;
+    int usineElectrique = 0;
+    bool enCours = FALSE;
+
     if (!ifs) {
         color(5, 0);
         printf("Vous n'avez pas encore de graphe\n");
@@ -28,6 +33,9 @@ Jeu *lire_graphe() {
     for (int i = 0; i <= ordre_y; i++) {
         for (int j = 0; j <= ordre_x; j++) {
             fscanf(ifs, " %d", &grille->terrain[i][j]);
+            if(grille->terrain[i][j] == 2 || grille->terrain[i][j] == 3 || grille->terrain[i][j] == 4){
+                chargementListe(grille,grille->terrain[i][j],i,&j,&ifs);
+            }
         }
     }
     /*if(grille->terrain[0][0] == NULL){
@@ -46,24 +54,7 @@ Jeu *lire_graphe() {
     return grille;
 }
 
-void initialisation_Grille(){
-    color(14, 0);
-    printf("Creation d'un graphe ... ...\n");
-    sleep(1);
-    color(15, 0);
-    FILE *ifs = fopen(NOM_DU_FICHIER, "w");
-    fprintf(ifs, "%d\n", ORDRE_EN_X);
-    fprintf(ifs, "%d\n", ORDRE_EN_Y);
-    fprintf(ifs, "%d\n", ARGENT_DE_DEBUT);
-    for (int i = 0; i <= ORDRE_EN_Y; i++) {
-        for (int j = 0; j <= ORDRE_EN_X; j++) {
-            fprintf(ifs, "%d ", vide);
-        }
-        fprintf(ifs, "\n");
-    }
-    fclose(ifs);
-    //on ne ferme pas ce fichier car nous allons le lire juste apres dans le cas ou nous avons pas de fichier
-}
+
 
 void enregistrer_Grille(Jeu* jeu){
     FILE *ifs = fopen(NOM_DU_FICHIER, "w");
@@ -124,11 +115,12 @@ void ajout_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y, int 
                 }else co_y--;
             }
             color(1, 0);
-            printf("La construction : %s, est un succes !\n", jeu->batiments[nomDuBatiment].nom);
+            printf("La construction : %s, est un succes !\n", jeu->batiments[nomDuBatiment]->nom);
             color(15, 0);
         } else {
             color(5, 0);
             printf("Vous ne pouvez pas construire ici, un obstacle vous en empeche !\n");
+            detruireBatiment(jeu,co_x,co_y,nomDuBatiment);
             color(15, 0);
         }
     }else{
@@ -156,6 +148,7 @@ void ajout_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y, int 
         } else {
             color(5, 0);
             printf("Vous ne pouvez pas construire ici, un obstacle vous en empeche !\n");
+            detruireBatiment(jeu,co_x,co_y,nomDuBatiment);
             color(15, 0);
         }
     }
@@ -165,3 +158,87 @@ void ajout_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y, int 
 void suppression_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y, int co_xroute, int co_yroute){
     //il me faut les co des batiments deja place (x,y) grace au liste chaine donc j'att...
 }
+
+
+
+Coordonnee position_maison(Jeu jeu, int x, int y){
+    Coordonnee position_maison;
+    position_maison.x = -1;
+    position_maison.y = -1;
+    bool batiment_trouve = FALSE;
+    Batiment* batiment_actuel = jeu.batiments[maison];
+    while(batiment_trouve == FALSE){
+        for(int i = 0; i < TAILLE_MAISON; i++){
+            if (x - i == batiment_actuel->x){
+                position_maison.x = batiment_actuel->x;
+            }
+            if (y - i == batiment_actuel->y){
+                position_maison.y = batiment_actuel->y;
+            }
+        }
+        if (position_maison.x != -1 && position_maison.y != -1){
+            batiment_trouve = TRUE;
+        }
+        batiment_actuel = batiment_actuel->next;
+    }
+    return position_maison;
+}
+
+Coordonnee position_usine(Jeu jeu, int x, int y, int type_usine){
+    Coordonnee position_usine;
+    position_usine.x = -1;
+    position_usine.y = -1;
+    bool batiment_trouve = FALSE;
+    Batiment* batiment_actuel = jeu.batiments[type_usine];
+    while(batiment_trouve == FALSE){
+        for(int i = 0; i < LONGUEUR_BATIMENTS; i++) {
+            if (x - i == batiment_actuel->x) {
+                position_usine.x = batiment_actuel->x;
+            }
+        }
+        for(int i = 0; i < LARGEUR_BATIMENTS; i++) {
+            if (y - i == batiment_actuel->y) {
+                position_usine.y = batiment_actuel->y;
+            }
+        }
+        if (position_usine.x != -1 && position_usine.y != -1){
+            batiment_trouve = TRUE;
+        }
+        batiment_actuel = batiment_actuel->next;
+    }
+    return position_usine;
+}
+
+Coordonnee position_batiment(Jeu jeu, int x, int y){
+    Coordonnee postion_batiment;
+    int type_batiment = jeu.terrain[y][x];
+    switch (type_batiment) {
+        case vide : {
+            break;
+        }
+        case reseau : {
+            postion_batiment.x = x;
+            postion_batiment.y = y;
+            break;
+        }
+        case maison : {
+            postion_batiment = position_maison(jeu, x, y);
+            break;
+        }
+        case chateau_deau : {
+            postion_batiment = position_usine(jeu, x, y, chateau_deau);
+            break;
+        }
+        case usine_electrique : {
+            postion_batiment = position_usine(jeu, x, y, usine_electrique);
+            break;
+        }
+        default : {
+            break;
+        }
+
+    }
+    return postion_batiment;
+}
+
+

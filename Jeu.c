@@ -23,7 +23,21 @@ int difference_entre_2_nombres_VALEURABSOLUE(int a, int b){
     }else return a-b;
 }
 
-Batiment* maj_liste_chaine(Batiment *nouveau,Batiment *tail,Batiment * liste){
+void detecterCoordonneDouble(Jeu* jeu,int x,int y,int choix){
+    Batiment *liste = jeu->batiments[choix];
+    Batiment *parcours = liste;
+    if(liste != NULL) {
+        while (parcours->next != liste) {
+            if (parcours->x == x && parcours->y == y) {
+                printf("Coordonnees invalides\n");
+                afficher_choix_joueur(jeu);
+            }
+            parcours = parcours->next;
+        }
+    }
+}
+
+Batiment * maj_liste_chaine(Batiment *nouveau,Batiment *tail,Batiment * liste){
     if(liste == NULL){
         liste = nouveau;
         liste->next = liste;
@@ -43,9 +57,14 @@ void ajouterBatiment(Jeu* jeu,int x,int y,int choix){
     Batiment *nouveau = NULL;
     Batiment * tail = NULL;
     Batiment * liste = NULL;
+
+    detecterCoordonneDouble(jeu,x,y,choix);
     nouveau = calloc(1,sizeof(Batiment));
     nouveau->x = x;
     nouveau->y = y;
+    nouveau->taille.x = TAILLE_MAISON;
+    nouveau->taille.y = TAILLE_MAISON;
+    nouveau->nom = "Maison";
     switch (choix) {
         case maison: {
             liste = jeu->batiments[maison];
@@ -63,6 +82,9 @@ void ajouterBatiment(Jeu* jeu,int x,int y,int choix){
             liste =  jeu->batiments[usine_electrique];
             liste = maj_liste_chaine(nouveau, tail, liste);
             jeu->batiments[usine_electrique] = liste;
+            break;
+        }
+        default : {
             break;
         }
     }
@@ -113,6 +135,8 @@ Batiment* maj_destruction_maillon(Batiment* liste,int x,int y,Jeu* jeu) {
         free(parcour);
     }
     else{printf("Liste vide.\n");}
+
+    return liste;
 }
 
 void detruireBatiment(Jeu* jeu,int x,int y,int choix) {
@@ -141,210 +165,84 @@ void detruireBatiment(Jeu* jeu,int x,int y,int choix) {
             }
             break;
         }
+        default :{
+            break;
+        }
     }
 }
 
-void sauvBatiment(Coordonnee* listeMaison, Coordonnee* listeChateauEau, Coordonnee* listeUsineElectrique){
-    remove("liste.txt");
-    Batiment *head = listeMaison;
-    Batiment *headChateau = listeChateauEau;
-    Batiment *headUsine = listeUsineElectrique;
-    FILE *ifs = fopen("liste.txt", "w");
-    if(ifs==NULL){
-        printf("Erreur lors de l'1ouverture d'un fichier");
-        exit(1);
+void stocker(int nb,FILE* ifs){
+    int n = 0;
+    for(int i = 0; i < nb;i++){
+        fscanf(ifs,"%d",&n);
     }
-    if(head != NULL) {
-        do{
-            fprintf(ifs, "%d ", head->x);
-            fprintf(ifs, "%d ", head->y);
-            head = head->next;
-        }while (head != listeMaison);
-    }
-    fprintf(ifs,"\n");
-
-    if(headChateau != NULL) {
-        do{
-            fprintf(ifs, "%d ", headChateau->x);
-            fprintf(ifs, "%d ", headChateau->y);
-            headChateau = headChateau->next;
-        }while (headChateau != listeChateauEau);
-    }
-    fprintf(ifs,"\n");
-
-    if(headUsine != NULL) {
-        do{
-            fprintf(ifs, "%d ", headUsine->x);
-            fprintf(ifs, "%d ", headUsine->y);
-            headUsine = headUsine->next;
-        }while (headUsine != listeUsineElectrique);
-    }
-    fclose(ifs);
 }
 
+Batiment* maj_charge_liste(){
 
-void chargeBatiment(Jeu* jeu){
-    Batiment* listeMaison = &jeu->batiments[maison];
-    Batiment* listeChateauEau = &jeu->batiments[chateau_deau];
-    Batiment* listeUsineElectrique = &jeu->batiments[usine_electrique];
-    int x = 0;
-    int y = 0;
-    char c = 0, cPrec = 0;
+}
 
-
-    /*FILE *ifs = fopen("liste.txt", "r");
-    while((c != ' ' && cPrec != ' ' ) || (c != '\000' && cPrec != '\000')){
-        cPrec = c;
-        fscanf(ifs,"%c",&c);
-        i++;
-    }
-    fscanf(ifs,"\n");
-    c = 0;
-    while((c != ' ' && cPrec != ' ' ) || (c != '\000' && cPrec != '\000')){
-        cPrec = c;
-        fscanf(ifs,"%c",&c);
-        j++;
-    }
-    fscanf(ifs,"\n");
-    c = 0;
-    while((c != ' ' && cPrec != ' ' ) || (c != '\000' && cPrec != '\000')){
-        cPrec = c;
-        fscanf(ifs,"%c",&c);
-        k++;
-    }
-    fclose(ifs);*/
-    int i = 0,j = 0,k = 0;
-    FILE *ifs2 = fopen("liste.txt", "r");
-    for(int p = 0;p<1;p++){
-        fscanf(ifs2,"%d",&x);
-        fscanf(ifs2,"%d",&y);
-        ajouterBatiment(jeu,x,y,maison);
-    }
-    fscanf(ifs2,"\n");
-    for(int p = 0;p<1;p++){
-        fscanf(ifs2,"%d",&x);
-        fscanf(ifs2,"%d",&y);
-        ajouterBatiment(jeu,x,y,chateau_deau);
-    }
-    fscanf(ifs2,"\n");
-    for(int p = 0;p<1;p++){
-        fscanf(ifs2,"%d",&x);
-        fscanf(ifs2,"%d",&y);
-        ajouterBatiment(jeu,x,y,usine_electrique);
-    }
-
-
-
-    fclose(ifs2);
-    //fscanf()
-    //while()
-    /*int espace = 0;
-    int type = 0;
-    FILE *ifs = fopen(NOM_DU_FICHIER, "r");
-
-    fscanf(ifs,"%d\n",&espace);
-    fscanf(ifs,"%d\n",&espace);
-
-    for(int i = 0;i < ORDRE_EN_Y;i++){
-        for(int j = 0;j < ORDRE_EN_X;j++){
-            fscanf(ifs,"%d",&type);
-            if(type != 0) {
-                if (i == 0) {
-                    ajouterBatiment(listeMaison, listeChateauEau, listeUsineElectrique, i, j, type);
-                    switch (type) {
-                        case maison: {
-                            j = j + 2;
-                            fscanf(ifs,"%d",&type);
-                            fscanf(ifs,"%d",&type);
-                            break;
-                        }
-                        case chateau_deau: {
-                            j = j + 5;
-                            break;
-                        }
-                        case usine_electrique: {
-                            j = j + 5;
-                            break;
-                        }
-                    }
-                }
-                else{
-                    switch (type) {
-                        case maison: {
-                            Coordonnee **head = listeMaison;
-                            Coordonnee **parcour = head;
-                            while ((*parcour)->next != head) {
-                                if(i > 1 && j > 1) {
-                                    if ((i - 1 != (*parcour)->x && j != (*parcour)->y) ||
-                                        (i - 2 != (*parcour)->x && j != (*parcour)->y) ||
-                                        (i != (*parcour)->x && j - 1 != (*parcour)->y) ||
-                                        (i - 1 != (*parcour)->x && j - 1 != (*parcour)->y)
-                                        || (i - 2 != (*parcour)->x && j - 1 != (*parcour)->y) ||
-                                        (i != (*parcour)->x && j - 2 != (*parcour)->y) ||
-                                        (i - 1 != (*parcour)->x && j - 2 != (*parcour)->y) ||
-                                        (i - 2 != (*parcour)->x && j - 2 != (*parcour)->y)) {
-                                        ajouterBatiment(listeMaison, listeChateauEau, listeUsineElectrique, i, j,
-                                                        maison);
-                                    }
-                                }
-                                else if(i == 1 && j > 1){
-                                    if ((i - 1 != (*parcour)->x && j != (*parcour)->y) ||
-                                        (i != (*parcour)->x && j - 1 != (*parcour)->y) ||
-                                        (i - 1 != (*parcour)->x && j - 1 != (*parcour)->y)
-                                        ||(i != (*parcour)->x && j - 2 != (*parcour)->y) ||
-                                        (i - 1 != (*parcour)->x && j - 2 != (*parcour)->y)) {
-                                        ajouterBatiment(listeMaison, listeChateauEau, listeUsineElectrique, i, j,
-                                                        maison);
-                                    }
-                                }
-                                else if(i == 1 && j == 1){
-                                    if ((i - 1 != (*parcour)->x && j != (*parcour)->y) ||
-                                        (i != (*parcour)->x && j - 1 != (*parcour)->y) ||
-                                        (i - 1 != (*parcour)->x && j - 1 != (*parcour)->y)) {
-                                        ajouterBatiment(listeMaison, listeChateauEau, listeUsineElectrique, i, j,
-                                                        maison);
-                                    }
-                                }
-                                else if(i == 1 && j == 0) {
-                                    if ((i - 1 != (*parcour)->x && j != (*parcour)->y)){
-                                        ajouterBatiment(listeMaison, listeChateauEau, listeUsineElectrique, i, j,
-                                                        maison);
-                                    }
-                                }
-                                else if(i == 2 && j == 0) {
-                                    if ((i - 1 != (*parcour)->x && j != (*parcour)->y) ||
-                                        (i - 2 != (*parcour)->x && j != (*parcour)->y)){
-                                        ajouterBatiment(listeMaison, listeChateauEau, listeUsineElectrique, i, j,
-                                                        maison);
-                                    }
-                                }
-                                else if(i == 2 && j == 1) {
-                                    if ((i - 1 != (*parcour)->x && j != (*parcour)->y) ||
-                                        (i - 2 != (*parcour)->x && j != (*parcour)->y) ||
-                                        (i != (*parcour)->x && j - 1 != (*parcour)->y) ||
-                                        (i - 1 != (*parcour)->x && j - 1 != (*parcour)->y)
-                                        || (i - 2 != (*parcour)->x && j - 1 != (*parcour)->y)) {
-                                        ajouterBatiment(listeMaison, listeChateauEau, listeUsineElectrique, i, j,
-                                                        maison);
-                                    }
-                                }
-
-                                (*parcour) = (*parcour)->next;
-                            }
-                            break;
-                        }
-                        case chateau_deau: {
-                            break;
-                        }
-                        case usine_electrique: {
-                            break;
-                        }
+void chargementListe(Jeu* jeu,int num,int i,int* j,FILE** ifs){
+    Batiment* listeMaison = jeu->batiments[maison];
+    Batiment* parcours = listeMaison;
+    switch(num){
+        case 2:{
+            if(listeMaison == NULL) {
+                ajouterBatiment(jeu, (*j), i, maison);
+                jeu->batiments[maison]->retenueMaisonY = i;
+                jeu->batiments[maison]->retenueMaisonX = (*j);
+                jeu->batiments[maison]->enCours = TRUE;
+                (*j) = (*j) + 2;
+                stocker(2,*ifs);
+            }
+            else if(parcours->next == listeMaison){
+                if (((i == parcours->retenueMaisonY + 2 && (*j) == parcours->retenueMaisonX) ||
+                     (i == parcours->retenueMaisonY + 1 && (*j) == parcours->retenueMaisonX)) &&
+                    parcours->enCours == TRUE) {
+                    (*j) = (*j) + 2;
+                    stocker(2, *ifs);
+                    if (i == parcours->retenueMaisonY + 2) {
+                        parcours->enCours = FALSE;
                     }
                 }
             }
-        }
-    }*/
+            else {
+                while (parcours->next != listeMaison) {
+                    if (((i == parcours->retenueMaisonY + 2 && (*j) == parcours->retenueMaisonX) ||
+                         (i == parcours->retenueMaisonY + 1 && (*j) == parcours->retenueMaisonX)) &&
+                        parcours->enCours == TRUE) {
+                        (*j) = (*j) + 2;
+                        stocker(2, *ifs);
+                        if (i == parcours->retenueMaisonY + 2) {
+                            parcours->enCours = FALSE;
+                        }
+                    }
+                    else{
+                        ajouterBatiment(jeu, (*j), i, maison);
+                        Batiment* parcoursbis = listeMaison;
+                        while (parcoursbis->next != listeMaison) {
+                            parcoursbis = parcoursbis->next;
+                        }
+                        parcoursbis->retenueMaisonY = i;
+                        parcoursbis->retenueMaisonX = (*j);
+                        parcoursbis->enCours = TRUE;
+                        (*j) = (*j) + 2;
+                        stocker(2, *ifs);
+                        jeu->batiments[maison] = listeMaison;
+                    }
+                    parcours = parcours->next;
+                }
 
+            }
+            break;
+        }
+        case 3:{
+            break;
+        }
+        case 4:{
+            break;
+        }
+    }
 }
 
 void liberationListe(Jeu* jeu) {
@@ -383,6 +281,9 @@ void liberationListe(Jeu* jeu) {
         } while (parcour != jeu->batiments[usine_electrique]);
         jeu->batiments[usine_electrique] = NULL;
     }
+    jeu->batiments[maison] = NULL;
+    jeu->batiments[chateau_deau] = NULL;
+    jeu->batiments[usine_electrique] = NULL;
 }
 
 void changementHeure(bool shift){
