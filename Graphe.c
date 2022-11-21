@@ -7,6 +7,11 @@ Jeu *lire_graphe() {
     int ordre_y;
     int argent;
 
+    int retenueMaison = -1;
+    int retenurChateauEau = 0;
+    int usineElectrique = 0;
+    bool enCours = FALSE;
+
     if (!ifs) {
         color(5, 0);
         printf("Vous n'avez pas encore de graphe\n");
@@ -28,6 +33,9 @@ Jeu *lire_graphe() {
     for (int i = 0; i <= ordre_y; i++) {
         for (int j = 0; j <= ordre_x; j++) {
             fscanf(ifs, " %d", &grille->terrain[i][j]);
+            if(grille->terrain[i][j] == 2 || grille->terrain[i][j] == 3 || grille->terrain[i][j] == 4){
+                chargementListe(grille,grille->terrain[i][j],i,&j,&ifs);
+            }
         }
     }
     /*if(grille->terrain[0][0] == NULL){
@@ -129,6 +137,7 @@ void ajout_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y, int 
         } else {
             color(5, 0);
             printf("Vous ne pouvez pas construire ici, un obstacle vous en empeche !\n");
+            detruireBatiment(jeu,co_x,co_y,nomDuBatiment);
             color(15, 0);
         }
     }else{
@@ -156,6 +165,7 @@ void ajout_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y, int 
         } else {
             color(5, 0);
             printf("Vous ne pouvez pas construire ici, un obstacle vous en empeche !\n");
+            detruireBatiment(jeu,co_x,co_y,nomDuBatiment);
             color(15, 0);
         }
     }

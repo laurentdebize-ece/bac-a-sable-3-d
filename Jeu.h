@@ -22,6 +22,8 @@ typedef struct Batiment{
     int x,y;
     int capacite;
     int nb_habitants;
+    bool enCours;
+    int retenueMaisonX, retenueMaisonY;
     struct Batiment* next;
 }Batiment;
 
@@ -37,12 +39,10 @@ typedef struct Jeu{
     Batiment* batiments[nbBatiments];
 }Jeu;
 
-
 void ajouterBatiment(Jeu* jeu,int x,int y,int choix);
 void afficherM(Jeu* jeu);
 void detruireBatiment(Jeu* jeu,int x,int y,int choix);
-void sauvBatiment(Coordonnee* listeMaison, Coordonnee* listeChateauEau, Coordonnee* listeUsineElectrique);
-void chargeBatiment(Jeu* jeu);
+void chargementListe(Jeu* jeu,int num,int i,int* j,FILE **ifs);
 void liberationListe(Jeu* jeu);
 void tempsTour();
 void changementHeure(bool shift);

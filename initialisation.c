@@ -11,6 +11,9 @@ Jeu* initialisation_structure(Jeu* grille){
     for (int i = 0; i < nbBatiments; i++){
         grille->batiments[i] = (Batiment*) malloc(sizeof (Batiment));
     }
+    grille->batiments[maison] = NULL;
+    grille->batiments[chateau_deau] = NULL;
+    grille->batiments[usine_electrique] = NULL;
 }
 
 void initialisation_Grille(){
@@ -43,42 +46,34 @@ Jeu* initialisation_sans_save(){
     j->argent = ARGENT_DE_DEBUT;
     j->production_eau_restante = 0;
     j->production_elec_restante = 0;
-    initialisation_CONSTANTE(j);
 
     return j;
 }
 
-Batiment* initialisation_CONSTANTE(){
-    Batiment* batiment;
-    batiment.taille.x = TAILLE_VIDE;
-    batiment.taille.y = TAILLE_VIDE;
-    j->batiments[vide]->nom = "Vide";
+Jeu* initialisation_CONSTANTE(int choix) {
+     Jeu *j;
 
-    j->batiments[reseau]->taille.x = TAILLE_ROUTE;
-    j->batiments[reseau]->taille.y = TAILLE_ROUTE;
-    j->batiments[reseau]->nom = "Route";
+    switch(choix) {
+        case 2: {
+            j->batiments[maison]->taille.x = TAILLE_MAISON;
+            j->batiments[maison]->taille.y = TAILLE_MAISON;
+            j->batiments[maison]->nom = "Maison";
+            break;
+        }
 
-    j->batiments[maison]->taille.x = TAILLE_MAISON;
-    j->batiments[maison]->taille.y = TAILLE_MAISON;
-    j->batiments[maison]->nom = "Maison";
-    //Coordonnee* listeMaison = NULL;
-    //j->batiments[maison] = *listeMaison;
-    //j->batiments[maison] = NULL;
-    /*Coordonnee* listeChateauEau = NULL;
-    jeu->batiments[chateau_deau] = *listeChateauEau;
-    Coordonnee* listeUsineElectrique = NULL;
-    jeu->batiments[usine_electrique] = *listeUsineElectrique;*/
-    j->batiments[maison] = NULL;
+        case 3: {
+            j->batiments[chateau_deau]->taille.x = LONGUEUR_BATIMENTS;
+            j->batiments[chateau_deau]->taille.y = LARGEUR_BATIMENTS;
+            j->batiments[chateau_deau]->nom = "Chateau d'eau";
+            break;
+        }
 
-    j->batiments[chateau_deau]->taille.x = LONGUEUR_BATIMENTS;
-    j->batiments[chateau_deau]->taille.y = LARGEUR_BATIMENTS;
-    j->batiments[chateau_deau]->nom = "Chateau d'eau";
-    j->batiments[chateau_deau] = NULL;
-
-    j->batiments[usine_electrique]->taille.x = LONGUEUR_BATIMENTS;
-    j->batiments[usine_electrique]->taille.y = LARGEUR_BATIMENTS;
-    j->batiments[usine_electrique]->nom = "Usine electrique";
-    j->batiments[usine_electrique] = NULL;
-
-    return* batiment;
+        case 4: {
+            j->batiments[usine_electrique]->taille.x = LONGUEUR_BATIMENTS;
+            j->batiments[usine_electrique]->taille.y = LARGEUR_BATIMENTS;
+            j->batiments[usine_electrique]->nom = "Usine electrique";
+            break;
+        }
+    }
+    return j;
 }
