@@ -98,6 +98,7 @@ void afficher_choix_joueur(Jeu* jeu) {
     printf("5 : afficher\n");
     printf("6 : Detruire batiment\n");
     printf("9 : ~~~~ AFFICHER LA MAP ~~~~\n");
+    printf("10 : Quel batiment ?\n");
     scanf(" %d", &choix);
     switch (choix) {
         case 0: {
@@ -196,6 +197,14 @@ void afficher_choix_joueur(Jeu* jeu) {
             case 9: {
                 afficher_la_grille(jeu);
                 break;
+            }
+            case 10: {
+                int a = 0, b = 0;
+                Coordonnee batiment;
+                printf("Coordonnee:\n");
+                scanf("%d  %d", &a, &b);
+                batiment = position_batiment(*jeu, a, b);
+                printf("Batiment en (%d,%d)\n", batiment.x, batiment.y);
             }
             default : {
                 break;
