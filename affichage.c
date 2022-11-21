@@ -53,7 +53,6 @@ void afficher_menu_console(Jeu* jeu){
             printf("CHARGEMENT EN COURS...\n");
             jeu = lire_graphe();
             sleep(1);
-            initialisation_structure(jeu);
             printf("CHARGEMENT TERMINE !\n");
             afficher_choix_joueur(jeu);
             break;
@@ -95,7 +94,7 @@ void afficher_choix_joueur(Jeu* jeu) {
     printf("2 : placer une maison\n");
     printf("3 : placer un chateau d eau\n");
     printf("4 : placer une usine elec\n");
-    printf("5 : afficher\n");
+    printf("5 : afficher Liste chaine\n");
     printf("6 : Detruire batiment\n");
     printf("9 : ~~~~ AFFICHER LA MAP ~~~~\n");
     printf("10 : Quel batiment ?\n");

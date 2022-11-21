@@ -1,11 +1,9 @@
 #include "initialisation.h"
 
 
-Jeu* initialisation_structure(Jeu* grille){
-
-
+/*Jeu* initialisation_structure(Jeu* grille){
     return grille;
-}
+}*/
 
 void initialisation_Grille(){
     color(14, 0);

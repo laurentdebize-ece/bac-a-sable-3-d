@@ -62,23 +62,30 @@ void ajouterBatiment(Jeu* jeu,int x,int y,int choix){
     nouveau = calloc(1,sizeof(Batiment));
     nouveau->x = x;
     nouveau->y = y;
-    nouveau->taille.x = TAILLE_MAISON;
-    nouveau->taille.y = TAILLE_MAISON;
-    nouveau->nom = "Maison";
+
     switch (choix) {
         case maison: {
+            nouveau->taille.x = TAILLE_MAISON;
+            nouveau->taille.y = TAILLE_MAISON;
+            nouveau->nom = "Maison";
             liste = jeu->batiments[maison];
             liste = maj_liste_chaine(nouveau, tail, liste);
             jeu->batiments[maison] = liste;
             break;
         }
         case chateau_deau: {
+            nouveau->taille.x = LONGUEUR_BATIMENTS;
+            nouveau->taille.y = LARGEUR_BATIMENTS;
+            nouveau->nom = "Chateau d'eau";
             liste =  jeu->batiments[chateau_deau];
             liste = maj_liste_chaine(nouveau, tail, liste);
             jeu->batiments[chateau_deau] = liste;
             break;
         }
         case usine_electrique: {
+            nouveau->taille.x = LONGUEUR_BATIMENTS;
+            nouveau->taille.y = LARGEUR_BATIMENTS;
+            nouveau->nom = "Usine electrique";
             liste =  jeu->batiments[usine_electrique];
             liste = maj_liste_chaine(nouveau, tail, liste);
             jeu->batiments[usine_electrique] = liste;
@@ -94,19 +101,36 @@ void ajouterBatiment(Jeu* jeu,int x,int y,int choix){
 
 
 void afficherM(Jeu* jeu){
+    int nbmaison =1;
+    int nbchateau = 1;
+    int nbusine = 1;
     Batiment* listeMaison = jeu->batiments[maison];
-    Batiment *parcour = listeMaison;
+    Batiment* listeChateau = jeu->batiments[chateau_deau];
+    Batiment* listeUsine = jeu->batiments[usine_electrique];
 
-    if(parcour == NULL){
+    if(listeMaison == NULL || listeChateau == NULL || listeUsine == NULL){
         printf("Liste vide.\n");
     }
 
     else {
         do {
-            printf("Maison en: %d   %d\n",parcour->x,parcour->y);
-            parcour = parcour->next;
+            printf("Maison %d : x: %d  y: %d\n",nbmaison ,listeMaison->x,listeMaison->y);
+            nbmaison++;
+            listeMaison = listeMaison->next;
 
-        }while(parcour != listeMaison);
+        }while(listeMaison != jeu->batiments[maison]);
+        do {
+            printf("Chateau d'eau %d : x: %d  y: %d\n",nbchateau ,listeChateau->x,listeChateau->y);
+            nbchateau++;
+            listeChateau = listeChateau->next;
+
+        }while(listeChateau != jeu->batiments[chateau_deau]);
+        do {
+            printf("Usine electrique %d : x: %d   y: %d\n",nbusine ,listeUsine->x,listeUsine->y);
+            nbusine++;
+            listeUsine = listeUsine->next;
+
+        }while(listeUsine != jeu->batiments[usine_electrique]);
     }
 }
 
