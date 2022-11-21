@@ -206,58 +206,54 @@ Batiment* maj_charge_liste(){
 
 }
 
-void chargementListe(Jeu* jeu,int num,int i,int* j,FILE** ifs){
+void chargementListe(Jeu* jeu,int num,int y,int* x,FILE** ifs){
     Batiment* listeMaison = jeu->batiments[maison];
     Batiment* parcours = listeMaison;
     switch(num){
         case 2:{
             if(listeMaison == NULL) {
-                ajouterBatiment(jeu, (*j), i, maison);
-                jeu->batiments[maison]->retenueMaisonY = i;
-                jeu->batiments[maison]->retenueMaisonX = (*j);
+                ajouterBatiment(jeu, (*x), y, maison);
                 jeu->batiments[maison]->enCours = TRUE;
-                (*j) = (*j) + 2;
+                parcours = jeu->batiments[maison];
+                (*x) = (*x) + 2;
                 stocker(2,*ifs);
             }
             else if(parcours->next == listeMaison){
-                if (((i == parcours->retenueMaisonY + 2 && (*j) == parcours->retenueMaisonX) ||
-                     (i == parcours->retenueMaisonY + 1 && (*j) == parcours->retenueMaisonX)) &&
+                if (((y == parcours->y + 2 && (*x) == parcours->x) ||
+                     (y == parcours->y + 1 && (*x) == parcours->x)) &&
                     parcours->enCours == TRUE) {
-                    (*j) = (*j) + 2;
+                    (*x) = (*x) + 2;
                     stocker(2, *ifs);
-                    if (i == parcours->retenueMaisonY + 2) {
+                    if (y == parcours->y + 2) {
                         parcours->enCours = FALSE;
                     }
                 }
             }
-            else {
-                while (parcours->next != listeMaison) {
-                    if (((i == parcours->retenueMaisonY + 2 && (*j) == parcours->retenueMaisonX) ||
-                         (i == parcours->retenueMaisonY + 1 && (*j) == parcours->retenueMaisonX)) &&
+            while (parcours->next != jeu->batiments[maison]) {
+                    if (((y == parcours->y + 2 && (*x) == parcours->x) ||
+                         (y == parcours->y + 1 && (*x) == parcours->x)) &&
                         parcours->enCours == TRUE) {
-                        (*j) = (*j) + 2;
+                        (*x) = (*x) + 2;
                         stocker(2, *ifs);
-                        if (i == parcours->retenueMaisonY + 2) {
+                        if (y == parcours->y + 2) {
                             parcours->enCours = FALSE;
                         }
                     }
-                    else{
-                        ajouterBatiment(jeu, (*j), i, maison);
+                    else if (parcours != NULL){
+                        ajouterBatiment(jeu, (*x), y, maison);
                         Batiment* parcoursbis = listeMaison;
                         while (parcoursbis->next != listeMaison) {
                             parcoursbis = parcoursbis->next;
                         }
-                        parcoursbis->retenueMaisonY = i;
-                        parcoursbis->retenueMaisonX = (*j);
+                        parcoursbis->y = y;
+                        parcoursbis->x = (*x);
                         parcoursbis->enCours = TRUE;
-                        (*j) = (*j) + 2;
+                        (*x) = (*x) + 2;
                         stocker(2, *ifs);
                         jeu->batiments[maison] = listeMaison;
                     }
                     parcours = parcours->next;
                 }
-
-            }
             break;
         }
         case 3:{

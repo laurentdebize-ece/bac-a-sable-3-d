@@ -41,11 +41,17 @@ Jeu *lire_graphe() {
     for (int i = 0; i <= ordre_y; i++) {
         for (int j = 0; j <= ordre_x; j++) {
             fscanf(ifs, " %d", &grille->terrain[i][j]);
-            if(grille->terrain[i][j] == 2 || grille->terrain[i][j] == 3 || grille->terrain[i][j] == 4){
-                chargementListe(grille,grille->terrain[i][j],i,&j,&ifs);
+        }
+    }
+
+    for (int y = 0; y <= ordre_y; y++) {
+        for (int x = 0; x <= ordre_x; x++) {
+            if(grille->terrain[y][x] == 2 || grille->terrain[y][x] == 3 || grille->terrain[y][x] == 4){
+                chargementListe(grille,grille->terrain[y][x],y,&x,&ifs);
             }
         }
     }
+
     /*if(grille->terrain[0][0] == NULL){
         color(5, 0);
         printf("Vous n'avez pas encore de graphe\n");

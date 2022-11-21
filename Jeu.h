@@ -23,7 +23,6 @@ typedef struct Batiment{
     int capacite;
     int nb_habitants;
     bool enCours;
-    int retenueMaisonX, retenueMaisonY;
     struct Batiment* next;
 }Batiment;
 
