@@ -39,6 +39,7 @@ typedef struct Jeu{
     Batiment* batiments[nbBatiments];
 }Jeu;
 
+
 void ajouterBatiment(Jeu* jeu,int x,int y,int choix);
 void afficherM(Jeu* jeu);
 void detruireBatiment(Jeu* jeu,int x,int y,int choix);

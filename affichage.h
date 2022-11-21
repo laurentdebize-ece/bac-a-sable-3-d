@@ -1,6 +1,7 @@
 #ifndef TEMPLATE_RAYLIB_AFFICHAGE_H
 #define TEMPLATE_RAYLIB_AFFICHAGE_H
 #include "Jeu.h"
+#include "initialisation.h"
 
 
 void afficher_la_grille(Jeu* jeu);

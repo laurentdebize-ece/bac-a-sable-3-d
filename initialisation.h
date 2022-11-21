@@ -5,6 +5,6 @@
 Jeu* initialisation_structure(Jeu* jeu);
 void initialisation_Grille();
 Jeu* initialisation_sans_save();
-Jeu* initialisation_CONSTANTE(int choix);
+Batiment* initialisation_CONSTANTE();
 
 #endif //BAC_A_SABLE_2_INITIALISATION_H

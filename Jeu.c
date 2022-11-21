@@ -84,6 +84,9 @@ void ajouterBatiment(Jeu* jeu,int x,int y,int choix){
             jeu->batiments[usine_electrique] = liste;
             break;
         }
+        default : {
+            break;
+        }
     }
 }
 
@@ -160,6 +163,9 @@ void detruireBatiment(Jeu* jeu,int x,int y,int choix) {
                 liste = maj_destruction_maillon(liste,x,y,jeu);
                 jeu->batiments[usine_electrique] = liste;
             }
+            break;
+        }
+        default :{
             break;
         }
     }
