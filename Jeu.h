@@ -44,8 +44,6 @@ void afficherM(Jeu* jeu);
 void detruireBatiment(Jeu* jeu,int x,int y,int choix);
 void chargementListe(Jeu* jeu,int num,int i,int* j,FILE **ifs);
 void liberationListe(Jeu* jeu);
-void tempsTour();
-void changementHeure(bool shift);
 
 // TODO: NE PAS CHANGER LORDRE DES INCLUDES IMPORTANT !!!
 

@@ -7,11 +7,6 @@ Jeu *lire_graphe() {
     int ordre_y;
     int argent;
 
-    int retenueMaison = -1;
-    int retenurChateauEau = 0;
-    int usineElectrique = 0;
-    bool enCours = FALSE;
-
     if (!ifs) {
         color(5, 0);
         printf("Vous n'avez pas encore de graphe\n");
@@ -146,7 +141,6 @@ void ajout_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y, int 
                 }
             }
             if (obstacle == TRUE){
-                //detruire maison de la liste chaine
                 break;
             }
             y_temporaire ++;

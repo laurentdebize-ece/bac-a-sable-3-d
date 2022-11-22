@@ -100,37 +100,39 @@ void ajouterBatiment(Jeu* jeu,int x,int y,int choix){
 
 
 
-void afficherM(Jeu* jeu){
-    int nbmaison =1;
+void afficherM(Jeu* jeu) {
+    int nbmaison = 1;
     int nbchateau = 1;
     int nbusine = 1;
-    Batiment* listeMaison = jeu->batiments[maison];
-    Batiment* listeChateau = jeu->batiments[chateau_deau];
-    Batiment* listeUsine = jeu->batiments[usine_electrique];
+    Batiment *listeMaison = jeu->batiments[maison];
+    Batiment *listeChateau = jeu->batiments[chateau_deau];
+    Batiment *listeUsine = jeu->batiments[usine_electrique];
 
-    if(listeMaison == NULL || listeChateau == NULL || listeUsine == NULL){
-        printf("Liste vide.\n");
-    }
-
-    else {
+    if(listeMaison != NULL) {
         do {
-            printf("Maison %d : x: %d  y: %d\n",nbmaison ,listeMaison->x,listeMaison->y);
+            printf("Maison %d : x: %d  y: %d\n", nbmaison, listeMaison->x, listeMaison->y);
             nbmaison++;
             listeMaison = listeMaison->next;
 
-        }while(listeMaison != jeu->batiments[maison]);
+        } while (listeMaison != jeu->batiments[maison]);
+    }
+
+    if(listeChateau != NULL) {
         do {
-            printf("Chateau d'eau %d : x: %d  y: %d\n",nbchateau ,listeChateau->x,listeChateau->y);
+            printf("Chateau d'eau %d : x: %d  y: %d\n", nbchateau, listeChateau->x, listeChateau->y);
             nbchateau++;
             listeChateau = listeChateau->next;
 
-        }while(listeChateau != jeu->batiments[chateau_deau]);
+        } while (listeChateau != jeu->batiments[chateau_deau]);
+    }
+
+    if(listeUsine != NULL) {
         do {
-            printf("Usine electrique %d : x: %d   y: %d\n",nbusine ,listeUsine->x,listeUsine->y);
+            printf("Usine electrique %d : x: %d   y: %d\n", nbusine, listeUsine->x, listeUsine->y);
             nbusine++;
             listeUsine = listeUsine->next;
 
-        }while(listeUsine != jeu->batiments[usine_electrique]);
+        } while (listeUsine != jeu->batiments[usine_electrique]);
     }
 }
 
@@ -202,64 +204,86 @@ void stocker(int nb,FILE* ifs){
     }
 }
 
-Batiment* maj_charge_liste(){
+Batiment* maj_charge_liste(Jeu* jeu,Batiment* liste,int* x,int y,FILE* ifs,int choix){
+    Batiment* parcours = liste;
+    bool bouclePasse = FALSE;
 
-}
+    if(liste == NULL) {
+        ajouterBatiment(jeu, (*x), y, choix);
+        jeu->batiments[choix]->enCours = TRUE;
+        (*x) = (*x) + jeu->batiments[choix]->taille.x - 1;
+        stocker(jeu->batiments[choix]->taille.x - 1,ifs);
 
-void chargementListe(Jeu* jeu,int num,int y,int* x,FILE** ifs){
-    Batiment* listeMaison = jeu->batiments[maison];
-    Batiment* parcours = listeMaison;
-    switch(num){
-        case 2:{
-            if(listeMaison == NULL) {
-                ajouterBatiment(jeu, (*x), y, maison);
-                jeu->batiments[maison]->enCours = TRUE;
-                parcours = jeu->batiments[maison];
-                (*x) = (*x) + 2;
-                stocker(2,*ifs);
-            }
-            else if(parcours->next == listeMaison){
-                if (((y == parcours->y + 2 && (*x) == parcours->x) ||
-                     (y == parcours->y + 1 && (*x) == parcours->x)) &&
-                    parcours->enCours == TRUE) {
-                    (*x) = (*x) + 2;
-                    stocker(2, *ifs);
-                    if (y == parcours->y + 2) {
-                        parcours->enCours = FALSE;
-                    }
-                }
-            }
-            while (parcours->next != jeu->batiments[maison]) {
+    }
+    else {
+        do {
+            bool conditionVerifie = FALSE;
+            switch (choix) {
+                case maison: {
                     if (((y == parcours->y + 2 && (*x) == parcours->x) ||
                          (y == parcours->y + 1 && (*x) == parcours->x)) &&
                         parcours->enCours == TRUE) {
-                        (*x) = (*x) + 2;
-                        stocker(2, *ifs);
-                        if (y == parcours->y + 2) {
-                            parcours->enCours = FALSE;
-                        }
+                        conditionVerifie = TRUE;
                     }
-                    else if (parcours != NULL){
-                        ajouterBatiment(jeu, (*x), y, maison);
-                        Batiment* parcoursbis = listeMaison;
-                        while (parcoursbis->next != listeMaison) {
-                            parcoursbis = parcoursbis->next;
-                        }
-                        parcoursbis->y = y;
-                        parcoursbis->x = (*x);
-                        parcoursbis->enCours = TRUE;
-                        (*x) = (*x) + 2;
-                        stocker(2, *ifs);
-                        jeu->batiments[maison] = listeMaison;
-                    }
-                    parcours = parcours->next;
+                    break;
                 }
+                default: {
+                    if (((y == parcours->y + 3 && (*x) == parcours->x) ||
+                         (y == parcours->y + 2 && (*x) == parcours->x) ||
+                         (y == parcours->y + 1 && (*x) == parcours->x)) &&
+                        parcours->enCours == TRUE) {
+                        conditionVerifie = TRUE;
+                    }
+                }
+            }
+            if (conditionVerifie == TRUE) {
+                (*x) = (*x) + jeu->batiments[choix]->taille.x - 1;
+                stocker(jeu->batiments[choix]->taille.x - 1, ifs);
+                if (y == parcours->y + jeu->batiments[choix]->taille.x - 1) {
+                    parcours->enCours = FALSE;
+                }
+                bouclePasse = TRUE;
+            }
+
+            parcours = parcours->next;
+        }while(parcours != jeu->batiments[choix]);
+
+        if(bouclePasse == FALSE) {
+            ajouterBatiment(jeu, (*x), y, choix);
+            Batiment *parcoursbis = liste;
+            while (parcoursbis->next != liste) {
+                parcoursbis = parcoursbis->next;
+            }
+            parcoursbis->y = y;
+            parcoursbis->x = (*x);
+            parcoursbis->enCours = TRUE;
+            (*x) = (*x) + jeu->batiments[choix]->taille.x - 1;
+            stocker(jeu->batiments[choix]->taille.x - 1, ifs);
+        }
+    }
+    return jeu->batiments[choix];
+}
+
+void chargementListe(Jeu* jeu,int num,int y,int* x,FILE** ifs){
+    Batiment* liste = NULL;
+
+    switch(num){
+        case 2:{
+            liste = jeu->batiments[maison];
+            liste = maj_charge_liste(jeu,liste,x,y,*ifs,maison);
+            jeu->batiments[maison] = liste;
             break;
         }
         case 3:{
+            liste = jeu->batiments[chateau_deau];
+            liste = maj_charge_liste(jeu,liste,x,y,*ifs,chateau_deau);
+            jeu->batiments[chateau_deau] = liste;
             break;
         }
         case 4:{
+            liste = jeu->batiments[usine_electrique];
+            liste = maj_charge_liste(jeu,liste,x,y,*ifs,usine_electrique);
+            jeu->batiments[usine_electrique] = liste;
             break;
         }
     }
@@ -304,8 +328,4 @@ void liberationListe(Jeu* jeu) {
     jeu->batiments[maison] = NULL;
     jeu->batiments[chateau_deau] = NULL;
     jeu->batiments[usine_electrique] = NULL;
-}
-
-void changementHeure(bool shift){
-
 }
