@@ -33,6 +33,7 @@ Jeu *lire_graphe() {
     grille->batiments[chateau_deau] = NULL;
     grille->batiments[usine_electrique] = NULL;
 
+
     for (int i = 0; i <= ordre_y; i++) {
         for (int j = 0; j <= ordre_x; j++) {
             fscanf(ifs, " %d", &grille->terrain[i][j]);

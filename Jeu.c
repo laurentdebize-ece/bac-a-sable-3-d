@@ -329,3 +329,33 @@ void liberationListe(Jeu* jeu) {
     jeu->batiments[chateau_deau] = NULL;
     jeu->batiments[usine_electrique] = NULL;
 }
+
+int conditionAchatBatiment(Jeu* jeu,int choix){
+    switch(choix){
+        case maison:{
+            if(jeu->argent >= COUT_MAISON){
+                jeu->argent = jeu->argent - COUT_MAISON;
+                return 1;
+            }
+            break;
+        }
+        case chateau_deau:{
+            if(jeu->argent >= COUT_CHATEAU_EAU){
+                jeu->argent = jeu->argent - COUT_CHATEAU_EAU;
+                return 1;
+            }
+            break;
+        }
+        case usine_electrique:{
+            if(jeu->argent >= COUT_USINE_ELECTRIQUE){
+                jeu->argent = jeu->argent - COUT_USINE_ELECTRIQUE;
+                return 1;
+            }
+            break;
+        }
+    }
+
+    printf("Vous n'avez pas assez d'argent pour poser ce batiment") ;
+    return 0;
+
+}

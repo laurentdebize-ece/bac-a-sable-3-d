@@ -23,6 +23,7 @@ typedef struct Batiment{
     int capacite;
     int nb_habitants;
     bool enCours;
+    int cout;
     struct Batiment* next;
 }Batiment;
 
@@ -44,6 +45,7 @@ void afficherM(Jeu* jeu);
 void detruireBatiment(Jeu* jeu,int x,int y,int choix);
 void chargementListe(Jeu* jeu,int num,int i,int* j,FILE **ifs);
 void liberationListe(Jeu* jeu);
+int conditionAchatBatiment(Jeu* jeu,int choix);
 
 // TODO: NE PAS CHANGER LORDRE DES INCLUDES IMPORTANT !!!
 

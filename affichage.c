@@ -121,49 +121,55 @@ void afficher_choix_joueur(Jeu* jeu) {
             break;
         }
         case maison: {
-            color(10, 0);
-            printf("\nCoordonnees ? (x / y)\n");
-            color(15, 0);
-            scanf(" %d %d", &co_x, &co_y);
-            if (co_x < 0 || co_y < 0 || co_x > ORDRE_EN_X || co_y > ORDRE_EN_Y) {
-                print_message_error_construire_hors_map();
-                break;
-            }
+            if(conditionAchatBatiment(jeu,maison)) {
+                color(10, 0);
+                printf("\nCoordonnees ? (x / y)\n");
+                color(15, 0);
+                scanf(" %d %d", &co_x, &co_y);
+                if (co_x < 0 || co_y < 0 || co_x > ORDRE_EN_X || co_y > ORDRE_EN_Y) {
+                    print_message_error_construire_hors_map();
+                    break;
+                }
 
-            ajouterBatiment(jeu, co_x, co_y, choix);
-            ajout_Batiment_Grille(jeu, maison, co_x, co_y, co_x1, co_y1);
-            //printf("Ajout d'une maison ...\n");
-            sleep(1);
+                ajouterBatiment(jeu, co_x, co_y, choix);
+                ajout_Batiment_Grille(jeu, maison, co_x, co_y, co_x1, co_y1);
+                //printf("Ajout d'une maison ...\n");
+                sleep(1);
+            }
             break;
         }
         case chateau_deau: {
-            color(10, 0);
-            printf("\nCoordonnees ? (x / y)\n");
-            color(15, 0);
-            scanf(" %d %d", &co_x, &co_y);
-            if (co_x < 0 || co_y < 0 || co_x > ORDRE_EN_X || co_y > ORDRE_EN_Y) {
-                print_message_error_construire_hors_map();
-                break;
+            if(conditionAchatBatiment(jeu,chateau_deau)) {
+                color(10, 0);
+                printf("\nCoordonnees ? (x / y)\n");
+                color(15, 0);
+                scanf(" %d %d", &co_x, &co_y);
+                if (co_x < 0 || co_y < 0 || co_x > ORDRE_EN_X || co_y > ORDRE_EN_Y) {
+                    print_message_error_construire_hors_map();
+                    break;
+                }
+                ajouterBatiment(jeu, co_x, co_y, choix);
+                ajout_Batiment_Grille(jeu, chateau_deau, co_x, co_y, co_x1, co_y1);
+                printf("Ajout d'un chateau d'eau ...\n");
+                sleep(1);
             }
-            ajouterBatiment(jeu, co_x, co_y, choix);
-            ajout_Batiment_Grille(jeu, chateau_deau, co_x, co_y, co_x1, co_y1);
-            printf("Ajout d'un chateau d'eau ...\n");
-            sleep(1);
             break;
         }
         case usine_electrique: {
-            color(10, 0);
-            printf("\nCoordonnees ? (x / y)\n");
-            color(15, 0);
-            scanf(" %d %d", &co_x, &co_y);
-            if (co_x < 0 || co_y < 0 || co_x > ORDRE_EN_X || co_y > ORDRE_EN_Y) {
-                print_message_error_construire_hors_map();
-                break;
+            if(conditionAchatBatiment(jeu,usine_electrique)) {
+                color(10, 0);
+                printf("\nCoordonnees ? (x / y)\n");
+                color(15, 0);
+                scanf(" %d %d", &co_x, &co_y);
+                if (co_x < 0 || co_y < 0 || co_x > ORDRE_EN_X || co_y > ORDRE_EN_Y) {
+                    print_message_error_construire_hors_map();
+                    break;
+                }
+                ajouterBatiment(jeu, co_x, co_y, choix);
+                ajout_Batiment_Grille(jeu, usine_electrique, co_x, co_y, co_x1, co_y1);
+                printf("Ajout d'une usine electrique ...\n");
+                sleep(1);
             }
-            ajouterBatiment(jeu, co_x, co_y, choix);
-            ajout_Batiment_Grille(jeu, usine_electrique, co_x, co_y, co_x1, co_y1);
-            printf("Ajout d'une usine electrique ...\n");
-            sleep(1);
             break;
         }
         case 5: {
