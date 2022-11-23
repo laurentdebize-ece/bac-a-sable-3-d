@@ -5,10 +5,9 @@
 #include <stdlib.h>
 #include <stdbool.h>
 enum {animation_Lancement, menu_principale, en_jeu, regles, credis, nbPages};
-enum {img_menu, img_boutonoff, img_boutonJouer, img_boutonSauvegarder, img_boutonRegles, img_boutonCredits, img_suppSave, nbImages};
-
-enum {vide, reseau, maison, chateau_deau, usine_electrique, nbBatiments};
-
+enum {img_menu, img_boutonoff, img_boutonJouer, img_boutonSauvegarder, img_boutonRegles, img_boutonCredits, img_suppSave, img_fondJeu1, img_fondJeu2, img_fondJeu3, img_fondJeu4, img_logosJeu,nbImages};
+enum {mode_neutre, mode_reseau ,mode_maison, mode_usine, mode_chateauDO, mode_demolition, nb_modes};
+enum {vide, reseau, maison, chateau_deau, usine_electrique, demolition, nbBatiments};
 enum {son_Bouton, son_menu, nbSons};
 
 typedef struct Coordonnee {
@@ -25,6 +24,7 @@ typedef struct S_Image{
     int y;
     float frame_hauteur;
     float frame_longueur;
+    float alpha;
     bool action_sur_click;
 }S_Image;
 
@@ -38,9 +38,11 @@ typedef struct Batiment{
 }Batiment;
 
 typedef struct Jeu{
+    bool Communisme;
     bool en_cours;
     bool fichier;
     bool quitter;
+    int mode_Jeu;
     int page_actuel;
     int** terrain;
     Coordonnee ordre;

@@ -18,17 +18,29 @@ void initialisation_Images(Jeu* jeu){
     jeu->tabImages[menu_principale][img_menu].texture2D = LoadTexture("Menu.png");
     jeu->tabImages[menu_principale][img_menu].charge = 1;
 
+    jeu->tabImages[en_jeu][img_fondJeu1].texture2D = LoadTexture("fond_jeu1.png");
+    jeu->tabImages[en_jeu][img_fondJeu1].charge = 1;
+    jeu->tabImages[en_jeu][img_fondJeu1].alpha = 0;
+    jeu->tabImages[en_jeu][img_fondJeu2].texture2D = LoadTexture("fond_jeu2.png");
+    jeu->tabImages[en_jeu][img_fondJeu2].charge = 1;
+    jeu->tabImages[en_jeu][img_fondJeu2].alpha = 0;
+    jeu->tabImages[en_jeu][img_fondJeu3].texture2D = LoadTexture("fond_jeu3.png");
+    jeu->tabImages[en_jeu][img_fondJeu3].charge = 1;
+    jeu->tabImages[en_jeu][img_fondJeu3].alpha = 0;
+    jeu->tabImages[en_jeu][img_fondJeu4].texture2D = LoadTexture("fond_jeu4.png");
+    jeu->tabImages[en_jeu][img_fondJeu4].charge = 1;
+    jeu->tabImages[en_jeu][img_fondJeu4].alpha = 0;
 
+
+    jeu->tabImages[en_jeu][img_logosJeu].texture2D = LoadTexture("logoJeu.png");
+    jeu->tabImages[en_jeu][img_logosJeu].charge = 1;
+    jeu->tabImages[en_jeu][img_logosJeu].frame_longueur = 90;
+    jeu->tabImages[en_jeu][img_logosJeu].frame_hauteur = 90;
+    /*Rectangle RecLogoJeu = {0, 0, (float)jeu->tabImages[en_jeu][img_logosJeu].texture2D.width, jeu->tabImages[en_jeu][img_logosJeu].frame_hauteur };
+    jeu->tabImages[en_jeu][img_logosJeu].source_Rec = RecLogoJeu;
+    Rectangle posLogoJeu = {0, TAILLE_CASE_GRILLE*jeu->ordre.y, (float)jeu->tabImages[en_jeu][img_logosJeu].texture2D.width, 250 };
+    jeu->tabImages[en_jeu][img_logosJeu].pos_Rec = posLogoJeu;*/
 }
-
-void initialisation_Sons(Jeu* jeu){
-    jeu->tabSon[son_Bouton] = LoadSound("bouton_son.mp3");
-    SetSoundVolume(jeu->tabSon[img_boutonoff], 0.4);
-
-    jeu->tabSon[son_menu] = LoadSound("musique_ambiance_menu.mp3");
-    SetSoundVolume(jeu->tabSon[son_menu], 0.6);
-}
-
 
 void ini_bouton(Jeu* jeu){
     jeu->tabImages[menu_principale][img_boutonoff].charge = 1;
@@ -96,6 +108,13 @@ void unload_all(Jeu* jeu){
     for (int i = 0; i < nbSons; i++) {
         UnloadSound(jeu->tabSon[i]);
     }
+}
+void initialisation_Sons(Jeu* jeu){
+    jeu->tabSon[son_Bouton] = LoadSound("bouton_son.mp3");
+    SetSoundVolume(jeu->tabSon[img_boutonoff], 0.4f);
+
+    jeu->tabSon[son_menu] = LoadSound("musique_ambiance_menu.mp3");
+    SetSoundVolume(jeu->tabSon[son_menu], 0.6f);
 }
 
 
