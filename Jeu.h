@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 enum {animation_Lancement, menu_principale, en_jeu, regles, credis, nbPages};
-enum {img_menu, img_boutonoff, img_boutonJouer, img_boutonSauvegarder, img_boutonRegles, img_boutonCredits, img_suppSave, img_fondJeu1, img_fondJeu2, img_fondJeu3, img_fondJeu4, img_logosJeu,nbImages};
+enum {img_menu, img_boutonoff, img_boutonJouer, img_boutonSauvegarder, img_boutonRegles, img_boutonCredits, img_suppSave, img_fondJeu1, img_fondJeu2, img_fondJeu3, img_fondJeu4, img_logosJeu, img_boutonRetourMenu, nbImages};
 enum {mode_neutre, mode_reseau ,mode_maison, mode_usine, mode_chateauDO, mode_demolition, nb_modes};
 enum {vide, reseau, maison, chateau_deau, usine_electrique, demolition, nbBatiments};
 enum {son_Bouton, son_menu, nbSons};
@@ -50,6 +50,7 @@ typedef struct Jeu{
     int argent;
     int production_eau_restante;
     int production_elec_restante;
+    int timer_jeu;
     Batiment batiments[nbBatiments];
     S_Image tabImages[nbPages][nbImages];
     Sound tabSon[nbSons];

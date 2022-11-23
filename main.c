@@ -8,10 +8,7 @@ int main() {
     j->en_cours = 0;
     lire_graphe(j);
     j->page_actuel = animation_Lancement;
-
-
     affichage_Boucle_G(j);
-
     return 0;
 }
 

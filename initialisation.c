@@ -20,16 +20,12 @@ void initialisation_Images(Jeu* jeu){
 
     jeu->tabImages[en_jeu][img_fondJeu1].texture2D = LoadTexture("fond_jeu1.png");
     jeu->tabImages[en_jeu][img_fondJeu1].charge = 1;
-    jeu->tabImages[en_jeu][img_fondJeu1].alpha = 0;
     jeu->tabImages[en_jeu][img_fondJeu2].texture2D = LoadTexture("fond_jeu2.png");
     jeu->tabImages[en_jeu][img_fondJeu2].charge = 1;
-    jeu->tabImages[en_jeu][img_fondJeu2].alpha = 0;
     jeu->tabImages[en_jeu][img_fondJeu3].texture2D = LoadTexture("fond_jeu3.png");
     jeu->tabImages[en_jeu][img_fondJeu3].charge = 1;
-    jeu->tabImages[en_jeu][img_fondJeu3].alpha = 0;
     jeu->tabImages[en_jeu][img_fondJeu4].texture2D = LoadTexture("fond_jeu4.png");
     jeu->tabImages[en_jeu][img_fondJeu4].charge = 1;
-    jeu->tabImages[en_jeu][img_fondJeu4].alpha = 0;
 
 
     jeu->tabImages[en_jeu][img_logosJeu].texture2D = LoadTexture("logoJeu.png");
@@ -41,7 +37,12 @@ void initialisation_Images(Jeu* jeu){
     Rectangle posLogoJeu = {0, TAILLE_CASE_GRILLE*jeu->ordre.y, (float)jeu->tabImages[en_jeu][img_logosJeu].texture2D.width, 250 };
     jeu->tabImages[en_jeu][img_logosJeu].pos_Rec = posLogoJeu;*/
 }
-
+void ini_fond_jeu(Jeu* jeu){
+    jeu->tabImages[en_jeu][img_fondJeu1].alpha = 0;
+    jeu->tabImages[en_jeu][img_fondJeu2].alpha = 0;
+    jeu->tabImages[en_jeu][img_fondJeu3].alpha = 0;
+    jeu->tabImages[en_jeu][img_fondJeu4].alpha = 0;
+}
 void ini_bouton(Jeu* jeu){
     jeu->tabImages[menu_principale][img_boutonoff].charge = 1;
 
@@ -95,6 +96,14 @@ void ini_bouton(Jeu* jeu){
     // Definie l emplacement du boutton sur ecran (la ou l'on veut l afficher)
     Rectangle pos6 = {RESOLUTION_X / 2.0f - bouton_texture.width / 2.0f, RESOLUTION_Y / 2.0f - bouton_texture.height / NB_FRAMES_BOUTON + 3*(frame_hauteur + 5), (float)bouton_texture.width, frame_hauteur };
     jeu->tabImages[menu_principale][img_suppSave].pos_Rec = pos6;
+
+    //Bouton Retour Menu Principale
+    jeu->tabImages[en_jeu][img_boutonRetourMenu].texture2D = bouton_texture; // Load button texture
+    jeu->tabImages[en_jeu][img_boutonRetourMenu].frame_hauteur = frame_hauteur;
+    jeu->tabImages[en_jeu][img_boutonRetourMenu].source_Rec = sourceRec;
+    // Definie l emplacement du boutton sur ecran (la ou l'on veut l afficher)
+    Rectangle pos7 = {3, RESOLUTION_Y - bouton_texture.height / NB_FRAMES_BOUTON, (float)bouton_texture.width, frame_hauteur };
+    jeu->tabImages[en_jeu][img_boutonRetourMenu].pos_Rec = pos7;
 }
 void unload_all(Jeu* jeu){
     for (int i = 0; i < nbPages; i++) {

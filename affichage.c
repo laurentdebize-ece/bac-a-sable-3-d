@@ -7,6 +7,7 @@ void affichage_Boucle_G(Jeu* jeu){
     jeu->mode_Jeu = mode_neutre;
     initialisation_Images(jeu);
     initialisation_Sons(jeu);
+    ini_fond_jeu(jeu);
     ToggleFullscreen();
 
     int ballPositionX = -100;
@@ -14,6 +15,7 @@ void affichage_Boucle_G(Jeu* jeu){
     float ballAlpha = 0.0f;
     int state = 0;
     int timer = 0;
+    jeu->timer_jeu =0;
     float fade = 1;
     float fadeson = 0;
 
@@ -35,6 +37,7 @@ void affichage_Boucle_G(Jeu* jeu){
                 break;
         }
         timer++;
+        jeu->timer_jeu++;
     }
     unload_all(jeu);
     CloseAudioDevice();
@@ -129,6 +132,7 @@ void affi_bouton(Jeu* jeu, int page, int image, Vector2 pos_souris, char* nom, i
                 jeu->quitter = 1;
                 break;
             case img_boutonJouer:
+                ini_fond_jeu(jeu);
                 *timer = 0;
                 jeu->page_actuel = en_jeu;
                 break;
@@ -136,6 +140,13 @@ void affi_bouton(Jeu* jeu, int page, int image, Vector2 pos_souris, char* nom, i
                 printf("Destruction de votre ancien fichier de sauvegarde (si vous en aviez un)\n");
                 remove(NOM_DU_FICHIER);
                 lire_graphe(jeu);
+                break;
+            case img_boutonRetourMenu:
+                //faire la save ici
+                *timer = 0;
+                jeu->page_actuel = menu_principale;
+                break;
+            default:
                 break;
         }
     }
@@ -259,22 +270,22 @@ void afficherJeu(Jeu* jeu, Vector2 pos_souris, int* timer){
             else if (ordre.tileFog[y * ordre.x + x] == 2) DrawRectangle(x, y, 1, 1, Fade(WHITE, 0.8f));*/
     BeginDrawing();
 
-        ClearBackground(BLACK);
+    ClearBackground(BLACK);
 
-        affichage_defilement_fond(jeu, timer);
+    affichage_defilement_fond(jeu, timer);
 
-        for (int y = 0; y <= jeu->ordre.y; y++){
-            for (int x = 0; x <= jeu->ordre.x; x++){
-                DrawRectangle(x * TAILLE_CASE_GRILLE, (y) * TAILLE_CASE_GRILLE, TAILLE_CASE_GRILLE, TAILLE_CASE_GRILLE, WHITE);
-                DrawRectangle(x * TAILLE_CASE_GRILLE, (y) * TAILLE_CASE_GRILLE, TAILLE_CASE_GRILLE, TAILLE_CASE_GRILLE, Fade(BLACK, 0.8f));
-                DrawRectangleLines(x * TAILLE_CASE_GRILLE, (y) * TAILLE_CASE_GRILLE, TAILLE_CASE_GRILLE, TAILLE_CASE_GRILLE, Fade(WHITE, 0.6f));
-            }
+    for (int y = 0; y <= jeu->ordre.y; y++){
+        for (int x = 0; x <= jeu->ordre.x; x++){
+            DrawRectangle(x * TAILLE_CASE_GRILLE, (y) * TAILLE_CASE_GRILLE, TAILLE_CASE_GRILLE, TAILLE_CASE_GRILLE, WHITE);
+            DrawRectangle(x * TAILLE_CASE_GRILLE, (y) * TAILLE_CASE_GRILLE, TAILLE_CASE_GRILLE, TAILLE_CASE_GRILLE, Fade(BLACK, 0.8f));
+            DrawRectangleLines(x * TAILLE_CASE_GRILLE, (y) * TAILLE_CASE_GRILLE, TAILLE_CASE_GRILLE, TAILLE_CASE_GRILLE, Fade(WHITE, 0.6f));
         }
+    }
+    affi_bouton(jeu, jeu->page_actuel, img_boutonRetourMenu, pos_souris, "MENU", timer);
+    afficher_jeu_logo_interactionAvecClick(jeu, pos_souris);
 
-        afficher_jeu_logo_interactionAvecClick(jeu, pos_souris);
-
-        DrawRectangleV(playerPosition, (Vector2){ PLAYER_SIZE, PLAYER_SIZE }, RED);
-        DrawText(TextFormat("Current tile: [%i,%i]", playerTileX, playerTileY), RESOLUTION_X-200, 0, 20, WHITE);
+    DrawRectangleV(playerPosition, (Vector2){ PLAYER_SIZE, PLAYER_SIZE }, RED);
+    DrawText(TextFormat("Case Actuelle: [%i,%i]", playerTileX, playerTileY), RESOLUTION_X-200, 0, 20, WHITE);
     EndDrawing();
 }
 
