@@ -135,10 +135,9 @@ void afficher_choix_joueur(Jeu* jeu) {
                     print_message_error_construire_hors_map();
                     break;
                 }
-
+                printf("Ajout d'une maison ...\n");
                 ajouterBatiment(jeu, co_x, co_y, choix);
                 ajout_Batiment_Grille(jeu, maison, co_x, co_y, co_x1, co_y1);
-                printf("Ajout d'une maison ...\n");
                 sleep(1);
             }
             break;
@@ -153,9 +152,9 @@ void afficher_choix_joueur(Jeu* jeu) {
                     print_message_error_construire_hors_map();
                     break;
                 }
+                printf("Ajout d'un chateau d'eau ...\n");
                 ajouterBatiment(jeu, co_x, co_y, choix);
                 ajout_Batiment_Grille(jeu, chateau_deau, co_x, co_y, co_x1, co_y1);
-                printf("Ajout d'un chateau d'eau ...\n");
                 sleep(1);
             }
             break;
@@ -170,9 +169,9 @@ void afficher_choix_joueur(Jeu* jeu) {
                     print_message_error_construire_hors_map();
                     break;
                 }
+                printf("Ajout d'une usine electrique ...\n");
                 ajouterBatiment(jeu, co_x, co_y, choix);
                 ajout_Batiment_Grille(jeu, usine_electrique, co_x, co_y, co_x1, co_y1);
-                printf("Ajout d'une usine electrique ...\n");
                 sleep(1);
             }
             break;
@@ -196,7 +195,6 @@ void afficher_choix_joueur(Jeu* jeu) {
                     if (co_x < 0 || co_y < 0 || co_x1 < 0 || co_y1 < 0 || co_x > ORDRE_EN_X || co_y > ORDRE_EN_Y ||
                         co_x1 > ORDRE_EN_X || co_y1 > ORDRE_EN_Y) {
                         print_message_error_detruire_hors_map();
-                        break;
                     }
                     suppression_Batiment_Grille(jeu, reseau, co_x, co_y, co_x1, co_y1);
                     sleep(1);
@@ -212,10 +210,15 @@ void afficher_choix_joueur(Jeu* jeu) {
                         break;
                     }
                     co_batiment = position_batiment(*jeu, co_x,co_y);
-                    printf("Destruction d'une maison ...\n");
-                    sleep(1);
-                    suppression_Batiment_Grille(jeu, maison, co_batiment.x, co_batiment.y, co_x1, co_y1);
-                    detruireBatiment(jeu, co_batiment.x, co_batiment.y, maison);
+                    if ((co_batiment.x == -1 && co_batiment.y == -1)|| jeu->terrain[co_batiment.y][co_batiment.x] != maison){
+                        printf("La destruction n'est pas possible : coordonnees invalides\n");
+                    }
+                    else {
+                        printf("Destruction d'une maison ...\n");
+                        suppression_Batiment_Grille(jeu, maison, co_batiment.x, co_batiment.y, co_x1, co_y1);
+                        detruireBatiment(jeu, co_batiment.x, co_batiment.y, maison);
+                        sleep(1);
+                    }
                     break;
                 }
                 case chateau_deau: {
@@ -228,26 +231,36 @@ void afficher_choix_joueur(Jeu* jeu) {
                         break;
                     }
                     co_batiment = position_batiment(*jeu, co_x,co_y);
-                    printf("Destruction d'un chateau d'eau ...\n");
-                    sleep(1);
-                    suppression_Batiment_Grille(jeu, chateau_deau, co_batiment.x, co_batiment.y, co_x1, co_y1);
-                    detruireBatiment(jeu, co_batiment.x, co_batiment.y, chateau_deau);
+                    if ((co_batiment.x == -1 && co_batiment.y == -1) || jeu->terrain[co_batiment.y][co_batiment.x] != chateau_deau){
+                        printf("La destruction n'est pas possible : coordonnees invalides\n");
+                    }
+                    else {
+                        printf("Destruction d'un chateau d'eau ...\n");
+                        suppression_Batiment_Grille(jeu, chateau_deau, co_batiment.x, co_batiment.y, co_x1, co_y1);
+                        detruireBatiment(jeu, co_batiment.x, co_batiment.y, chateau_deau);
+                        sleep(1);
+                    }
                     break;
                 }
                 case usine_electrique: {
-                    color(10, 0);
                     printf("\nCoordonnees ? (x / y)\n");
-                    color(15, 0);
                     scanf(" %d %d", &co_x, &co_y);
                     if (co_x < 0 || co_y < 0 || co_x > ORDRE_EN_X || co_y > ORDRE_EN_Y) {
                         print_message_error_detruire_hors_map();
                         break;
                     }
                     co_batiment = position_batiment(*jeu, co_x,co_y);
-                    printf("Destruction d'une usine electrique ...\n");
-                    sleep(1);
-                    suppression_Batiment_Grille(jeu, usine_electrique, co_batiment.x, co_batiment.y, co_x1, co_y1);
-                    detruireBatiment(jeu, co_batiment.x, co_batiment.y, usine_electrique);
+                    if ((co_batiment.x == -1 && co_batiment.y == -1)|| jeu->terrain[co_batiment.y][co_batiment.x] != usine_electrique) {
+                        color(5,0);
+                        printf("La destruction n'est pas possible : coordonnees invalides\n");
+                        color(5,0);
+                    }
+                    else {
+                        printf("Destruction d'une usine electrique ...\n");
+                        suppression_Batiment_Grille(jeu, usine_electrique, co_batiment.x, co_batiment.y, co_x1, co_y1);
+                        detruireBatiment(jeu, co_batiment.x, co_batiment.y, usine_electrique);
+                        sleep(1);
+                    }
                     break;
                 }
                 default :{

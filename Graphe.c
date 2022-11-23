@@ -210,7 +210,7 @@ void suppression_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y
             color(15, 0);
         } else {
             color(5, 0);
-            printf("Il n'y a rien à détruire ici !\n");
+            printf("Il n'y a pas de route a detruire !\n");
             color(15, 0);
         }
     }else{
@@ -299,6 +299,8 @@ Coordonnee position_batiment(Jeu jeu, int x, int y){
     switch (type_batiment) {
         case vide : {
             printf("Cette case est vide\n");
+            postion_batiment.x = -1;
+            postion_batiment.y = -1;
             break;
         }
         case reseau : {
