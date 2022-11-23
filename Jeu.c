@@ -119,6 +119,7 @@ void afficherM(Jeu* jeu) {
 
         } while (listeMaison != jeu->batiments[maison]);
     }
+    else{printf("Liste maison vide\n");}
 
     if(listeChateau != NULL) {
         do {
@@ -128,6 +129,7 @@ void afficherM(Jeu* jeu) {
 
         } while (listeChateau != jeu->batiments[chateau_deau]);
     }
+    else{printf("Liste chateau eau vide\n");}
 
     if(listeUsine != NULL) {
         do {
@@ -137,6 +139,7 @@ void afficherM(Jeu* jeu) {
 
         } while (listeUsine != jeu->batiments[usine_electrique]);
     }
+    else{printf("Liste usine electrique vide\n");}
 }
 
 Batiment* maj_destruction_maillon(Batiment* liste,int x,int y,Jeu* jeu) {
