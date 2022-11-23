@@ -23,7 +23,7 @@ typedef struct Batiment{
     int capacite;
     int nb_habitants;
     bool enCours;
-    int cout;
+    int stadeEvolution;
     struct Batiment* next;
 }Batiment;
 
@@ -43,7 +43,7 @@ typedef struct Jeu{
 void ajouterBatiment(Jeu* jeu,int x,int y,int choix);
 void afficherM(Jeu* jeu);
 void detruireBatiment(Jeu* jeu,int x,int y,int choix);
-void chargementListe(Jeu* jeu,int num,int i,int* j,FILE **ifs);
+void chargementListe(Jeu* jeu,int num,int y,int* x,FILE **ifs,int stadeEvo);
 void liberationListe(Jeu* jeu);
 int conditionAchatBatiment(Jeu* jeu,int choix);
 

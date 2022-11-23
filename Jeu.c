@@ -68,6 +68,7 @@ void ajouterBatiment(Jeu* jeu,int x,int y,int choix){
             nouveau->taille.x = TAILLE_MAISON;
             nouveau->taille.y = TAILLE_MAISON;
             nouveau->nom = "Maison";
+            nouveau->stadeEvolution = 1;
             liste = jeu->batiments[maison];
             liste = maj_liste_chaine(nouveau, tail, liste);
             jeu->batiments[maison] = liste;
@@ -77,6 +78,7 @@ void ajouterBatiment(Jeu* jeu,int x,int y,int choix){
             nouveau->taille.x = LONGUEUR_BATIMENTS;
             nouveau->taille.y = LARGEUR_BATIMENTS;
             nouveau->nom = "Chateau d'eau";
+            nouveau->stadeEvolution = 0;
             liste =  jeu->batiments[chateau_deau];
             liste = maj_liste_chaine(nouveau, tail, liste);
             jeu->batiments[chateau_deau] = liste;
@@ -86,6 +88,7 @@ void ajouterBatiment(Jeu* jeu,int x,int y,int choix){
             nouveau->taille.x = LONGUEUR_BATIMENTS;
             nouveau->taille.y = LARGEUR_BATIMENTS;
             nouveau->nom = "Usine electrique";
+            nouveau->stadeEvolution = 0;
             liste =  jeu->batiments[usine_electrique];
             liste = maj_liste_chaine(nouveau, tail, liste);
             jeu->batiments[usine_electrique] = liste;
@@ -110,7 +113,7 @@ void afficherM(Jeu* jeu) {
 
     if(listeMaison != NULL) {
         do {
-            printf("Maison %d : x: %d  y: %d\n", nbmaison, listeMaison->x, listeMaison->y);
+            printf("Maison %d : x: %d  y: %d    stade: %d\n", nbmaison, listeMaison->x, listeMaison->y,listeMaison->stadeEvolution);
             nbmaison++;
             listeMaison = listeMaison->next;
 
@@ -203,14 +206,17 @@ void stocker(int nb,FILE* ifs){
         fscanf(ifs,"%d",&n);
     }
 }
-
-Batiment* maj_charge_liste(Jeu* jeu,Batiment* liste,int* x,int y,FILE* ifs,int choix){
+// centaine type de batiment dizaine evolution unite temps restant
+Batiment* maj_charge_liste(Jeu* jeu,Batiment* liste,int* x,int y,FILE* ifs,int choix,int stadeEvo){
     Batiment* parcours = liste;
     bool bouclePasse = FALSE;
 
     if(liste == NULL) {
         ajouterBatiment(jeu, (*x), y, choix);
         jeu->batiments[choix]->enCours = TRUE;
+        if(choix == maison){
+            jeu->batiments[choix]->stadeEvolution = stadeEvo;
+        }
         (*x) = (*x) + jeu->batiments[choix]->taille.x - 1;
         stocker(jeu->batiments[choix]->taille.x - 1,ifs);
 
@@ -257,6 +263,9 @@ Batiment* maj_charge_liste(Jeu* jeu,Batiment* liste,int* x,int y,FILE* ifs,int c
             parcoursbis->y = y;
             parcoursbis->x = (*x);
             parcoursbis->enCours = TRUE;
+            if(choix == maison){
+                parcoursbis->stadeEvolution = stadeEvo;
+            }
             (*x) = (*x) + jeu->batiments[choix]->taille.x - 1;
             stocker(jeu->batiments[choix]->taille.x - 1, ifs);
         }
@@ -264,25 +273,25 @@ Batiment* maj_charge_liste(Jeu* jeu,Batiment* liste,int* x,int y,FILE* ifs,int c
     return jeu->batiments[choix];
 }
 
-void chargementListe(Jeu* jeu,int num,int y,int* x,FILE** ifs){
+void chargementListe(Jeu* jeu,int num,int y,int* x,FILE** ifs,int stadeEvo){
     Batiment* liste = NULL;
 
     switch(num){
         case 2:{
             liste = jeu->batiments[maison];
-            liste = maj_charge_liste(jeu,liste,x,y,*ifs,maison);
+            liste = maj_charge_liste(jeu,liste,x,y,*ifs,maison,stadeEvo);
             jeu->batiments[maison] = liste;
             break;
         }
         case 3:{
             liste = jeu->batiments[chateau_deau];
-            liste = maj_charge_liste(jeu,liste,x,y,*ifs,chateau_deau);
+            liste = maj_charge_liste(jeu,liste,x,y,*ifs,chateau_deau,stadeEvo);
             jeu->batiments[chateau_deau] = liste;
             break;
         }
         case 4:{
             liste = jeu->batiments[usine_electrique];
-            liste = maj_charge_liste(jeu,liste,x,y,*ifs,usine_electrique);
+            liste = maj_charge_liste(jeu,liste,x,y,*ifs,usine_electrique,stadeEvo);
             jeu->batiments[usine_electrique] = liste;
             break;
         }
