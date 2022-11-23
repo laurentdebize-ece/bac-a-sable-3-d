@@ -5,6 +5,11 @@ void print_message_error_construire_hors_map(){
     printf("\n VOUS NE POUVEZ PAS CONSTRUIRE EN DEHORS DES LIMITES DE LA MAP !!!\n\n");
     color(15, 0);
 }
+void print_message_error_detruire_hors_map(){
+    color (12, 0);
+    printf("\n VOUS NE POUVEZ PAS DETRUIRE EN DEHORS DES LIMITES DE LA MAP !!!\n\n");
+    color(15, 0);
+}
 
 void afficher_menu_console(Jeu* jeu){
     int choix = 0;
@@ -133,7 +138,7 @@ void afficher_choix_joueur(Jeu* jeu) {
 
                 ajouterBatiment(jeu, co_x, co_y, choix);
                 ajout_Batiment_Grille(jeu, maison, co_x, co_y, co_x1, co_y1);
-                //printf("Ajout d'une maison ...\n");
+                printf("Ajout d'une maison ...\n");
                 sleep(1);
             }
             break;
@@ -177,22 +182,72 @@ void afficher_choix_joueur(Jeu* jeu) {
             break;
         }
         case 6: {
-            int x = 0, y = 0, type = 0;
-            printf("Type?\n");
-            scanf("%d", &type);
-            printf("Coordonnee:\n");
-            scanf("%d  %d", &x, &y);
-            switch (type) {
-                case 2: {
-                    detruireBatiment(jeu, x, y, maison);
+            printf("Quel type de batiment voulez vous detruire ?\n1 : Route\n2 : Maison\n3 : Chateau d'eau\n4 : Usine electrique\n");
+            scanf("%d", &choix);
+            Coordonnee co_batiment;
+            switch (choix) {
+                case reseau : {
+                    color(10, 0);
+                    printf("\nCoordonnees du point initiale? (x / y)\n");
+                    scanf(" %d %d", &co_x, &co_y);
+                    printf("\nCoordonnees du point final? (x / y)\n");
+                    color(15, 0);
+                    scanf(" %d %d", &co_x1, &co_y1);
+                    if (co_x < 0 || co_y < 0 || co_x1 < 0 || co_y1 < 0 || co_x > ORDRE_EN_X || co_y > ORDRE_EN_Y ||
+                        co_x1 > ORDRE_EN_X || co_y1 > ORDRE_EN_Y) {
+                        print_message_error_detruire_hors_map();
+                        break;
+                    }
+                    suppression_Batiment_Grille(jeu, reseau, co_x, co_y, co_x1, co_y1);
+                    sleep(1);
                     break;
                 }
-                case 3: {
-                    detruireBatiment(jeu, x, y, chateau_deau);
+                case maison: {
+                    color(10, 0);
+                    printf("\nCoordonnees ? (x / y)\n");
+                    color(15, 0);
+                    scanf(" %d %d", &co_x, &co_y);
+                    if (co_x < 0 || co_y < 0 || co_x > ORDRE_EN_X || co_y > ORDRE_EN_Y) {
+                        print_message_error_detruire_hors_map();
+                        break;
+                    }
+                    co_batiment = position_batiment(*jeu, co_x,co_y);
+                    printf("Destruction d'une maison ...\n");
+                    sleep(1);
+                    suppression_Batiment_Grille(jeu, maison, co_batiment.x, co_batiment.y, co_x1, co_y1);
+                    detruireBatiment(jeu, co_batiment.x, co_batiment.y, maison);
                     break;
                 }
-                case 4: {
-                    detruireBatiment(jeu, x, y, usine_electrique);
+                case chateau_deau: {
+                    color(10, 0);
+                    printf("\nCoordonnees ? (x / y)\n");
+                    color(15, 0);
+                    scanf(" %d %d", &co_x, &co_y);
+                    if (co_x < 0 || co_y < 0 || co_x > ORDRE_EN_X || co_y > ORDRE_EN_Y) {
+                        print_message_error_detruire_hors_map();
+                        break;
+                    }
+                    co_batiment = position_batiment(*jeu, co_x,co_y);
+                    printf("Destruction d'un chateau d'eau ...\n");
+                    sleep(1);
+                    suppression_Batiment_Grille(jeu, chateau_deau, co_batiment.x, co_batiment.y, co_x1, co_y1);
+                    detruireBatiment(jeu, co_batiment.x, co_batiment.y, chateau_deau);
+                    break;
+                }
+                case usine_electrique: {
+                    color(10, 0);
+                    printf("\nCoordonnees ? (x / y)\n");
+                    color(15, 0);
+                    scanf(" %d %d", &co_x, &co_y);
+                    if (co_x < 0 || co_y < 0 || co_x > ORDRE_EN_X || co_y > ORDRE_EN_Y) {
+                        print_message_error_detruire_hors_map();
+                        break;
+                    }
+                    co_batiment = position_batiment(*jeu, co_x,co_y);
+                    printf("Destruction d'une usine electrique ...\n");
+                    sleep(1);
+                    suppression_Batiment_Grille(jeu, usine_electrique, co_batiment.x, co_batiment.y, co_x1, co_y1);
+                    detruireBatiment(jeu, co_batiment.x, co_batiment.y, usine_electrique);
                     break;
                 }
                 default :{

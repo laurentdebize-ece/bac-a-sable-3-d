@@ -166,7 +166,6 @@ Batiment* maj_destruction_maillon(Batiment* liste,int x,int y,Jeu* jeu) {
 }
 
 void detruireBatiment(Jeu* jeu,int x,int y,int choix) {
-
     Batiment *liste = NULL;
     switch (choix) {
         case maison: {
