@@ -135,10 +135,13 @@ void afficher_choix_joueur(Jeu* jeu) {
                     print_message_error_construire_hors_map();
                     break;
                 }
-                printf("Ajout d'une maison ...\n");
-                ajouterBatiment(jeu, co_x, co_y, choix);
-                ajout_Batiment_Grille(jeu, maison, co_x, co_y, co_x1, co_y1);
-                sleep(1);
+                if(verifier_batiment_a_cote_route(jeu, maison, co_x, co_y)){
+                    printf("Ajout d'une maison ...\n");
+                    ajouterBatiment(jeu, co_x, co_y, choix);
+                    ajout_Batiment_Grille(jeu, maison, co_x, co_y, co_x1, co_y1);
+                    sleep(1);
+                }
+                else { printf("Vous ne pouvez pas placer un batiment s'il n'est pas a cote d'une route\n");}
             }
             break;
         }
@@ -152,10 +155,13 @@ void afficher_choix_joueur(Jeu* jeu) {
                     print_message_error_construire_hors_map();
                     break;
                 }
-                printf("Ajout d'un chateau d'eau ...\n");
-                ajouterBatiment(jeu, co_x, co_y, choix);
-                ajout_Batiment_Grille(jeu, chateau_deau, co_x, co_y, co_x1, co_y1);
-                sleep(1);
+                if(verifier_batiment_a_cote_route(jeu, chateau_deau, co_x, co_y)){
+                    printf("Ajout d'un chateau d'eau ...\n");
+                    ajouterBatiment(jeu, co_x, co_y, choix);
+                    ajout_Batiment_Grille(jeu, chateau_deau, co_x, co_y, co_x1, co_y1);
+                    sleep(1);
+                }
+                else { printf("Vous ne pouvez pas placer un batiment s'il n'est pas a cote d'une route\n");}
             }
             break;
         }
@@ -169,10 +175,13 @@ void afficher_choix_joueur(Jeu* jeu) {
                     print_message_error_construire_hors_map();
                     break;
                 }
-                printf("Ajout d'une usine electrique ...\n");
-                ajouterBatiment(jeu, co_x, co_y, choix);
-                ajout_Batiment_Grille(jeu, usine_electrique, co_x, co_y, co_x1, co_y1);
-                sleep(1);
+                if (verifier_batiment_a_cote_route(jeu, usine_electrique, co_x, co_y)){
+                    printf("Ajout d'une usine electrique ...\n");
+                    ajouterBatiment(jeu, co_x, co_y, choix);
+                    ajout_Batiment_Grille(jeu, usine_electrique, co_x, co_y, co_x1, co_y1);
+                    sleep(1);
+                }
+                else { printf("Vous ne pouvez pas placer un batiment s'il n'est pas a cote d'une route\n");}
             }
             break;
         }

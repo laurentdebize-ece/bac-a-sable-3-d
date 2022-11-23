@@ -329,6 +329,54 @@ void liberationListe(Jeu* jeu) {
     jeu->batiments[usine_electrique] = NULL;
 }
 
+bool verifier_batiment_a_cote_route(Jeu *jeu, int type_de_batiment, int co_x, int co_y) {
+    int nb_connexion = 0;
+    switch (type_de_batiment) {
+        case maison : {
+            for (int i = 0; i < TAILLE_MAISON; i++) {
+                if (co_y != 0 && (jeu->terrain[co_y - 1][co_x + i] == 1)) {
+                    nb_connexion++;
+                }
+                if (co_x != 0 && (jeu->terrain[co_y + i][co_x - 1] == 1)) {
+                    nb_connexion++;
+                }
+                if (co_y != ORDRE_EN_Y && (jeu->terrain[co_y + TAILLE_MAISON][co_x + i] == 1)) {
+                    nb_connexion++;
+                }
+                if (co_x != ORDRE_EN_X && (jeu->terrain[co_y + i][co_x + TAILLE_MAISON] == 1)) {
+                    nb_connexion++;
+                }
+            }
+            return (nb_connexion != 0) ? TRUE : FALSE;
+        }
+        case chateau_deau :
+        case usine_electrique : {
+            for (int i = 0; i < LARGEUR_BATIMENTS; i++) {
+                if (co_x != 0 && (jeu->terrain[co_y + i][co_x - 1] == 1)) {
+                    nb_connexion++;
+                }
+                if (co_x != ORDRE_EN_X && (jeu->terrain[co_y + i][co_x + LARGEUR_BATIMENTS] == 1)) {
+                    nb_connexion++;
+                }
+            }
+            for (int i = 0; i < LONGUEUR_BATIMENTS; i++) {
+                if (co_y != 0 && (jeu->terrain[co_y - 1][co_x + i] == 1)) {
+                    nb_connexion++;
+                }
+                if (co_y != ORDRE_EN_Y && (jeu->terrain[co_y + LONGUEUR_BATIMENTS][co_x + i] == 1)) {
+                    nb_connexion++;
+                }
+            }
+            return (nb_connexion != 0) ? TRUE : FALSE;
+        }
+        default: {
+            break;
+        }
+    }
+
+}
+
+
 int conditionAchatBatiment(Jeu* jeu,int choix){
     switch(choix){
         case maison:{

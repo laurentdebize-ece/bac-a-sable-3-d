@@ -46,6 +46,7 @@ void detruireBatiment(Jeu* jeu,int x,int y,int choix);
 void chargementListe(Jeu* jeu,int num,int i,int* j,FILE **ifs);
 void liberationListe(Jeu* jeu);
 int conditionAchatBatiment(Jeu* jeu,int choix);
+bool verifier_batiment_a_cote_route(Jeu* jeu, int type_de_batiment, int co_x, int co_y);
 
 // TODO: NE PAS CHANGER LORDRE DES INCLUDES IMPORTANT !!!
 
