@@ -145,7 +145,7 @@ void ajout_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y, int 
                 }else co_y--;
             }
             color(1, 0);
-            printf("La construction : %s, est un succes !\n", jeu->batiments[nomDuBatiment]->nom);
+            printf("La construction : route, est un succes !\n");
             color(15, 0);
         } else {
             color(5, 0);
@@ -186,7 +186,81 @@ void ajout_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y, int 
 
 
 void suppression_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y, int co_xroute, int co_yroute){
-    //il me faut les co des batiments deja place (x,y) grace au liste chaine donc j'att...
+    bool obstacle = FALSE;
+    int y_temporaire = co_y;
+
+    if (co_xroute !=-1 || co_yroute != -1){
+        int x_temporaire = co_x;
+        int x_distance=difference_entre_2_nombres_VALEURABSOLUE(co_x, co_xroute), y_distance=difference_entre_2_nombres_VALEURABSOLUE(co_y, co_yroute);
+        for (int i = 0; i < x_distance ; i++) {
+            if (jeu->terrain[co_y][x_temporaire] != 0){
+                obstacle = TRUE;
+                break;
+            }
+            if (co_x < co_xroute){
+                x_temporaire++;
+            }else x_temporaire--;
+        }
+        for (int i = 0; i <= y_distance ; i++) {
+            if (jeu->terrain[y_temporaire][co_x] != 0){
+                obstacle = TRUE;
+                break;
+            }
+            if (co_y < co_yroute){
+                y_temporaire++;
+            }else y_temporaire--;
+        }
+        x_temporaire = co_x;
+        y_temporaire = co_y;
+        if (obstacle == TRUE){
+            for (int i = 0; i < x_distance ; i++) {
+                jeu->terrain[co_y][co_x] = 0;
+                if (co_x < co_xroute){
+                    co_x++;
+                }else co_x--;
+            }
+            for (int i = 0; i <= y_distance ; i++) {
+                jeu->terrain[co_y][co_x] = 0;
+                if (co_y < co_yroute){
+                    co_y++;
+                }else co_y--;
+            }
+            color(1, 0);
+            printf("La destruction : route, est un succes !\n");
+            color(15, 0);
+        } else {
+            color(5, 0);
+            printf("Il n'y a pas de route a detruire !\n");
+            color(15, 0);
+        }
+    }else{
+        for (int i = 0; i < jeu->batiments[nomDuBatiment]->taille.y ; i++) {
+            for (int j = 0; j < jeu->batiments[nomDuBatiment]->taille.x; j++) {
+                if (jeu->terrain[co_y][co_x + j] != 0){
+                    obstacle = TRUE;
+                    break;
+                }
+            }
+            if (obstacle == TRUE){
+                break;
+            }
+            y_temporaire ++;
+        }
+        if (obstacle == TRUE){
+            for (int i = 0; i < jeu->batiments[nomDuBatiment]->taille.y ; i++) {
+                for (int j = 0; j < jeu->batiments[nomDuBatiment]->taille.x; j++) {
+                    jeu->terrain[co_y][co_x + j] = 0;
+                }co_y ++;
+            }
+            color(1, 0);
+            printf("La destruction : %s, est un succes !\n", jeu->batiments[nomDuBatiment]->nom);
+            color(15, 0);
+        } else {
+            color(5, 0);
+            printf("Il n'y a rien a detruire ici !\n");
+            color(15, 0);
+        }
+    }
 }
 
 
@@ -245,6 +319,8 @@ Coordonnee position_batiment(Jeu jeu, int x, int y){
     switch (type_batiment) {
         case vide : {
             printf("Cette case est vide\n");
+            postion_batiment.x = -1;
+            postion_batiment.y = -1;
             break;
         }
         case reseau : {

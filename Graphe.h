@@ -6,7 +6,7 @@ void initialisation_Grille();
 Jeu *lire_graphe();
 void enregistrer_Grille(Jeu* jeu);
 void ajout_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y, int co_xroute, int co_yroute);
-void suppression_batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y, int co_xroute, int co_yroute);
+void suppression_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y, int co_xroute, int co_yroute);
 
 
 Coordonnee position_maison(Jeu jeu, int x, int y);
