@@ -42,8 +42,13 @@ Jeu *lire_graphe() {
 
     for (int y = 0; y <= ordre_y; y++) {
         for (int x = 0; x <= ordre_x; x++) {
-            if(grille->terrain[y][x] == 2 || grille->terrain[y][x] == 3 || grille->terrain[y][x] == 4){
-                chargementListe(grille,grille->terrain[y][x],y,&x,&ifs);
+            int stadeEvo = 0;
+            if(grille->terrain[y][x] == 2 || grille->terrain[y][x] == 3 || grille->terrain[y][x] == 4 || grille->terrain[y][x] >= 20){
+                if(grille->terrain[y][x] >= 20){
+                    stadeEvo = grille->terrain[y][x] - 20;
+                    grille->terrain[y][x] = 2;
+                }
+                chargementListe(grille,grille->terrain[y][x],y,&x,&ifs,stadeEvo);
             }
         }
     }
@@ -67,6 +72,7 @@ Jeu *lire_graphe() {
 
 
 void enregistrer_Grille(Jeu* jeu){
+    Batiment* parcours = jeu->batiments[maison];
     FILE *ifs = fopen(NOM_DU_FICHIER, "w");
     if(ifs==NULL){
         printf("Erreur lors de l'1ouverture d'un fichier");
@@ -77,7 +83,21 @@ void enregistrer_Grille(Jeu* jeu){
     fprintf(ifs, "%d\n",jeu->argent);
     for (int i = 0; i <= jeu->ordre.y; i++) {
         for (int j = 0; j <= jeu->ordre.x; j++) {
-            fprintf(ifs, "%d ", jeu->terrain[i][j]);
+            bool passe = FALSE;
+            if(jeu->terrain[i][j] == 2 && jeu->batiments[maison] != NULL){
+                do{
+                    if(i == parcours->y && j == parcours->x){
+                        fprintf(ifs, "%d ", jeu->terrain[i][j] + 18 + parcours->stadeEvolution);
+                        passe = TRUE;
+                    }
+                    parcours = parcours->next;
+                }while(parcours == jeu->batiments[maison]);
+                if(passe == FALSE){
+                    fprintf(ifs, "%d ", jeu->terrain[i][j]);
+                }
+
+            }
+            else{fprintf(ifs, "%d ", jeu->terrain[i][j]);}
         }
         fprintf(ifs, "\n");
     }
