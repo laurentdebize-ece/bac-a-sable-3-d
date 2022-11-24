@@ -208,7 +208,7 @@ void stocker(int nb,FILE* ifs){
         fscanf(ifs,"%d",&n);
     }
 }
-// centaine type de batiment dizaine evolution unite temps restant
+// dizaine type de batiment unite evolution
 Batiment* maj_charge_liste(Jeu* jeu,Batiment* liste,int* x,int y,FILE* ifs,int choix,int stadeEvo){
     Batiment* parcours = liste;
     bool bouclePasse = FALSE;
@@ -415,4 +415,8 @@ int conditionAchatBatiment(Jeu* jeu,int choix){
     }
     printf("Vous n'avez pas assez d'argent pour poser ce batiment") ;
     return 0;
+}
+
+void evolutionBatiment(Jeu* jeu){
+
 }
