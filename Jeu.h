@@ -3,7 +3,10 @@
 #include <stdio.h>
 #include <raylib.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <stdbool.h>
+
+//TODO: LISTE CHAINE POUR BATIMENTS
 
 enum {communisme, capitalisme};
 enum {animation_Lancement, menu_principale, selection_choix_jeu,en_jeu, regles, credis, nb_pages};
@@ -36,6 +39,7 @@ typedef struct Batiment{
     bool alimente_elec;
     Coordonnee taille;
     Coordonnee cases;
+    Coordonnee* cases_adjacentes;
     char* nom;
     int x,y;
     int capacite;
@@ -53,6 +57,12 @@ typedef struct Jeu{
     bool quitter;
     int choix_politique;
     int page_actuel;
+    int nb_maison;
+    int nb_chateau_eau;
+    int nb_centrale;
+    bool en_cours;
+    bool fichier;
+    int modeDeJeu;
     int** terrain;
     Coordonnee ordre;
     Coordonnee selection;
@@ -75,6 +85,7 @@ typedef struct Jeu{
 #include "Graphe.h"
 #include "reasings.h"
 #include "verification.h"
+#include "COULEURS.h"
 
 
 int difference_entre_2_nombres_VALEURABSOLUE(int a, int b);

@@ -1,7 +1,9 @@
 #include "Jeu.h"
 
-
 int main() {
+    Jeu* j;
+    afficher_menu_console(j);
+
     ChangeDirectory(GetApplicationDirectory());
     ChangeDirectory("../FILE");
     Jeu* j = (Jeu *) malloc(sizeof(Jeu));

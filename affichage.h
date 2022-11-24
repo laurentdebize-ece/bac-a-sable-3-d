@@ -2,6 +2,10 @@
 #define TEMPLATE_RAYLIB_AFFICHAGE_H
 #include "Jeu.h"
 
+void afficher_la_grille(Jeu* jeu);
+void afficher_menu_console(Jeu* jeu);
+void afficher_choix_joueur(Jeu* jeu);
+
 void affichage_Boucle_G(Jeu* jeu);
 void afficher_fenetre_menu(Jeu* jeu, Vector2 pos_Souris, int* timer, float* rectAplha, float* sonAlpha);
 void afficher_animation(Jeu* jeu, int* ballPositionX, int* ballRadius, float* ballAlpha, int* state, int* framesCounter);
