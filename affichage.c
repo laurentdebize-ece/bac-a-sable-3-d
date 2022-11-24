@@ -126,7 +126,6 @@ void afficher_choix_joueur(Jeu* jeu) {
             break;
         }
         case maison: {
-            if(conditionAchatBatiment(jeu,maison)) {
                 color(10, 0);
                 printf("\nCoordonnees ? (x / y)\n");
                 color(15, 0);
@@ -135,18 +134,16 @@ void afficher_choix_joueur(Jeu* jeu) {
                     print_message_error_construire_hors_map();
                     break;
                 }
-                if(verifier_batiment_a_cote_route(jeu, maison, co_x, co_y)){
+                if(verifier_batiment_a_cote_route(jeu, maison, co_x, co_y) && conditionAchatBatiment(jeu, maison)){
                     printf("Ajout d'une maison ...\n");
                     ajouterBatiment(jeu, co_x, co_y, choix);
                     ajout_Batiment_Grille(jeu, maison, co_x, co_y, co_x1, co_y1);
                     sleep(1);
                 }
                 else { printf("Vous ne pouvez pas placer un batiment s'il n'est pas a cote d'une route\n");}
-            }
             break;
         }
         case chateau_deau: {
-            if(conditionAchatBatiment(jeu,chateau_deau)) {
                 color(10, 0);
                 printf("\nCoordonnees ? (x / y)\n");
                 color(15, 0);
@@ -155,18 +152,16 @@ void afficher_choix_joueur(Jeu* jeu) {
                     print_message_error_construire_hors_map();
                     break;
                 }
-                if(verifier_batiment_a_cote_route(jeu, chateau_deau, co_x, co_y)){
+                if(verifier_batiment_a_cote_route(jeu, chateau_deau, co_x, co_y) && conditionAchatBatiment(jeu, chateau_deau)){
                     printf("Ajout d'un chateau d'eau ...\n");
                     ajouterBatiment(jeu, co_x, co_y, choix);
                     ajout_Batiment_Grille(jeu, chateau_deau, co_x, co_y, co_x1, co_y1);
                     sleep(1);
                 }
                 else { printf("Vous ne pouvez pas placer un batiment s'il n'est pas a cote d'une route\n");}
-            }
             break;
         }
         case usine_electrique: {
-            if(conditionAchatBatiment(jeu,usine_electrique)) {
                 color(10, 0);
                 printf("\nCoordonnees ? (x / y)\n");
                 color(15, 0);
@@ -175,14 +170,13 @@ void afficher_choix_joueur(Jeu* jeu) {
                     print_message_error_construire_hors_map();
                     break;
                 }
-                if (verifier_batiment_a_cote_route(jeu, usine_electrique, co_x, co_y)){
+                if (verifier_batiment_a_cote_route(jeu, usine_electrique, co_x, co_y) && conditionAchatBatiment(jeu, usine_electrique)){
                     printf("Ajout d'une usine electrique ...\n");
                     ajouterBatiment(jeu, co_x, co_y, choix);
                     ajout_Batiment_Grille(jeu, usine_electrique, co_x, co_y, co_x1, co_y1);
                     sleep(1);
                 }
                 else { printf("Vous ne pouvez pas placer un batiment s'il n'est pas a cote d'une route\n");}
-            }
             break;
         }
         case 5: {
