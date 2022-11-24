@@ -6,14 +6,14 @@
 
 int** creer_matrice_adjacence(Jeu* jeu, int type_batiment){
     switch (type_batiment) {
-        case chateau_deau:{
+        case chateau_deau: {
             int** matrice = (int**) calloc(jeu->nb_maison, sizeof(int*));
             for (int i = 0; i < jeu->nb_maison; i++) {
                 matrice[i] = (int*) calloc(jeu->nb_chateau_eau, sizeof(int));
             }
             return matrice;
         }
-        case usine_electrique:{
+        case usine_electrique: {
             int** matrice = (int**) calloc(jeu->nb_maison, sizeof(int*));
             for (int i = 0; i < jeu->nb_maison; i++) {
                 matrice[i] = (int*) calloc(jeu->nb_centrale, sizeof(int));
