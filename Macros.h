@@ -3,6 +3,8 @@
 //Affichage
 #define LARGEUR_FENETRE 920
 #define LONGUEUR_FENETRE 780
+#define LONGUEUR 45
+#define LARGEUR 35
 
 #define MOUSE_SCALE_MARK_SIZE   12
 
