@@ -1,7 +1,7 @@
 #ifndef TEMPLATE_RAYLIB_MACROS_H
 #define TEMPLATE_RAYLIB_MACROS_H
 
-#define VOLUME_GLOBAL 0.35f
+#define VOLUME_GLOBAL 0.3f
 
 //Affichage
 
@@ -44,5 +44,11 @@
 // capacité
 #define CAPACITE_MAISON 1000
 #define CAPACITE_USINE 5000
+
+//Cout
+#define COUT_MAISON 1000
+#define COUT_CHATEAU_EAU 4000
+#define COUT_USINE_ELECTRIQUE 4000
+#define COUT_ROUTE 10
 
 #endif //TEMPLATE_RAYLIB_MACROS_H
