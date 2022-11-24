@@ -86,12 +86,12 @@ void BFS_connexite(int** matrice_connexite_route, int** matrice_centrale, int** 
         }
     }
     new_cases_adjacentes = (Coordonnee**) malloc(nb_adjacence * sizeof(Coordonnee*));
-    int j = 0;
+    int y = 0;
     for (int i = 0; i < nb_adjacence_theorique ; i++){
 
         if (valeur_adjacence[i] != 0){
-            new_cases_adjacentes[j] = initialisation_case_ajacentes(cases_adjacentes[i], 1, 1);
-            j++;
+            new_cases_adjacentes[y] = initialisation_case_ajacentes(cases_adjacentes[i], 1, 1);
+            y++;
             if (valeur_adjacence[i] == 1){
                 valeur_adjacence[i] = num_connexite;
 
@@ -127,79 +127,90 @@ void BFS_connexite(int** matrice_connexite_route, int** matrice_centrale, int** 
     free(valeur_adjacence);
     valeur_adjacence = NULL;
 
-    while (new_cases_adjacentes != NULL){
-        cases_adjacentes = calloc(nb_adjacence_theorique * nb_adjacence, sizeof(Coordonnee));
-        int k = 0;
-        for (int i = 0; i < nb_adjacence; i++) {
-            for (int j = 0; j < nb_adjacence_theorique; j++) {
-                cases_adjacentes[k].y = new_cases_adjacentes[i][j].y;
-                cases_adjacentes[k].x = new_cases_adjacentes[i][j].x;
-                k++;
-            }
-        }
-        for (int i = 0; i < nb_adjacence_theorique; i++) {
-            free(new_cases_adjacentes[i]);
-            new_cases_adjacentes[i] = NULL;
-        }
-        free (new_cases_adjacentes);
-        new_cases_adjacentes = NULL;
-        nb_adjacence = new_nb_adjacence;
-        new_nb_adjacence = 0;
-        valeur_adjacence = calloc(nb_adjacence_theorique * nb_adjacence,sizeof(int));// valeurs des cases adjacentes découvertes initialisé à 0
-        for (int i = 0; i < nb_adjacence_theorique * nb_adjacence; i++){
-            // si case adjacente = route pas marquée, valeur_adjacence prend la valeur de la route et on incrémente le nombre de routes découvertes
-            if((cases_adjacentes[i].y >= 0) && (cases_adjacentes[i].x) ) {
-                if (matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x] != 0
-                    && matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x] != 2
-                    && matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x] != 3
-                    && matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x] != 4
-                    && matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x] != num_connexite) {
-                    valeur_adjacence[i] = matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x];
-                    new_nb_adjacence++;
+    while (new_cases_adjacentes != NULL) {
+        if (nb_adjacence != 0) {
+
+
+            cases_adjacentes = calloc(nb_adjacence_theorique * nb_adjacence, sizeof(Coordonnee));
+            int x = 0;
+            for (int i = 0; i < nb_adjacence; i++) {
+                for (int j = 0; j < nb_adjacence_theorique; j++) {
+                    cases_adjacentes[x].y = new_cases_adjacentes[i][j].y;
+                    cases_adjacentes[x].x = new_cases_adjacentes[i][j].x;
+                    x++;
                 }
             }
-        }
-        new_cases_adjacentes = (Coordonnee**) malloc(nb_adjacence * sizeof(Coordonnee*));
-        int j = 0;
-        for (int i = 0; i < nb_adjacence_theorique ; i++){
-
-            if (valeur_adjacence[i] != 0){
-                new_cases_adjacentes[j] = initialisation_case_ajacentes(cases_adjacentes[i], 1, 1);
-                j++;
-                if (valeur_adjacence[i] == 1){
-                    valeur_adjacence[i] = num_connexite;
-
-                }
-                else {
-                    if (valeur_adjacence[i] < num_connexite){
-
-                        for(int k = 0; k < LARGEUR ; k++){
-                            for(int l = 0; l < LONGUEUR ; l++){
-                                if (matrice_connexite_route[k][l] == num_connexite){
-                                    matrice_connexite_route[k][l] = valeur_adjacence[i];
-                                }
-                            }
-                        }
-                        num_connexite = valeur_adjacence[i];
-                    }
-                    else{
-                        for(int k = 0; k < LARGEUR ; k++){
-                            for(int l = 0; l < LONGUEUR ; l++){
-                                if (matrice_connexite_route[k][l] == valeur_adjacence[i]){
-                                    matrice_connexite_route[k][l] = num_connexite;
-                                }
-                            }
-                        }
+            for (int i = 0; i < nb_adjacence_theorique; i++) {
+                free(new_cases_adjacentes[i]);
+                new_cases_adjacentes[i] = NULL;
+            }
+            free(new_cases_adjacentes);
+            new_cases_adjacentes = NULL;
+            nb_adjacence = new_nb_adjacence;
+            new_nb_adjacence = 0;
+            valeur_adjacence = calloc(nb_adjacence_theorique * nb_adjacence,
+                                      sizeof(int));// valeurs des cases adjacentes découvertes initialisé à 0
+            for (int i = 0; i < nb_adjacence_theorique * nb_adjacence; i++) {
+                // si case adjacente = route pas marquée, valeur_adjacence prend la valeur de la route et on incrémente le nombre de routes découvertes
+                if ((cases_adjacentes[i].y >= 0) && (cases_adjacentes[i].x)) {
+                    if (matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x] != 0
+                        && matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x] != 2
+                        && matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x] != 3
+                        && matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x] != 4
+                        && matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x] != num_connexite) {
+                        valeur_adjacence[i] = matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x];
+                        new_nb_adjacence++;
                     }
                 }
             }
+            new_cases_adjacentes = (Coordonnee **) malloc(nb_adjacence * sizeof(Coordonnee *));
+            y = 0;
+            for (int i = 0; i < nb_adjacence_theorique; i++) {
 
+                if (valeur_adjacence[i] != 0) {
+                    new_cases_adjacentes[y] = initialisation_case_ajacentes(cases_adjacentes[i], 1, 1);
+                    y++;
+                    if (valeur_adjacence[i] == 1) {
+                        valeur_adjacence[i] = num_connexite;
+
+                    } else {
+                        if (valeur_adjacence[i] < num_connexite) {
+
+                            for (int k = 0; k < LARGEUR; k++) {
+                                for (int l = 0; l < LONGUEUR; l++) {
+                                    if (matrice_connexite_route[k][l] == num_connexite) {
+                                        matrice_connexite_route[k][l] = valeur_adjacence[i];
+                                    }
+                                }
+                            }
+                            num_connexite = valeur_adjacence[i];
+                        } else {
+                            for (int k = 0; k < LARGEUR; k++) {
+                                for (int l = 0; l < LONGUEUR; l++) {
+                                    if (matrice_connexite_route[k][l] == valeur_adjacence[i]) {
+                                        matrice_connexite_route[k][l] = num_connexite;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
+            new_nb_adjacence = nb_adjacence;
+            free(cases_adjacentes);
+            cases_adjacentes = NULL;
+            free(valeur_adjacence);
+            valeur_adjacence = NULL;
+
+        } else{
+            for (int i = 0; i < nb_adjacence_theorique; i++) {
+                free(new_cases_adjacentes[i]);
+                new_cases_adjacentes[i] = NULL;
+            }
+            free(new_cases_adjacentes);
+            new_cases_adjacentes = NULL;
         }
-        new_nb_adjacence = nb_adjacence;
-        free (cases_adjacentes);
-        cases_adjacentes = NULL;
-        free(valeur_adjacence);
-        valeur_adjacence = NULL;
     }
  }
 
@@ -217,7 +228,7 @@ int** init_conexite_route(Jeu* jeu){
         for ( batiment->next; batiment!=NULL; batiment->next){
             for(int i; i<(longueur*largeur batiment) ; i++){
                 if(matrice_connexite_route[batiment.adjacence[i].y][batiment.adjacence[i].x] == 1){
-                BFS_connexite(matrice_connexite_route, matrice_centrale, matrice_chateau_eau, batiment.adjacence[i], num_connexite);
+                BFS_connexite(matrice_connexite_route, batiment.adjacence[i], num_connexite);
                 num_connexite++;
             }
 
