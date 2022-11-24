@@ -32,6 +32,25 @@ void initialisation_Images(Jeu* jeu){
     jeu->tabImages[en_jeu][img_logosJeu].charge = 1;
     jeu->tabImages[en_jeu][img_logosJeu].frame_longueur = 90;
     jeu->tabImages[en_jeu][img_logosJeu].frame_hauteur = 90;
+
+    jeu->tabImages[en_jeu][img_route].texture2D = LoadTexture("route.png");
+    jeu->tabImages[en_jeu][img_route].charge = 1;
+    jeu->tabImages[en_jeu][img_usine].texture2D = LoadTexture("usine.png");
+    jeu->tabImages[en_jeu][img_usine].charge = 1;
+    jeu->tabImages[en_jeu][img_chateauDO].texture2D = LoadTexture("chateauDO.png");
+    jeu->tabImages[en_jeu][img_chateauDO].charge = 1;
+    //chargement texture maison car evolution comprise
+    Texture2D texture_maison = LoadTexture("maison.png");
+    float frame_longueur= (float)texture_maison.width / NB_FRAMES_MAISON;
+    jeu->tabImages[en_jeu][img_maison].texture2D = texture_maison;
+    jeu->tabImages[en_jeu][img_maison].charge = 1;
+    jeu->tabImages[en_jeu][img_maison].frame_longueur = frame_longueur;
+    Rectangle sourceRec = {0, 0, (float)jeu->tabImages[en_jeu][img_maison].frame_longueur, (float)jeu->tabImages[en_jeu][img_maison].texture2D.height };
+    jeu->tabImages[en_jeu][img_maison].source_Rec = sourceRec;
+
+
+
+
     /*Rectangle RecLogoJeu = {0, 0, (float)jeu->tabImages[en_jeu][img_logosJeu].texture2D.width, jeu->tabImages[en_jeu][img_logosJeu].frame_hauteur };
     jeu->tabImages[en_jeu][img_logosJeu].source_Rec = RecLogoJeu;
     Rectangle posLogoJeu = {0, TAILLE_CASE_GRILLE*jeu->ordre.y, (float)jeu->tabImages[en_jeu][img_logosJeu].texture2D.width, 250 };
@@ -102,28 +121,28 @@ void ini_bouton(Jeu* jeu){
     jeu->tabImages[en_jeu][img_boutonRetourMenu].frame_hauteur = frame_hauteur;
     jeu->tabImages[en_jeu][img_boutonRetourMenu].source_Rec = sourceRec;
     // Definie l emplacement du boutton sur ecran (la ou l'on veut l afficher)
-    Rectangle pos7 = {3, RESOLUTION_Y - bouton_texture.height / NB_FRAMES_BOUTON, (float)bouton_texture.width, frame_hauteur };
+    Rectangle pos7 = {0, RESOLUTION_Y + 20 - bouton_texture.height / NB_FRAMES_BOUTON, (float)bouton_texture.width, frame_hauteur };
     jeu->tabImages[en_jeu][img_boutonRetourMenu].pos_Rec = pos7;
 }
 void unload_all(Jeu* jeu){
-    for (int i = 0; i < nbPages; i++) {
-        for (int j = 0; j < nbImages; j++) {
+    for (int i = 0; i < nb_pages; i++) {
+        for (int j = 0; j < nb_img; j++) {
             if(jeu->tabImages[i][j].charge==1){
                 UnloadTexture(jeu->tabImages[i][j].texture2D);
             }
         }
 
     }
-    for (int i = 0; i < nbSons; i++) {
+    for (int i = 0; i < nb_sons; i++) {
         UnloadSound(jeu->tabSon[i]);
     }
 }
 void initialisation_Sons(Jeu* jeu){
     jeu->tabSon[son_Bouton] = LoadSound("bouton_son.mp3");
-    SetSoundVolume(jeu->tabSon[img_boutonoff], 0.4f);
+    SetSoundVolume(jeu->tabSon[img_boutonoff], VOLUME_GLOBAL-0.2f);
 
     jeu->tabSon[son_menu] = LoadSound("musique_ambiance_menu.mp3");
-    SetSoundVolume(jeu->tabSon[son_menu], 0.6f);
+    SetSoundVolume(jeu->tabSon[son_menu], VOLUME_GLOBAL);
 }
 
 

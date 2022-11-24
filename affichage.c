@@ -117,7 +117,8 @@ void affi_bouton(Jeu* jeu, int page, int image, Vector2 pos_souris, char* nom, i
     int btnState;
     bool btnAction;
     btnAction = false;
-    if (CheckCollisionPointRec(pos_souris, jeu->tabImages[page][image].pos_Rec))
+    Rectangle hit_box_bouton = {jeu->tabImages[page][image].pos_Rec.x, jeu->tabImages[page][image].pos_Rec.y, jeu->tabImages[page][image].pos_Rec.width, jeu->tabImages[page][image].pos_Rec.height-18};
+    if (CheckCollisionPointRec(pos_souris, hit_box_bouton))
     {
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) btnState = 2;
         else btnState = 1;
@@ -158,14 +159,14 @@ void affi_bouton(Jeu* jeu, int page, int image, Vector2 pos_souris, char* nom, i
 void afficher_jeu_logo_interactionAvecClick(Jeu* jeu, Vector2 pos_souris){
     float alphalogojeu1 = 0.5f;
     float alphalogojeu2 = 0.85f;
-    Rectangle logo_reseau = {0, TAILLE_CASE_GRILLE*jeu->ordre.y+20, jeu->tabImages[en_jeu][img_logosJeu].frame_hauteur, jeu->tabImages[en_jeu][img_logosJeu].frame_hauteur};
-    Rectangle logo_maison = {90, TAILLE_CASE_GRILLE*jeu->ordre.y+20, jeu->tabImages[en_jeu][img_logosJeu].frame_hauteur, jeu->tabImages[en_jeu][img_logosJeu].frame_hauteur};
-    Rectangle logo_usine = {180, TAILLE_CASE_GRILLE*jeu->ordre.y+20, jeu->tabImages[en_jeu][img_logosJeu].frame_hauteur, jeu->tabImages[en_jeu][img_logosJeu].frame_hauteur};
-    Rectangle logo_chateauDO = {270, TAILLE_CASE_GRILLE*jeu->ordre.y+20, jeu->tabImages[en_jeu][img_logosJeu].frame_hauteur, jeu->tabImages[en_jeu][img_logosJeu].frame_hauteur};
-    Rectangle logo_demolition = {360, TAILLE_CASE_GRILLE*jeu->ordre.y+20, jeu->tabImages[en_jeu][img_logosJeu].frame_hauteur, jeu->tabImages[en_jeu][img_logosJeu].frame_hauteur};
+    Rectangle logo_reseau = {0, TAILLE_CASE_GRILLE*(jeu->ordre.y+1), jeu->tabImages[en_jeu][img_logosJeu].frame_hauteur, jeu->tabImages[en_jeu][img_logosJeu].frame_hauteur};
+    Rectangle logo_maison = {90, TAILLE_CASE_GRILLE*(jeu->ordre.y+1), jeu->tabImages[en_jeu][img_logosJeu].frame_hauteur, jeu->tabImages[en_jeu][img_logosJeu].frame_hauteur};
+    Rectangle logo_usine = {180, TAILLE_CASE_GRILLE*(jeu->ordre.y+1), jeu->tabImages[en_jeu][img_logosJeu].frame_hauteur, jeu->tabImages[en_jeu][img_logosJeu].frame_hauteur};
+    Rectangle logo_chateauDO = {270, TAILLE_CASE_GRILLE*(jeu->ordre.y+1), jeu->tabImages[en_jeu][img_logosJeu].frame_hauteur, jeu->tabImages[en_jeu][img_logosJeu].frame_hauteur};
+    Rectangle logo_demolition = {360, TAILLE_CASE_GRILLE*(jeu->ordre.y+1), jeu->tabImages[en_jeu][img_logosJeu].frame_hauteur, jeu->tabImages[en_jeu][img_logosJeu].frame_hauteur};
     int selection = -1;
-    DrawRectangle(0, TAILLE_CASE_GRILLE*jeu->ordre.y + 20, jeu->tabImages[en_jeu][img_logosJeu].texture2D.width, jeu->tabImages[en_jeu][img_logosJeu].frame_hauteur,Fade(BLUE, 0.7f));
-    DrawTexture(jeu->tabImages[en_jeu][img_logosJeu].texture2D, 0, TAILLE_CASE_GRILLE*jeu->ordre.y+20, WHITE);
+    DrawRectangle(0, TAILLE_CASE_GRILLE*(jeu->ordre.y+1), jeu->tabImages[en_jeu][img_logosJeu].texture2D.width, jeu->tabImages[en_jeu][img_logosJeu].frame_hauteur,Fade(BLUE, 0.7f));
+    DrawTexture(jeu->tabImages[en_jeu][img_logosJeu].texture2D, 0, TAILLE_CASE_GRILLE*(jeu->ordre.y+1), WHITE);
     if (CheckCollisionPointRec(pos_souris, logo_reseau)){
         selection = reseau;
     }
@@ -187,34 +188,33 @@ void afficher_jeu_logo_interactionAvecClick(Jeu* jeu, Vector2 pos_souris){
                 jeu->mode_Jeu = mode_neutre;
                 break;
             case reseau:
-                DrawTextureRec(jeu->tabImages[en_jeu][img_logosJeu].texture2D, logo_reseau, (Vector2){0, TAILLE_CASE_GRILLE*jeu->ordre.y+20}, Fade(PURPLE, alphalogojeu1));
-                if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)){
-                    jeu->mode_Jeu = mode_reseau;
+                DrawTextureRec(jeu->tabImages[en_jeu][img_logosJeu].texture2D, logo_reseau, (Vector2){0, TAILLE_CASE_GRILLE*(jeu->ordre.y+1)}, Fade(PURPLE, alphalogojeu1));
+                if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)){
+                    jeu->mode_Jeu = (jeu->mode_Jeu != mode_reseau) ? mode_reseau : mode_neutre;
                 }
                 break;
             case maison:
-                DrawTextureRec(jeu->tabImages[en_jeu][img_logosJeu].texture2D, logo_maison, (Vector2){90, TAILLE_CASE_GRILLE*jeu->ordre.y+20}, Fade(PURPLE, alphalogojeu1));
-                if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)){
-                    jeu->mode_Jeu = mode_maison;
+                DrawTextureRec(jeu->tabImages[en_jeu][img_logosJeu].texture2D, logo_maison, (Vector2){90, TAILLE_CASE_GRILLE*(jeu->ordre.y+1)}, Fade(PURPLE, alphalogojeu1));
+                if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)){
+                    jeu->mode_Jeu = (jeu->mode_Jeu != mode_maison) ? mode_maison : mode_neutre;
                 }
                 break;
             case usine_electrique:
-                DrawTextureRec(jeu->tabImages[en_jeu][img_logosJeu].texture2D, logo_usine, (Vector2){180, TAILLE_CASE_GRILLE*jeu->ordre.y+20}, Fade(PURPLE, alphalogojeu1));
-                if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)){
-                    jeu->mode_Jeu = mode_usine;
+                DrawTextureRec(jeu->tabImages[en_jeu][img_logosJeu].texture2D, logo_usine, (Vector2){180, TAILLE_CASE_GRILLE*(jeu->ordre.y+1)}, Fade(PURPLE, alphalogojeu1));
+                if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)){
+                    jeu->mode_Jeu = (jeu->mode_Jeu != mode_usine) ? mode_usine : mode_neutre;
                 }
-
                 break;
             case chateau_deau:
-                DrawTextureRec(jeu->tabImages[en_jeu][img_logosJeu].texture2D, logo_chateauDO, (Vector2){270, TAILLE_CASE_GRILLE*jeu->ordre.y+20}, Fade(PURPLE, alphalogojeu1));
-                if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)){
-                    jeu->mode_Jeu = mode_chateauDO;
+                DrawTextureRec(jeu->tabImages[en_jeu][img_logosJeu].texture2D, logo_chateauDO, (Vector2){270, TAILLE_CASE_GRILLE*(jeu->ordre.y+1)}, Fade(PURPLE, alphalogojeu1));
+                if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)){
+                    jeu->mode_Jeu = (jeu->mode_Jeu != mode_chateauDO) ? mode_chateauDO : mode_neutre;
                 }
                 break;
             case demolition:
-                DrawTextureRec(jeu->tabImages[en_jeu][img_logosJeu].texture2D, logo_demolition, (Vector2){360, TAILLE_CASE_GRILLE*jeu->ordre.y+20}, Fade(PURPLE, alphalogojeu1));
-                if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)){
-                    jeu->mode_Jeu = mode_demolition;
+                DrawTextureRec(jeu->tabImages[en_jeu][img_logosJeu].texture2D, logo_demolition, (Vector2){360, TAILLE_CASE_GRILLE*(jeu->ordre.y+1)}, Fade(PURPLE, alphalogojeu1));
+                if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)){
+                    jeu->mode_Jeu = (jeu->mode_Jeu != mode_demolition) ? mode_demolition : mode_neutre;
                 }
                 break;
             default:
@@ -226,6 +226,27 @@ void afficher_jeu_logo_interactionAvecClick(Jeu* jeu, Vector2 pos_souris){
     if (jeu->mode_Jeu == mode_usine)DrawTextureRec(jeu->tabImages[en_jeu][img_logosJeu].texture2D, logo_usine, (Vector2){180, TAILLE_CASE_GRILLE*jeu->ordre.y+20}, Fade(BLUE, alphalogojeu2));
     if (jeu->mode_Jeu == mode_chateauDO)DrawTextureRec(jeu->tabImages[en_jeu][img_logosJeu].texture2D, logo_chateauDO, (Vector2){270, TAILLE_CASE_GRILLE*jeu->ordre.y+20}, Fade(BLUE, alphalogojeu2));
     if (jeu->mode_Jeu == mode_demolition)DrawTextureRec(jeu->tabImages[en_jeu][img_logosJeu].texture2D, logo_demolition, (Vector2){360, TAILLE_CASE_GRILLE*jeu->ordre.y+20}, Fade(BLUE, alphalogojeu2));
+}
+void afficher_construction_batiment(Jeu* jeu, Vector2 pos_souris){
+    pos_souris.x -= TAILLE_CASE_GRILLE*3/2;
+    pos_souris.y -= TAILLE_CASE_GRILLE*3/2;
+    Color color_construction = Fade(WHITE, 0.5f);
+    switch (jeu->mode_Jeu) {
+        case mode_neutre:
+            break;
+        case mode_maison:
+            jeu->tabImages[en_jeu][img_maison].source_Rec.x = 0 * jeu->tabImages[en_jeu][img_maison].frame_longueur; //c normal c pour me souvenir qu'il faut utiliser la mm structure de code pour augmenter les niv
+            DrawTextureRec(jeu->tabImages[en_jeu][img_maison].texture2D, jeu->tabImages[en_jeu][img_maison].source_Rec, pos_souris, color_construction);
+            break;
+        case mode_usine:
+            DrawTexture(jeu->tabImages[en_jeu][img_usine].texture2D, (int)pos_souris.x, (int)pos_souris.y, color_construction);
+            break;
+        case mode_chateauDO:
+            DrawTexture(jeu->tabImages[en_jeu][img_chateauDO].texture2D, (int)pos_souris.x, (int)pos_souris.y, color_construction);
+            break;
+        default:
+            break;
+    }
 }
 void affichage_defilement_fond(Jeu* jeu, int *timer){
     float alpha_fondu = 0.01f;
@@ -283,9 +304,10 @@ void afficherJeu(Jeu* jeu, Vector2 pos_souris, int* timer){
     }
     affi_bouton(jeu, jeu->page_actuel, img_boutonRetourMenu, pos_souris, "MENU", timer);
     afficher_jeu_logo_interactionAvecClick(jeu, pos_souris);
+    afficher_construction_batiment(jeu, pos_souris);
 
     DrawRectangleV(playerPosition, (Vector2){ PLAYER_SIZE, PLAYER_SIZE }, RED);
-    DrawText(TextFormat("Case Actuelle: [%i,%i]", playerTileX, playerTileY), RESOLUTION_X-200, 0, 20, WHITE);
+    DrawText(TextFormat("Case Actuelle: [%i,%i]", playerTileX, playerTileY), RESOLUTION_X-220, 0, 20, WHITE);
     EndDrawing();
 }
 

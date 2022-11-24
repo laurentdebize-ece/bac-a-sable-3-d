@@ -1,5 +1,8 @@
 #ifndef TEMPLATE_RAYLIB_MACROS_H
 #define TEMPLATE_RAYLIB_MACROS_H
+
+#define VOLUME_GLOBAL 0.35f
+
 //Affichage
 
 #define TEMPS_DEFILEMENT_FOND 7
@@ -12,9 +15,10 @@
 
 //IMAGES
 #define NB_FRAMES_BOUTON  3       // Nombre de frame pour le Bouton
+#define NB_FRAMES_MAISON 6
 #define MOUSE_SCALE_MARK_SIZE   12
 
-#define TAILLE_CASE_GRILLE    20         // taille des cases
+#define TAILLE_CASE_GRILLE    25      // taille des cases
 #define PLAYER_SIZE      16         // Taille du carre rouge
 #define PLAYER_TILE_VISIBILITY  2   // Player can see 2 tiles around its position
 

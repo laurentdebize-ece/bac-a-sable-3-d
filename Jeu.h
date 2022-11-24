@@ -4,11 +4,11 @@
 #include <raylib.h>
 #include <stdlib.h>
 #include <stdbool.h>
-enum {animation_Lancement, menu_principale, en_jeu, regles, credis, nbPages};
-enum {img_menu, img_boutonoff, img_boutonJouer, img_boutonSauvegarder, img_boutonRegles, img_boutonCredits, img_suppSave, img_fondJeu1, img_fondJeu2, img_fondJeu3, img_fondJeu4, img_logosJeu, img_boutonRetourMenu, nbImages};
+enum {animation_Lancement, menu_principale, en_jeu, regles, credis, nb_pages};
+enum {img_menu, img_boutonoff, img_boutonJouer, img_boutonSauvegarder, img_boutonRegles, img_boutonCredits, img_suppSave, img_fondJeu1, img_fondJeu2, img_fondJeu3, img_fondJeu4, img_logosJeu, img_boutonRetourMenu, img_route, img_maison, img_usine, img_chateauDO, nb_img};
 enum {mode_neutre, mode_reseau ,mode_maison, mode_usine, mode_chateauDO, mode_demolition, nb_modes};
-enum {vide, reseau, maison, chateau_deau, usine_electrique, demolition, nbBatiments};
-enum {son_Bouton, son_menu, nbSons};
+enum {vide, reseau, maison, chateau_deau, usine_electrique, demolition, nb_batiments};
+enum {son_Bouton, son_menu, nb_sons};
 
 typedef struct Coordonnee {
     int x;
@@ -34,6 +34,7 @@ typedef struct Batiment{
     char* nom;
     int capacite;
     int nb_habitants;
+    int experience;
     struct Batiment* next;
 }Batiment;
 
@@ -51,9 +52,9 @@ typedef struct Jeu{
     int production_eau_restante;
     int production_elec_restante;
     int timer_jeu;
-    Batiment batiments[nbBatiments];
-    S_Image tabImages[nbPages][nbImages];
-    Sound tabSon[nbSons];
+    Batiment batiments[nb_batiments];
+    S_Image tabImages[nb_pages][nb_img];
+    Sound tabSon[nb_sons];
 }Jeu;
 
 // TODO: NE PAS CHANGER LORDRE DES INCLUDES IMPORTANT !!!
