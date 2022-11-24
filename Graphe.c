@@ -359,5 +359,3 @@ Coordonnee position_batiment(Jeu jeu, int x, int y){
     }
     return postion_batiment;
 }
-
-

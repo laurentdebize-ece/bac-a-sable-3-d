@@ -16,6 +16,8 @@ typedef struct Coordonnee {
 }Coordonnee;
 
 typedef struct Batiment{
+    bool alimente_eau;
+    bool alimente_elec;
     Coordonnee taille;
     Coordonnee cases;
     char* nom;
