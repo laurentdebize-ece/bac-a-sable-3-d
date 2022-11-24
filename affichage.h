@@ -8,6 +8,7 @@ void afficher_animation(Jeu* jeu, int* ballPositionX, int* ballRadius, float* ba
 void afficher_la_grille(Jeu* jeu);
 void affi_bouton(Jeu* jeu, int page, int image, Vector2 pos_souris, char* nom, int* timer);
 void afficher_construction_batiment(Jeu* jeu, Vector2 pos_souris);
+void afficher_batiment_Raylib(Jeu* jeu, Vector2 pos_souris);
 void afficherJeu(Jeu* jeu, Vector2 pos_souris, int* timer);
 
 typedef struct Map {

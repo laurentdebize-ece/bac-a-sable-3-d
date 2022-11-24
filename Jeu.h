@@ -47,6 +47,7 @@ typedef struct Jeu{
     int page_actuel;
     int** terrain;
     Coordonnee ordre;
+    Coordonnee selection;
     int nb_habitants_tot;
     int argent;
     int production_eau_restante;

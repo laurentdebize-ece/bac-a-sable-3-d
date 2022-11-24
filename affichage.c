@@ -112,7 +112,6 @@ void afficher_animation(Jeu* jeu, int* ballPositionX, int* ballRadius, float* ba
     EndDrawing();
 }
 
-
 void affi_bouton(Jeu* jeu, int page, int image, Vector2 pos_souris, char* nom, int* timer){
     int btnState;
     bool btnAction;
@@ -228,25 +227,40 @@ void afficher_jeu_logo_interactionAvecClick(Jeu* jeu, Vector2 pos_souris){
     if (jeu->mode_Jeu == mode_demolition)DrawTextureRec(jeu->tabImages[en_jeu][img_logosJeu].texture2D, logo_demolition, (Vector2){360, TAILLE_CASE_GRILLE*jeu->ordre.y+20}, Fade(BLUE, alphalogojeu2));
 }
 void afficher_construction_batiment(Jeu* jeu, Vector2 pos_souris){
-    pos_souris.x -= TAILLE_CASE_GRILLE*3/2;
-    pos_souris.y -= TAILLE_CASE_GRILLE*3/2;
+    Vector2 pos_souris_maison = pos_souris;
+    pos_souris_maison.x -= TAILLE_CASE_GRILLE*3/2;
+    pos_souris_maison.y -= TAILLE_CASE_GRILLE*3/2;
     Color color_construction = Fade(WHITE, 0.5f);
     switch (jeu->mode_Jeu) {
         case mode_neutre:
             break;
+        case mode_reseau:
+            DrawTexture(jeu->tabImages[en_jeu][img_route].texture2D, (int)pos_souris.x-TAILLE_CASE_GRILLE/2, (int)pos_souris.y-TAILLE_CASE_GRILLE/2, color_construction);
+            break;
         case mode_maison:
             jeu->tabImages[en_jeu][img_maison].source_Rec.x = 0 * jeu->tabImages[en_jeu][img_maison].frame_longueur; //c normal c pour me souvenir qu'il faut utiliser la mm structure de code pour augmenter les niv
-            DrawTextureRec(jeu->tabImages[en_jeu][img_maison].texture2D, jeu->tabImages[en_jeu][img_maison].source_Rec, pos_souris, color_construction);
+            DrawTextureRec(jeu->tabImages[en_jeu][img_maison].texture2D, jeu->tabImages[en_jeu][img_maison].source_Rec, pos_souris_maison, color_construction);
             break;
         case mode_usine:
-            DrawTexture(jeu->tabImages[en_jeu][img_usine].texture2D, (int)pos_souris.x, (int)pos_souris.y, color_construction);
+            DrawTexture(jeu->tabImages[en_jeu][img_usine].texture2D, (int)pos_souris.x-TAILLE_CASE_GRILLE*6/2, (int)pos_souris.y-TAILLE_CASE_GRILLE*4/2, color_construction);
             break;
         case mode_chateauDO:
-            DrawTexture(jeu->tabImages[en_jeu][img_chateauDO].texture2D, (int)pos_souris.x, (int)pos_souris.y, color_construction);
+            DrawTexture(jeu->tabImages[en_jeu][img_chateauDO].texture2D, (int)pos_souris.x-TAILLE_CASE_GRILLE*6/2, (int)pos_souris.y-TAILLE_CASE_GRILLE*4/2, color_construction);
             break;
         default:
             break;
     }
+}
+void afficher_batiment_Raylib(Jeu* jeu, Vector2 pos_souris){
+    /*Vector2 playerPosition = { 0, 0 };
+    playerPosition.x = pos_souris.x - 8;
+    playerPosition.y = pos_souris.y - 8;*/
+
+    if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)){
+
+
+    }
+
 }
 void affichage_defilement_fond(Jeu* jeu, int *timer){
     float alpha_fondu = 0.01f;
@@ -308,6 +322,8 @@ void afficherJeu(Jeu* jeu, Vector2 pos_souris, int* timer){
 
     DrawRectangleV(playerPosition, (Vector2){ PLAYER_SIZE, PLAYER_SIZE }, RED);
     DrawText(TextFormat("Case Actuelle: [%i,%i]", playerTileX, playerTileY), RESOLUTION_X-220, 0, 20, WHITE);
+    jeu->selection.x = playerTileX;
+    jeu->selection.y = playerTileY;
     EndDrawing();
 }
 
