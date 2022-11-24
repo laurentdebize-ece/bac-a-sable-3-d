@@ -225,7 +225,7 @@ int** init_conexite_route(Jeu* jeu){
     }
     return matrice_connexite_route;
 }
-
+//
 void actualiser_matrice_connexite_route(int**);
 
 void actualiser_matrice_adjacence(Jeu jeu, int** matrice_centrale, int batiment_action){
