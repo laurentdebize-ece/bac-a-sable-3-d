@@ -12,7 +12,7 @@ int** creer_matrice_adjacence(Jeu* jeu, int type_batiment){
         case usine_electrique: {
             int** matrice = (int**) calloc(jeu->nb_maison, sizeof(int*));
             for (int i = 0; i < jeu->nb_maison; i++) {
-                matrice[i] = (int*) calloc(jeu->nb_centrale, sizeof(int));
+                matrice[i] = (int*) calloc(jeu->nb_central, sizeof(int));
             }
             return matrice;
         }
@@ -41,7 +41,7 @@ void alimenter_1_maison_elec(Jeu* jeu, int numero_maison, int numero_centrale){
 
 void distribuer_electricite(Jeu* jeu, int** matrice_adjacence){
     for (int i = 0; i < jeu->nb_maison; i++) {
-        for (int j = 0; j < jeu->nb_centrale; ++j) {
+        for (int j = 0; j < jeu->nb_central; ++j) {
             if (matrice_adjacence[i][j] == 1){
                 alimenter_1_maison_elec(jeu, i, j);
             }

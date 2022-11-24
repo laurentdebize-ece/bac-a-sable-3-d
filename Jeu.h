@@ -59,11 +59,10 @@ typedef struct Jeu{
     int page_actuel;
     int nb_maison;
     int nb_chateau_eau;
-    int nb_centrale;
-    bool en_cours;
-    bool fichier;
-    int modeDeJeu;
+    int nb_central;
+    int mode_de_selection;
     int** terrain;
+    int** matrice_connexite_route;
     Coordonnee ordre;
     Coordonnee selection;
     int nb_habitants_tot;
@@ -96,6 +95,7 @@ void chargementListe(Jeu* jeu,int num,int y,int* x,FILE **ifs,int stadeEvo);
 void liberationListe(Jeu* jeu);
 int conditionAchatBatiment(Jeu* jeu,int choix);
 bool verifier_batiment_a_cote_route(Jeu* jeu, int type_de_batiment, int co_x, int co_y);
+Coordonnee* initialisation_case_ajacentes(Coordonnee coordonnee_batiment,int longueur, int hauteur );
 
 
 #endif //TEMPLATE_RAYLIB_JEU_H

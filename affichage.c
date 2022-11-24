@@ -672,3 +672,4 @@ void afficher_choix_joueur(Jeu* jeu) {
             printf("\n");
         }
     }
+

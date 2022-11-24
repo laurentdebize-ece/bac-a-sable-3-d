@@ -118,7 +118,7 @@ void enregistrer_Grille(Jeu* jeu){
             bool passe = FALSE;
             if(jeu->terrain[i][j] == 2 && jeu->batiments[maison] != NULL){
                 do{
-                    if(i == parcours->y && j == parcours->x){
+                    if(i == parcours->co.y && j == parcours->co.x){
                         fprintf(ifs, "%d ", jeu->terrain[i][j] + 18 + parcours->stadeEvolution);
                         passe = TRUE;
                     }
@@ -300,8 +300,8 @@ Coordonnee position_maison(Jeu jeu, int x, int y){
             if (x - i == batiment_actuel->x){
                 position_maison.x = batiment_actuel->x;
             }
-            if (y - i == batiment_actuel->y){
-                position_maison.y = batiment_actuel->y;
+            if (y - i == batiment_actuel->co.y){
+                position_maison.y = batiment_actuel->co.y;
             }
         }
         if (position_maison.x != -1 && position_maison.y != -1){
@@ -325,8 +325,8 @@ Coordonnee position_usine(Jeu jeu, int x, int y, int type_usine){
             }
         }
         for(int i = 0; i < LARGEUR_BATIMENTS; i++) {
-            if (y - i == batiment_actuel->y) {
-                position_usine.y = batiment_actuel->y;
+            if (y - i == batiment_actuel->co.y) {
+                position_usine.y = batiment_actuel->co.y;
             }
         }
         if (position_usine.x != -1 && position_usine.y != -1){

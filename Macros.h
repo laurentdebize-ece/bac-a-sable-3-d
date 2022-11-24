@@ -5,6 +5,9 @@
 
 //Affichage
 
+#define TRUE 1
+#define FALSE 0
+
 #define TEMPS_DEFILEMENT_FOND 7
 #define TEMPS_FONDU_FOND 2
 
