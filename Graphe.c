@@ -50,9 +50,7 @@ Jeu *lire_graphe() {
     int argent;
 
     if (!ifs) {
-        color(5, 0);
         printf("Vous n'avez pas encore de graphe\n");
-        color(15, 0);
         initialisation_Grille();
         ifs = fopen(NOM_DU_FICHIER, "r");
     }
@@ -194,14 +192,10 @@ void ajout_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y, int 
                 }
 
             }
-            color(1, 0);
             printf("La construction : route, est un succes !\n");
-            color(15, 0);
         } else {
-            color(5, 0);
             printf("Vous ne pouvez pas construire ici, un obstacle vous en empeche !\n");
             detruireBatiment(jeu,co_x,co_y,nomDuBatiment);
-            color(15, 0);
         }
     }else{
         for (int i = 0; i < jeu->batiments[nomDuBatiment]->taille.y ; i++) {
@@ -222,14 +216,10 @@ void ajout_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y, int 
                     jeu->terrain[co_y][co_x + j] = nomDuBatiment;
                 }co_y ++;
             }
-            color(1, 0);
             printf("La construction : %s, est un succes !\n", jeu->batiments[nomDuBatiment]->nom);
-            color(15, 0);
         } else {
-            color(5, 0);
             printf("Vous ne pouvez pas construire ici, un obstacle vous en empeche !\n");
             detruireBatiment(jeu,co_x,co_y,nomDuBatiment);
-            color(15, 0);
         }
     }
 }
@@ -275,13 +265,9 @@ void suppression_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y
                     co_y++;
                 }else co_y--;
             }
-            color(1, 0);
             printf("La destruction : route, est un succes !\n");
-            color(15, 0);
         } else {
-            color(5, 0);
             printf("Il n'y a pas de route a detruire !\n");
-            color(15, 0);
         }
     }else{
         for (int i = 0; i < jeu->batiments[nomDuBatiment]->taille.y ; i++) {
@@ -302,13 +288,9 @@ void suppression_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y
                     jeu->terrain[co_y][co_x + j] = 0;
                 }co_y ++;
             }
-            color(1, 0);
             printf("La destruction : %s, est un succes !\n", jeu->batiments[nomDuBatiment]->nom);
-            color(15, 0);
         } else {
-            color(5, 0);
             printf("Il n'y a rien a detruire ici !\n");
-            color(15, 0);
         }
     }
 }

@@ -2,6 +2,7 @@
 #define TEMPLATE_RAYLIB_JEU_H
 #include <stdio.h>
 #include <raylib.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <stdbool.h>
 

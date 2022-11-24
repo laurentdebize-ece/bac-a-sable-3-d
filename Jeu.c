@@ -3,9 +3,7 @@
 
 Jeu* initialisation(){
     Jeu* j;
-    color(8, 0);
     printf("Destruction de votre ancien fichier de sauvegarde (si vous en aviez un)\n");
-    color(15, 0);
     remove(NOM_DU_FICHIER);
     j = lire_graphe();
 

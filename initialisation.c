@@ -239,10 +239,8 @@ void initialiser_jeu(Jeu* jeu){
 }*/
 
 void initialisation_Grille(){
-    color(14, 0);
     printf("Creation d'un graphe ... ...\n");
     sleep(1);
-    color(15, 0);
     FILE *ifs = fopen(NOM_DU_FICHIER, "w");
     fprintf(ifs, "%d\n", ORDRE_EN_X);
     fprintf(ifs, "%d\n", ORDRE_EN_Y);
@@ -260,9 +258,7 @@ void initialisation_Grille(){
 
 Jeu* initialisation_sans_save(){
     Jeu* j;
-    color(8, 0);
     printf("Destruction de votre ancien fichier de sauvegarde (si vous en aviez un)\n");
-    color(15, 0);
     remove(NOM_DU_FICHIER);
     j = lire_graphe();
     do {
