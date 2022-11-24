@@ -3,8 +3,8 @@
 #include "Jeu.h"
 
 void initialisation_Grille();
-//void lire_graphe(Jeu* jeu);
-Jeu *lire_graphe();
+void lire_graphe(Jeu* jeu);
+Jeu *lire_graphe_console();
 void enregistrer_Grille(Jeu* jeu);
 void ajout_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y, int co_xroute, int co_yroute);
 void suppression_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y, int co_xroute, int co_yroute);

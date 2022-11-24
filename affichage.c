@@ -155,7 +155,7 @@ void affi_bouton(Jeu* jeu, int page, int image, Vector2 pos_souris, char* nom, i
             case img_bouton_suppSave:
                 printf("Destruction de votre ancien fichier de sauvegarde (si vous en aviez un)\n");
                 remove(NOM_DU_FICHIER);
-                lire_graphe(jeu);
+                lire_graphe_console(jeu);
                 break;
             case img_bouton_Capitalisme:
                 ini_fond_jeu(jeu);
@@ -433,7 +433,7 @@ void afficher_menu_console(Jeu* jeu){
         }
         case 3:{
             printf("CHARGEMENT EN COURS...\n");
-            jeu = lire_graphe();
+            jeu = lire_graphe_console();
             sleep(1);
             printf("CHARGEMENT TERMINE !\n");
             afficher_choix_joueur(jeu);

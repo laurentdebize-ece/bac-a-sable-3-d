@@ -5,7 +5,7 @@ Jeu* initialisation(){
     Jeu* j;
     printf("Destruction de votre ancien fichier de sauvegarde (si vous en aviez un)\n");
     remove(NOM_DU_FICHIER);
-    j = lire_graphe();
+    j = lire_graphe_console();
 
     j->argent = ARGENT_DE_DEBUT;
     j->production_eau_restante = 0;

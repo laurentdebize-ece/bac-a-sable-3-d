@@ -1,7 +1,6 @@
 #include "initialisation.h"
 
 
-<<<<<<< HEAD
 void initialisation_Images(Jeu* jeu){
     // TODO: NE PAS OUBLIER DE Unload des imgs apres les avoir mises en texture /!\
     //  AVEC CA :  UnloadImage(jeu->tabImages[NOMDELIMAGE].image2D);
@@ -260,7 +259,7 @@ Jeu* initialisation_sans_save(){
     Jeu* j;
     printf("Destruction de votre ancien fichier de sauvegarde (si vous en aviez un)\n");
     remove(NOM_DU_FICHIER);
-    j = lire_graphe();
+    j = lire_graphe_console();
     do {
         printf("\nChoisissez un mode de jeu:\n1-Capitaliste\n2-Communiste\n");
         scanf("%d", &j->modeDeJeu);

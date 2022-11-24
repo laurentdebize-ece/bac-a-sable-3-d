@@ -1,6 +1,6 @@
 #include "Graphe.h"
 
-/*void lire_graphe(Jeu* jeu) {
+/*Jeu* lire_graphe_console() {
     FILE *ifs = fopen(NOM_DU_FICHIER, "r");
     int ordre_x;
     int ordre_y;
@@ -28,7 +28,7 @@
         }
 
     }
-    /*if(grille->terrain[0][0] == NULL){
+    if(grille->terrain[0][0] == NULL){
         color(5, 0);
         printf("Vous n'avez pas encore de graphe\n");
         color(14, 0);
@@ -36,18 +36,20 @@
         color(15, 0);
         initialisation_Grille();
         ifs = fopen(NOM_DU_FICHIER, "r");
-    }*/
+    }
     jeu->ordre.x = ordre_x;
     jeu->ordre.y = ordre_y;
     jeu->argent = argent;
     fclose(ifs);
+    return grille;
 }*/
-Jeu *lire_graphe() {
+void lire_graphe(Jeu* jeu) {
     Jeu* grille;
     FILE *ifs = fopen(NOM_DU_FICHIER, "r");
     int ordre_x;
     int ordre_y;
     int argent;
+    int politique;
 
     if (!ifs) {
         printf("Vous n'avez pas encore de graphe\n");
@@ -58,6 +60,7 @@ Jeu *lire_graphe() {
     fscanf(ifs, "%d", &ordre_x);
     fscanf(ifs, "%d", &ordre_y);
     fscanf(ifs, "%d", &argent);
+    fscanf(ifs, "%d", &politique);
     grille = (Jeu *) malloc(sizeof(Jeu));
     grille->terrain = (int**) malloc(ordre_y * sizeof(int*));
     fscanf(ifs,"%d",&grille->modeDeJeu);
@@ -65,7 +68,7 @@ Jeu *lire_graphe() {
         grille->terrain[i] = (int*) malloc(ordre_x * sizeof(int));
     }
 
-    for (int i = 0; i < nbBatiments; i++){
+    for (int i = 0; i < nb_batiments; i++){
         grille->batiments[i] = (Batiment*) malloc(sizeof (Batiment));
     }
     grille->batiments[maison] = NULL;
@@ -91,21 +94,11 @@ Jeu *lire_graphe() {
             }
         }
     }
-
-    /*if(grille->terrain[0][0] == NULL){
-        color(5, 0);
-        printf("Vous n'avez pas encore de graphe\n");
-        color(14, 0);
-        printf("Creation d'un graphe ... ...\n");
-        color(15, 0);
-        initialisation_Grille();
-        ifs = fopen(NOM_DU_FICHIER, "r");
-    }*/
     grille->ordre.x = ordre_x;
     grille->ordre.y = ordre_y;
     grille->argent = argent;
+    grille->choix_politique = politique;
     fclose(ifs);
-    return grille;
 }
 
 
