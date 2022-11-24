@@ -133,16 +133,24 @@ void ajout_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y, int 
         y_temporaire = co_y;
         if (obstacle == FALSE){
             for (int i = 0; i < x_distance ; i++) {
-                jeu->terrain[co_y][co_x] = nomDuBatiment;
-                if (co_x < co_xroute){
-                    co_x++;
-                }else co_x--;
+                if (jeu->argent - COUT_ROUTE >= 0){
+                    jeu->terrain[co_y][co_x] = nomDuBatiment;
+                    jeu->argent-= COUT_ROUTE;
+                    if (co_x < co_xroute){
+                        co_x++;
+                    }else co_x--;
+                }
+
             }
             for (int i = 0; i <= y_distance ; i++) {
-                jeu->terrain[co_y][co_x] = nomDuBatiment;
-                if (co_y < co_yroute){
-                    co_y++;
-                }else co_y--;
+                if (jeu->argent - COUT_ROUTE >= 0){
+                    jeu->terrain[co_y][co_x] = nomDuBatiment;
+                    jeu->argent-= COUT_ROUTE;
+                    if (co_y < co_yroute){
+                        co_y++;
+                    }else co_y--;
+                }
+
             }
             color(1, 0);
             printf("La construction : route, est un succes !\n");
