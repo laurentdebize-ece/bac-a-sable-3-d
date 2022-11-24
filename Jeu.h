@@ -24,6 +24,7 @@ typedef struct Batiment{
     int nb_habitants;
     bool enCours;
     int stadeEvolution;
+    int nb_batiment;
     struct Batiment* next;
 }Batiment;
 

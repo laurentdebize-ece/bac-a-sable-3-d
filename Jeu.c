@@ -38,14 +38,17 @@ void detecterCoordonneDouble(Jeu* jeu,int x,int y,int choix){
 }
 
 Batiment * maj_liste_chaine(Batiment *nouveau,Batiment *tail,Batiment * liste){
+    liste->nb_batiment = 0;
     if(liste == NULL){
         liste = nouveau;
         liste->next = liste;
+        liste->nb_batiment = 1;
     }
     else{
         tail = liste;
         while(tail->next != liste){
             tail = tail->next;
+            liste->nb_batiment++;
         }
         tail->next = nouveau;
         nouveau->next = liste;
