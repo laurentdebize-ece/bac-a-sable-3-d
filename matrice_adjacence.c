@@ -1,7 +1,3 @@
-//
-// Created by chape on 24/11/2022.
-//
-
 #include "matrice_adjacence.h"
 
 int** creer_matrice_adjacence(Jeu* jeu, int type_batiment){

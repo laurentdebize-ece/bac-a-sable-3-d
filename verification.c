@@ -83,3 +83,7 @@ void ajout_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y, int 
         }
     }
 }*/
+
+void verif_construction_batiment(){
+
+}

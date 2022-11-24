@@ -44,7 +44,6 @@
     return grille;
 }*/
 void lire_graphe(Jeu* jeu) {
-    Jeu* grille;
     FILE *ifs = fopen(NOM_DU_FICHIER, "r");
     int ordre_x;
     int ordre_y;
@@ -61,43 +60,43 @@ void lire_graphe(Jeu* jeu) {
     fscanf(ifs, "%d", &ordre_y);
     fscanf(ifs, "%d", &argent);
     fscanf(ifs, "%d", &politique);
-    grille = (Jeu *) malloc(sizeof(Jeu));
-    grille->terrain = (int**) malloc(ordre_y * sizeof(int*));
-    fscanf(ifs,"%d",&grille->modeDeJeu);
+
+    if(jeu->en_cours ==0)jeu->terrain = (int**) malloc(ordre_y * sizeof(int*));
+
     for (int i = 0; i <= ordre_y; i++) {
-        grille->terrain[i] = (int*) malloc(ordre_x * sizeof(int));
+        jeu->terrain[i] = (int*) malloc(ordre_x * sizeof(int));
     }
 
     for (int i = 0; i < nb_batiments; i++){
-        grille->batiments[i] = (Batiment*) malloc(sizeof (Batiment));
+        jeu->batiments[i] = (Batiment*) malloc(sizeof (Batiment));
     }
-    grille->batiments[maison] = NULL;
-    grille->batiments[chateau_deau] = NULL;
-    grille->batiments[usine_electrique] = NULL;
+    jeu->batiments[maison] = NULL;
+    jeu->batiments[chateau_deau] = NULL;
+    jeu->batiments[usine_electrique] = NULL;
 
 
     for (int i = 0; i <= ordre_y; i++) {
         for (int j = 0; j <= ordre_x; j++) {
-            fscanf(ifs, " %d", &grille->terrain[i][j]);
+            fscanf(ifs, " %d", &jeu->terrain[i][j]);
         }
     }
 
     for (int y = 0; y <= ordre_y; y++) {
         for (int x = 0; x <= ordre_x; x++) {
             int stadeEvo = 0;
-            if(grille->terrain[y][x] == 2 || grille->terrain[y][x] == 3 || grille->terrain[y][x] == 4 || grille->terrain[y][x] >= 20){
-                if(grille->terrain[y][x] >= 20){
-                    stadeEvo = grille->terrain[y][x] - 20;
-                    grille->terrain[y][x] = 2;
+            if(jeu->terrain[y][x] == 2 || jeu->terrain[y][x] == 3 || jeu->terrain[y][x] == 4 || jeu->terrain[y][x] >= 20){
+                if(jeu->terrain[y][x] >= 20){
+                    stadeEvo = jeu->terrain[y][x] - 20;
+                    jeu->terrain[y][x] = 2;
                 }
-                chargementListe(grille,grille->terrain[y][x],y,&x,&ifs,stadeEvo);
+                chargementListe(jeu, jeu->terrain[y][x], y, &x, &ifs, stadeEvo);
             }
         }
     }
-    grille->ordre.x = ordre_x;
-    grille->ordre.y = ordre_y;
-    grille->argent = argent;
-    grille->choix_politique = politique;
+    jeu->ordre.x = ordre_x;
+    jeu->ordre.y = ordre_y;
+    jeu->argent = argent;
+    jeu->choix_politique = politique;
     fclose(ifs);
 }
 
@@ -113,7 +112,7 @@ void enregistrer_Grille(Jeu* jeu){
     fprintf(ifs, "%d\n",jeu->ordre.x);
     fprintf(ifs, "%d\n",jeu->ordre.y);
     fprintf(ifs, "%d\n",jeu->argent);
-    fprintf(ifs,"%d\n",jeu->modeDeJeu);
+    fprintf(ifs,"%d\n",jeu->choix_politique);
     for (int i = 0; i <= jeu->ordre.y; i++) {
         for (int j = 0; j <= jeu->ordre.x; j++) {
             bool passe = FALSE;

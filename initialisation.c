@@ -232,7 +232,6 @@ void initialiser_jeu(Jeu* jeu){
     jeu->batiments[terrain_vague].nb_habitants = 0;*/
 }
 
-=======
 /*Jeu* initialisation_structure(Jeu* grille){
     return grille;
 }*/
@@ -244,7 +243,7 @@ void initialisation_Grille(){
     fprintf(ifs, "%d\n", ORDRE_EN_X);
     fprintf(ifs, "%d\n", ORDRE_EN_Y);
     fprintf(ifs, "%d\n", ARGENT_DE_DEBUT);
-    fprintf(ifs,"%d\n",0);
+    fprintf(ifs,"%d\n", -1);
     for (int i = 0; i <= ORDRE_EN_Y; i++) {
         for (int j = 0; j <= ORDRE_EN_X; j++) {
             fprintf(ifs, "%d ", vide);
@@ -255,23 +254,6 @@ void initialisation_Grille(){
     //on ne ferme pas ce fichier car nous allons le lire juste apres dans le cas ou nous avons pas de fichier
 }
 
-Jeu* initialisation_sans_save(){
-    Jeu* j;
-    printf("Destruction de votre ancien fichier de sauvegarde (si vous en aviez un)\n");
-    remove(NOM_DU_FICHIER);
-    j = lire_graphe_console();
-    do {
-        printf("\nChoisissez un mode de jeu:\n1-Capitaliste\n2-Communiste\n");
-        scanf("%d", &j->modeDeJeu);
-    }while(j->modeDeJeu != 1 && j->modeDeJeu != 2);
-    j->argent = ARGENT_DE_DEBUT;
-    j->production_eau_restante = 0;
-    j->production_elec_restante = 0;
-    j->nb_chateau_eau = 0;
-    j->nb_centrale = 0;
-    j->nb_maison = 0;
-    return j;
-}
 
 /*Jeu* initialisation_CONSTANTE(int choix) {
      Jeu *j;
@@ -300,4 +282,3 @@ Jeu* initialisation_sans_save(){
     }
     return j;
 }*/
->>>>>>> origin/affichage_console

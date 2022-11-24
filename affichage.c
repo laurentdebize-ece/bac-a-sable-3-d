@@ -4,7 +4,7 @@ void affichage_Boucle_G(Jeu* jeu){
     InitWindow(RESOLUTION_X, RESOLUTION_Y, "ECE-CITY BETA/ALPHA de L'OMEGA");
     InitAudioDevice();      // Initialise le haut-parleur
     jeu->quitter = 0;
-    jeu->choix_politique = mode_neutre;
+    jeu->mode_de_selection = mode_neutre;
     initialisation_Images(jeu);
     initialisation_Sons(jeu);
     ini_fond_jeu(jeu);
@@ -19,11 +19,10 @@ void affichage_Boucle_G(Jeu* jeu){
     float fade = 1;
     float fadeson = 0;
 
-    SetWindowPosition(0, 25);
     SetTargetFPS(60);
     while (!jeu->quitter) {
         jeu->quitter = WindowShouldClose();
-        if(IsKeyPressed(KEY_SPACE))jeu->page_actuel = en_jeu;
+        if(IsKeyPressed(KEY_SPACE))jeu->page_actuel = en_jeu; //raccourci pour jouer
         Vector2 pos_Souris = GetMousePosition();
         switch (jeu->page_actuel) {
             case animation_Lancement:
@@ -155,7 +154,7 @@ void affi_bouton(Jeu* jeu, int page, int image, Vector2 pos_souris, char* nom, i
             case img_bouton_suppSave:
                 printf("Destruction de votre ancien fichier de sauvegarde (si vous en aviez un)\n");
                 remove(NOM_DU_FICHIER);
-                lire_graphe_console(jeu);
+                lire_graphe(jeu);
                 break;
             case img_bouton_Capitalisme:
                 ini_fond_jeu(jeu);
@@ -212,54 +211,55 @@ void afficher_jeu_logo_interactionAvecClick(Jeu* jeu, Vector2 pos_souris){
     if (selection != -1){
         switch (selection) {
             case 0:
-                jeu->choix_politique = mode_neutre;
+                jeu->mode_de_selection = mode_neutre;
                 break;
             case reseau:
                 DrawTextureRec(jeu->tabImages[en_jeu][img_logosJeu].texture2D, logo_reseau, (Vector2){0, TAILLE_CASE_GRILLE*(jeu->ordre.y+1)}, Fade(PURPLE, alphalogojeu1));
                 if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)){
-                    jeu->choix_politique = (jeu->choix_politique != mode_reseau) ? mode_reseau : mode_neutre;
+                    jeu->mode_de_selection = (jeu->mode_de_selection != mode_reseau) ? mode_reseau : mode_neutre;
                 }
                 break;
             case maison:
                 DrawTextureRec(jeu->tabImages[en_jeu][img_logosJeu].texture2D, logo_maison, (Vector2){90, TAILLE_CASE_GRILLE*(jeu->ordre.y+1)}, Fade(PURPLE, alphalogojeu1));
                 if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)){
-                    jeu->choix_politique = (jeu->choix_politique != mode_maison) ? mode_maison : mode_neutre;
+                    jeu->mode_de_selection = (jeu->mode_de_selection != mode_maison) ? mode_maison : mode_neutre;
                 }
                 break;
             case usine_electrique:
                 DrawTextureRec(jeu->tabImages[en_jeu][img_logosJeu].texture2D, logo_usine, (Vector2){180, TAILLE_CASE_GRILLE*(jeu->ordre.y+1)}, Fade(PURPLE, alphalogojeu1));
                 if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)){
-                    jeu->choix_politique = (jeu->choix_politique != mode_usine) ? mode_usine : mode_neutre;
+                    jeu->mode_de_selection = (jeu->mode_de_selection != mode_usine) ? mode_usine : mode_neutre;
                 }
                 break;
             case chateau_deau:
                 DrawTextureRec(jeu->tabImages[en_jeu][img_logosJeu].texture2D, logo_chateauDO, (Vector2){270, TAILLE_CASE_GRILLE*(jeu->ordre.y+1)}, Fade(PURPLE, alphalogojeu1));
                 if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)){
-                    jeu->choix_politique = (jeu->choix_politique != mode_chateauDO) ? mode_chateauDO : mode_neutre;
+                    jeu->mode_de_selection = (jeu->mode_de_selection != mode_chateauDO) ? mode_chateauDO : mode_neutre;
                 }
                 break;
             case demolition:
                 DrawTextureRec(jeu->tabImages[en_jeu][img_logosJeu].texture2D, logo_demolition, (Vector2){360, TAILLE_CASE_GRILLE*(jeu->ordre.y+1)}, Fade(PURPLE, alphalogojeu1));
                 if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)){
-                    jeu->choix_politique = (jeu->choix_politique != mode_demolition) ? mode_demolition : mode_neutre;
+                    jeu->mode_de_selection = (jeu->mode_de_selection != mode_demolition) ? mode_demolition : mode_neutre;
                 }
                 break;
             default:
                 break;
         }
     }
-    if (jeu->choix_politique == mode_reseau)DrawTextureRec(jeu->tabImages[en_jeu][img_logosJeu].texture2D, logo_reseau, (Vector2){0, TAILLE_CASE_GRILLE * jeu->ordre.y + 20}, Fade(BLUE, alphalogojeu2));
-    if (jeu->choix_politique == mode_maison)DrawTextureRec(jeu->tabImages[en_jeu][img_logosJeu].texture2D, logo_maison, (Vector2){90, TAILLE_CASE_GRILLE * jeu->ordre.y + 20}, Fade(BLUE, alphalogojeu2));
-    if (jeu->choix_politique == mode_usine)DrawTextureRec(jeu->tabImages[en_jeu][img_logosJeu].texture2D, logo_usine, (Vector2){180, TAILLE_CASE_GRILLE * jeu->ordre.y + 20}, Fade(BLUE, alphalogojeu2));
-    if (jeu->choix_politique == mode_chateauDO)DrawTextureRec(jeu->tabImages[en_jeu][img_logosJeu].texture2D, logo_chateauDO, (Vector2){270, TAILLE_CASE_GRILLE * jeu->ordre.y + 20}, Fade(BLUE, alphalogojeu2));
-    if (jeu->choix_politique == mode_demolition)DrawTextureRec(jeu->tabImages[en_jeu][img_logosJeu].texture2D, logo_demolition, (Vector2){360, TAILLE_CASE_GRILLE * jeu->ordre.y + 20}, Fade(BLUE, alphalogojeu2));
+    if (jeu->mode_de_selection == mode_reseau)DrawTextureRec(jeu->tabImages[en_jeu][img_logosJeu].texture2D, logo_reseau, (Vector2){0, TAILLE_CASE_GRILLE * jeu->ordre.y + 20}, Fade(BLUE, alphalogojeu2));
+    if (jeu->mode_de_selection == mode_maison)DrawTextureRec(jeu->tabImages[en_jeu][img_logosJeu].texture2D, logo_maison, (Vector2){90, TAILLE_CASE_GRILLE * jeu->ordre.y + 20}, Fade(BLUE, alphalogojeu2));
+    if (jeu->mode_de_selection == mode_usine)DrawTextureRec(jeu->tabImages[en_jeu][img_logosJeu].texture2D, logo_usine, (Vector2){180, TAILLE_CASE_GRILLE * jeu->ordre.y + 20}, Fade(BLUE, alphalogojeu2));
+    if (jeu->mode_de_selection == mode_chateauDO)DrawTextureRec(jeu->tabImages[en_jeu][img_logosJeu].texture2D, logo_chateauDO, (Vector2){270, TAILLE_CASE_GRILLE * jeu->ordre.y + 20}, Fade(BLUE, alphalogojeu2));
+    if (jeu->mode_de_selection == mode_demolition)DrawTextureRec(jeu->tabImages[en_jeu][img_logosJeu].texture2D, logo_demolition, (Vector2){360, TAILLE_CASE_GRILLE * jeu->ordre.y + 20}, Fade(BLUE, alphalogojeu2));
 }
+
 void afficher_construction_batiment(Jeu* jeu, Vector2 pos_souris){
     Vector2 pos_souris_maison = pos_souris;
     pos_souris_maison.x -= TAILLE_CASE_GRILLE*3/2;
     pos_souris_maison.y -= TAILLE_CASE_GRILLE*3/2;
     Color color_construction = Fade(WHITE, 0.5f);
-    switch (jeu->choix_politique) {
+    switch (jeu->mode_de_selection) {
         case mode_neutre:
             break;
         case mode_reseau:
@@ -279,7 +279,7 @@ void afficher_construction_batiment(Jeu* jeu, Vector2 pos_souris){
             break;
     }
 }
-void afficher_batiment_Raylib(Jeu* jeu, int type_batiment){
+void afficher_batiment_Raylib(Jeu* jeu){
     int nbmaison = 1;
     int nbchateau = 1;
     int nbusine = 1;
@@ -287,26 +287,36 @@ void afficher_batiment_Raylib(Jeu* jeu, int type_batiment){
     Batiment *listeChateau = jeu->batiments[chateau_deau];
     Batiment *listeUsine = jeu->batiments[usine_electrique];
 
+    for (int y = 0; y < jeu->ordre.y; y++) {
+        for (int x = 0; x < jeu->ordre.x; x++) {
+            if (jeu->terrain[y][x] == reseau){
+                DrawTexture(jeu->tabImages[en_jeu][img_route].texture2D, x*TAILLE_CASE_GRILLE, y*TAILLE_CASE_GRILLE, WHITE);
+            }
+        }
+    }
+
     if(listeMaison != NULL) {
         do {
             printf("Maison %d : x: %d  y: %d    stade: %d\n", nbmaison, listeMaison->x, listeMaison->y,listeMaison->stadeEvolution);
-            DrawTexture(jeu->tabImages[en_jeu][img_maison].texture2D, listeMaison->x, listeMaison->y, WHITE); //TODO : DOIS CHANGER CAR PAS EVOLUTION LA
+            jeu->tabImages[en_jeu][img_maison].source_Rec.x = listeMaison->stadeEvolution * jeu->tabImages[en_jeu][img_maison].frame_longueur;
+            DrawTextureRec(jeu->tabImages[en_jeu][img_maison].texture2D, jeu->tabImages[en_jeu][img_maison].source_Rec, (Vector2){listeMaison->x*TAILLE_CASE_GRILLE, listeMaison->y*TAILLE_CASE_GRILLE}, WHITE); //TODO : DOIS CHANGER CAR PAS EVOLUTION LA
             nbmaison++;
             listeMaison = listeMaison->next;
 
         } while (listeMaison != jeu->batiments[maison]);
     }
-    else{printf("Liste maison vide\n");}
+    else DrawText("ERROR LISTE MAISON VIDE", LONGUEUR_FENETRE + 100, 30, 10, WHITE);
 
     if(listeChateau != NULL) {
         do {
             printf("Chateau d'eau %d : x: %d  y: %d\n", nbchateau, listeChateau->x, listeChateau->y);
+            DrawTexture(jeu->tabImages[en_jeu][img_chateauDO].texture2D, listeChateau->x*TAILLE_CASE_GRILLE, listeChateau->y*TAILLE_CASE_GRILLE, WHITE); //TODO : DOIS CHANGER CAR PAS EVOLUTION LA
             nbchateau++;
             listeChateau = listeChateau->next;
 
         } while (listeChateau != jeu->batiments[chateau_deau]);
     }
-    else{printf("Liste chateau eau vide\n");}
+    else DrawText("ERROR LISTE CHATEAU VIDE", LONGUEUR_FENETRE + 100, 10, 10, WHITE);
 
     if(listeUsine != NULL) {
         do {
@@ -316,8 +326,9 @@ void afficher_batiment_Raylib(Jeu* jeu, int type_batiment){
 
         } while (listeUsine != jeu->batiments[usine_electrique]);
     }
-    else{printf("Liste usine electrique vide\n");}
+    else DrawText("ERROR LISTE USINE VIDE", LONGUEUR_FENETRE + 100, 20, 10, WHITE);
 }
+
 void affichage_defilement_fond(Jeu* jeu, int *timer){
     float alpha_fondu = 0.01f;
     if (*timer < 60*TEMPS_DEFILEMENT_FOND){
@@ -372,19 +383,18 @@ void afficherJeu(Jeu* jeu, Vector2 pos_souris, int* timer){
             DrawRectangleLines(x * TAILLE_CASE_GRILLE, (y) * TAILLE_CASE_GRILLE, TAILLE_CASE_GRILLE, TAILLE_CASE_GRILLE, Fade(WHITE, 0.6f));
         }
     }
+    afficher_batiment_Raylib(jeu);
     affi_bouton(jeu, jeu->page_actuel, img_boutonRetourMenu, pos_souris, "MENU", timer);
     afficher_jeu_logo_interactionAvecClick(jeu, pos_souris);
     afficher_construction_batiment(jeu, pos_souris);
 
-    DrawRectangleV(playerPosition, (Vector2){ PLAYER_SIZE, PLAYER_SIZE }, RED);
+
+
     DrawText(TextFormat("Case Actuelle: [%i,%i]", playerTileX, playerTileY), RESOLUTION_X-220, 0, 20, WHITE);
     jeu->selection.x = playerTileX;
     jeu->selection.y = playerTileY;
     EndDrawing();
 }
-
-
-
 
 void print_message_error_construire_hors_map(){
     printf("\n VOUS NE POUVEZ PAS CONSTRUIRE EN DEHORS DES LIMITES DE LA MAP !!!\n\n");
@@ -415,7 +425,6 @@ void afficher_menu_console(Jeu* jeu){
             }
         }
         case 1:{
-            jeu = initialisation_sans_save();
             afficher_choix_joueur(jeu);
             break;
         }
@@ -426,15 +435,12 @@ void afficher_menu_console(Jeu* jeu){
             } else {
                 printf("SAUVEGARDE EN COURS...\n");
                 enregistrer_Grille(jeu);
-                sleep(2);
                 printf("SAUVEGARDE EFFECTUEE\n");
                 break;
             }
         }
         case 3:{
             printf("CHARGEMENT EN COURS...\n");
-            jeu = lire_graphe_console();
-            sleep(1);
             printf("CHARGEMENT TERMINE !\n");
             afficher_choix_joueur(jeu);
             break;
@@ -501,7 +507,7 @@ void afficher_choix_joueur(Jeu* jeu) {
                 }
                 if(verifier_batiment_a_cote_route(jeu, maison, co_x, co_y) && conditionAchatBatiment(jeu, maison)){
                     printf("Ajout d'une maison ...\n");
-                    ajouterBatiment(jeu, co_x, co_y, choix);
+                    ajouterBatiment_ListeChainee(jeu, co_x, co_y, choix);
                     ajout_Batiment_Grille(jeu, maison, co_x, co_y, co_x1, co_y1);
                     sleep(1);
                 }
@@ -517,7 +523,7 @@ void afficher_choix_joueur(Jeu* jeu) {
                 }
                 if(verifier_batiment_a_cote_route(jeu, chateau_deau, co_x, co_y) && conditionAchatBatiment(jeu, chateau_deau)){
                     printf("Ajout d'un chateau d'eau ...\n");
-                    ajouterBatiment(jeu, co_x, co_y, choix);
+                    ajouterBatiment_ListeChainee(jeu, co_x, co_y, choix);
                     ajout_Batiment_Grille(jeu, chateau_deau, co_x, co_y, co_x1, co_y1);
                     sleep(1);
                 }
@@ -533,7 +539,7 @@ void afficher_choix_joueur(Jeu* jeu) {
                 }
                 if (verifier_batiment_a_cote_route(jeu, usine_electrique, co_x, co_y) && conditionAchatBatiment(jeu, usine_electrique)){
                     printf("Ajout d'une usine electrique ...\n");
-                    ajouterBatiment(jeu, co_x, co_y, choix);
+                    ajouterBatiment_ListeChainee(jeu, co_x, co_y, choix);
                     ajout_Batiment_Grille(jeu, usine_electrique, co_x, co_y, co_x1, co_y1);
                     sleep(1);
                 }

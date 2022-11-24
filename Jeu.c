@@ -5,7 +5,7 @@ Jeu* initialisation(){
     Jeu* j;
     printf("Destruction de votre ancien fichier de sauvegarde (si vous en aviez un)\n");
     remove(NOM_DU_FICHIER);
-    j = lire_graphe_console();
+    //j = lire_graphe_console(); //psk pas console
 
     j->argent = ARGENT_DE_DEBUT;
     j->production_eau_restante = 0;
@@ -50,43 +50,7 @@ Batiment* maj_liste_chaine(Batiment *nouveau,Batiment *tail,Batiment * liste){
     }return liste;
 }
 
-int difference_entre_2_nombres_VALEURABSOLUE(int a, int b){
-    if (a<b){
-        return b-a;
-    }else return a-b;
-}
-void detecterCoordonneDouble(Jeu* jeu,int x,int y,int choix){
-    Batiment *liste = jeu->batiments[choix];
-    Batiment *parcours = liste;
-    if(liste != NULL) {
-        while (parcours->next != liste) {
-            if (parcours->x == x && parcours->y == y) {
-                printf("Coordonnees invalides\n");
-            }
-            parcours = parcours->next;
-        }
-    }
-}
-Batiment * maj_liste_chaine(Batiment *nouveau,Batiment *tail,Batiment * liste){
-    liste->nb_batiment = 0;
-    if(liste == NULL){
-        liste = nouveau;
-        liste->next = liste;
-        liste->nb_batiment = 1;
-    }
-    else{
-        tail = liste;
-        while(tail->next != liste){
-            tail = tail->next;
-            liste->nb_batiment++;
-        }
-        tail->next = nouveau;
-        nouveau->next = liste;
-    }return liste;
-}
-
-
-void ajouterBatiment(Jeu* jeu,int x,int y,int choix){
+void ajouterBatiment_ListeChainee(Jeu* jeu, int x, int y, int choix){
     Batiment *nouveau = NULL;
     Batiment * tail = NULL;
     Batiment * liste = NULL;
@@ -243,7 +207,7 @@ Batiment* maj_charge_liste(Jeu* jeu,Batiment* liste,int* x,int y,FILE* ifs,int c
     bool bouclePasse = 0;
 
     if(liste == NULL) {
-        ajouterBatiment(jeu, (*x), y, choix);
+        ajouterBatiment_ListeChainee(jeu, (*x), y, choix);
         jeu->batiments[choix]->enCours = 1;
         if(choix == maison){
             jeu->batiments[choix]->stadeEvolution = stadeEvo;
@@ -286,7 +250,7 @@ Batiment* maj_charge_liste(Jeu* jeu,Batiment* liste,int* x,int y,FILE* ifs,int c
         }while(parcours != jeu->batiments[choix]);
 
         if(bouclePasse == 0) {
-            ajouterBatiment(jeu, (*x), y, choix);
+            ajouterBatiment_ListeChainee(jeu, (*x), y, choix);
             Batiment *parcoursbis = liste;
             while (parcoursbis->next != liste) {
                 parcoursbis = parcoursbis->next;
@@ -789,7 +753,6 @@ bool verifier_batiment_a_cote_route(Jeu *jeu, int type_de_batiment, int co_x, in
     }
 
 }
-
 
 int conditionAchatBatiment(Jeu* jeu,int choix){
     switch(choix){

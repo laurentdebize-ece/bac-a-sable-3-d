@@ -38,7 +38,7 @@ typedef struct Batiment{
     bool alimente_eau;
     bool alimente_elec;
     Coordonnee taille;
-    Coordonnee cases;
+    Coordonnee co;
     Coordonnee* cases_adjacentes;
     char* nom;
     int x,y;
@@ -85,12 +85,11 @@ typedef struct Jeu{
 #include "Graphe.h"
 #include "reasings.h"
 #include "verification.h"
-#include "COULEURS.h"
 
 
 int difference_entre_2_nombres_VALEURABSOLUE(int a, int b);
 Jeu* initialisation_sans_save();
-void ajouterBatiment(Jeu* jeu,int x,int y,int choix);
+void ajouterBatiment_ListeChainee(Jeu* jeu, int x, int y, int choix);
 void afficherM(Jeu* jeu);
 void detruireBatiment(Jeu* jeu,int x,int y,int choix);
 void chargementListe(Jeu* jeu,int num,int y,int* x,FILE **ifs,int stadeEvo);
