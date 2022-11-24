@@ -30,6 +30,7 @@ typedef struct Batiment{
 typedef struct Jeu{
     bool en_cours;
     bool fichier;
+    int modeDeJeu;
     int** terrain;
     Coordonnee ordre;
     int nb_habitants_tot;

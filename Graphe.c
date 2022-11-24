@@ -18,10 +18,9 @@ Jeu *lire_graphe() {
     fscanf(ifs, "%d", &ordre_x);
     fscanf(ifs, "%d", &ordre_y);
     fscanf(ifs, "%d", &argent);
-
     grille = (Jeu *) malloc(sizeof(Jeu));
     grille->terrain = (int**) malloc(ordre_y * sizeof(int*));
-
+    fscanf(ifs,"%d",&grille->modeDeJeu);
     for (int i = 0; i <= ordre_y; i++) {
         grille->terrain[i] = (int*) malloc(ordre_x * sizeof(int));
     }
@@ -81,6 +80,7 @@ void enregistrer_Grille(Jeu* jeu){
     fprintf(ifs, "%d\n",jeu->ordre.x);
     fprintf(ifs, "%d\n",jeu->ordre.y);
     fprintf(ifs, "%d\n",jeu->argent);
+    fprintf(ifs,"%d\n",jeu->modeDeJeu);
     for (int i = 0; i <= jeu->ordre.y; i++) {
         for (int j = 0; j <= jeu->ordre.x; j++) {
             bool passe = FALSE;

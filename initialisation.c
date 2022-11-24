@@ -14,6 +14,7 @@ void initialisation_Grille(){
     fprintf(ifs, "%d\n", ORDRE_EN_X);
     fprintf(ifs, "%d\n", ORDRE_EN_Y);
     fprintf(ifs, "%d\n", ARGENT_DE_DEBUT);
+    fprintf(ifs,"%d\n",0);
     for (int i = 0; i <= ORDRE_EN_Y; i++) {
         for (int j = 0; j <= ORDRE_EN_X; j++) {
             fprintf(ifs, "%d ", vide);
@@ -31,7 +32,10 @@ Jeu* initialisation_sans_save(){
     color(15, 0);
     remove(NOM_DU_FICHIER);
     j = lire_graphe();
-
+    do {
+        printf("\nChoisissez un mode de jeu:\n1-Capitaliste\n2-Communiste\n");
+        scanf("%d", &j->modeDeJeu);
+    }while(j->modeDeJeu != 1 && j->modeDeJeu != 2);
     j->argent = ARGENT_DE_DEBUT;
     j->production_eau_restante = 0;
     j->production_elec_restante = 0;
