@@ -39,7 +39,9 @@ Jeu* initialisation_sans_save(){
     j->argent = ARGENT_DE_DEBUT;
     j->production_eau_restante = 0;
     j->production_elec_restante = 0;
-
+    j->nb_chateau_eau = 0;
+    j->nb_centrale = 0;
+    j->nb_maison = 0;
     return j;
 }
 

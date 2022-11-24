@@ -37,18 +37,15 @@ void detecterCoordonneDouble(Jeu* jeu,int x,int y,int choix){
     }
 }
 
-Batiment * maj_liste_chaine(Batiment *nouveau,Batiment *tail,Batiment * liste){
-    liste->nb_batiment = 0;
+Batiment* maj_liste_chaine(Batiment *nouveau,Batiment *tail,Batiment * liste){
     if(liste == NULL){
         liste = nouveau;
         liste->next = liste;
-        liste->nb_batiment = 1;
     }
     else{
         tail = liste;
         while(tail->next != liste){
             tail = tail->next;
-            liste->nb_batiment++;
         }
         tail->next = nouveau;
         nouveau->next = liste;
@@ -75,6 +72,7 @@ void ajouterBatiment(Jeu* jeu,int x,int y,int choix){
             liste = jeu->batiments[maison];
             liste = maj_liste_chaine(nouveau, tail, liste);
             jeu->batiments[maison] = liste;
+            jeu->nb_maison++;
             break;
         }
         case chateau_deau: {
@@ -85,6 +83,7 @@ void ajouterBatiment(Jeu* jeu,int x,int y,int choix){
             liste =  jeu->batiments[chateau_deau];
             liste = maj_liste_chaine(nouveau, tail, liste);
             jeu->batiments[chateau_deau] = liste;
+            jeu->nb_chateau_eau++;
             break;
         }
         case usine_electrique: {
@@ -95,6 +94,7 @@ void ajouterBatiment(Jeu* jeu,int x,int y,int choix){
             liste =  jeu->batiments[usine_electrique];
             liste = maj_liste_chaine(nouveau, tail, liste);
             jeu->batiments[usine_electrique] = liste;
+            jeu->nb_centrale++;
             break;
         }
         default : {
@@ -343,6 +343,7 @@ void liberationListe(Jeu* jeu) {
     jeu->batiments[chateau_deau] = NULL;
     jeu->batiments[usine_electrique] = NULL;
 }
+
 
 bool verifier_batiment_a_cote_route(Jeu *jeu, int type_de_batiment, int co_x, int co_y) {
     int nb_connexion = 0;

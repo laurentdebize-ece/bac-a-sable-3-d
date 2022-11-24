@@ -26,11 +26,13 @@ typedef struct Batiment{
     int nb_habitants;
     bool enCours;
     int stadeEvolution;
-    int nb_batiment;
     struct Batiment* next;
 }Batiment;
 
 typedef struct Jeu{
+    int nb_maison;
+    int nb_chateau_eau;
+    int nb_centrale;
     bool en_cours;
     bool fichier;
     int modeDeJeu;
