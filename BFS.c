@@ -194,7 +194,7 @@ int** init_conexite_route(Jeu* jeu){
                 nb_batiment = jeu->nb_chateau_eau;
                 break;
             case usine_electrique :
-                nb_batiment = jeu->nb_central;
+                nb_batiment = jeu->nb_usine_electrique;
                 break;
         }
         printf("switch case ok %d\n",nb_batiment);

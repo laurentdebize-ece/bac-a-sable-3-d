@@ -66,7 +66,7 @@ void ajouterBatiment_ListeChainee(Jeu* jeu, int x, int y, int choix){
             nouveau->taille.y = TAILLE_MAISON;
             nouveau->cases_adjacentes = initialisation_case_ajacentes(nouveau->co, TAILLE_MAISON, TAILLE_MAISON);
             nouveau->nom = "Maison";
-            nouveau->stadeEvolution = 1;
+            nouveau->stadeEvolution = 0;
             liste = jeu->batiments[maison];
             liste = maj_liste_chaine(nouveau, tail, liste);
             jeu->batiments[maison] = liste;
