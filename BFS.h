@@ -6,5 +6,6 @@
 
 void BFS_connexite(int** matrice_connexite_route, Coordonnee tuile, int num_connexite);
 int** init_conexite_route(Jeu* jeu);
-
+void connexite_route_ajout_batiment(Jeu* jeu, Batiment* nouveau);
+void connexite_route_ajout_route(Jeu* jeu, Coordonnee debut, Coordonnee fin);
 #endif //BAC_A_SABLE_2_BFS_H
