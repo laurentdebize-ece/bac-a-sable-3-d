@@ -174,18 +174,18 @@ int** init_conexite_route(Jeu* jeu){
         }
     }
     printf("matrice_connexite_route initialiser\n");
-    for (int j = maison; j < nb_batiments ; j++) {
+    for (int j = maison; j < nb_type_batiments ; j++) {
         batiment->next = jeu->batiments[j]->next;
         int nb_batiment;
         switch (j) {
             case maison :
-                nb_batiment = jeu->nb_maison;
+                nb_batiment = jeu->batiments[maison]->nb_batiment;
                 break;
             case chateau_deau :
-                nb_batiment = jeu->nb_chateau_eau;
+                nb_batiment = jeu->batiments[chateau_deau]->nb_batiment;
                 break;
             case usine_electrique :
-                nb_batiment = jeu->nb_central;
+                nb_batiment = jeu->batiments[usine_electrique]->nb_batiment;
                 break;
         }
         printf("switch case ok %d\n",nb_batiment);

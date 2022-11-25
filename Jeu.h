@@ -12,7 +12,7 @@ enum {communisme, capitalisme};
 enum {animation_Lancement, menu_principale, selection_choix_jeu,en_jeu, regles, credis, nb_pages};
 enum {img_menu, img_boutonoff, img_boutonJouer, img_boutonSauvegarder, img_boutonRegles, img_boutonCredits, img_bouton_suppSave, img_bouton_Communisme, img_bouton_Capitalisme, img_fond_ChoixJeu, img_fondJeu1, img_fondJeu2, img_fondJeu3, img_fondJeu4, img_logosJeu, img_boutonRetourMenu, img_route, img_maison, img_usine, img_chateauDO, nb_img};
 enum {mode_neutre, mode_reseau ,mode_maison, mode_usine, mode_chateauDO, mode_demolition, nb_modes};
-enum {vide, reseau, maison, chateau_deau, usine_electrique, demolition, nb_batiments};
+enum {vide, reseau, maison, chateau_deau, usine_electrique, demolition, nb_type_batiments};
 enum {son_Bouton, son_menu, nb_sons};
 
 typedef struct Coordonnee {
@@ -47,6 +47,7 @@ typedef struct Batiment{
     int stadeEvolution;
     int nb_batiment;
     int experience;
+    int numero;
     struct Batiment* next;
 }Batiment;
 
@@ -56,12 +57,11 @@ typedef struct Jeu{
     bool quitter;
     int choix_politique;
     int page_actuel;
-    int nb_maison;
-    int nb_chateau_eau;
-    int nb_central;
     int mode_de_selection;
     int** terrain;
     int** matrice_connexite_route;
+    Matrice_batiment** matrice_connexite_eau;
+    Matrice_batiment** matrice_connexite_electricite;
     int num_connexite;
     Coordonnee ordre;
     Coordonnee selection;
@@ -70,7 +70,7 @@ typedef struct Jeu{
     int production_eau_restante;
     int production_elec_restante;
     int timer_jeu;
-    Batiment* batiments[nb_batiments];
+    Batiment* batiments[nb_type_batiments];
     S_Image tabImages[nb_pages][nb_img];
     Sound tabSon[nb_sons];
 }Jeu;
@@ -96,6 +96,7 @@ void liberationListe(Jeu* jeu);
 int conditionAchatBatiment(Jeu* jeu,int choix);
 bool verifier_batiment_a_cote_route(Jeu* jeu, int type_de_batiment, int co_x, int co_y);
 Coordonnee* initialisation_case_ajacentes(Coordonnee coordonnee_batiment,int longueur, int hauteur );
+void compteurNbBatimentListe(Jeu* jeu,int choix);
 
 
 #endif //TEMPLATE_RAYLIB_JEU_H
