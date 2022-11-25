@@ -271,6 +271,13 @@ void connexite_route_ajout_route(Jeu* jeu, Coordonnee debut, Coordonnee fin){
         }
     }
     if (connexe && batiment_a_cote){
-        jeu->num_connexite++;
+        jeu->num_connexite--;
+    }
+    if (connexe || batiment_a_cote){
+        for (int i = 0; i < ((debut.x - fin.x + 1 + debut.y - fin.y + 1) * 2); i++){
+            if (jeu->matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x] == 1){
+                BFS_connexite(jeu, cases_adjacentes[i]);
+            }
+        }
     }
 }
