@@ -15,6 +15,7 @@ void affi_bouton(Jeu* jeu, int page, int image, Vector2 pos_souris, char* nom, i
 void afficher_construction_batiment(Jeu* jeu, Vector2 pos_souris);
 void afficher_batiment_Raylib(Jeu* jeu);
 void afficherJeu(Jeu* jeu, Vector2 pos_souris, int* timer);
+void afficherMatriceConnexiteRoute(Jeu* jeu);
 
 typedef struct Map {
     unsigned int x;            // Number of tiles in X axis

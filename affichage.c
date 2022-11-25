@@ -478,6 +478,7 @@ void afficher_choix_joueur(Jeu* jeu) {
     printf("6 : Detruire batiment\n");
     printf("9 : ~~~~ AFFICHER LA MAP ~~~~\n");
     printf("10 : Quel batiment ?\n");
+    printf("11 : Matrice afficher route\n");
     scanf(" %d", &choix);
     switch (choix) {
         case 0: {
@@ -640,6 +641,9 @@ void afficher_choix_joueur(Jeu* jeu) {
                 position_batiment(*jeu, a, b); //retourne les coordonnées
                 break;
             }
+            case 11:{
+                afficherMatriceConnexiteRoute(jeu);
+            }
             default : {
                 break;
             }
@@ -648,28 +652,36 @@ void afficher_choix_joueur(Jeu* jeu) {
     }
     afficher_choix_joueur(jeu);
 }
-    void afficher_la_grille(Jeu *jeu) {  ///la fonction ici presente est tres relou parceque j ai voulu faire les marquages en x et en y mais on ne peut pas bien afficher l'echelle car nous sommes dans la console dcp j ai fais au mieux :)
-        printf("   ");
-        for (int i = 0; i <= jeu->ordre.x -
-                             4; i++) { //si tu comprends pas pourquoi je fais -3 demande à sacha il a fait ça c normal
-            printf("%d ", i);
+void afficher_la_grille(Jeu *jeu) {  ///la fonction ici presente est tres relou parceque j ai voulu faire les marquages en x et en y mais on ne peut pas bien afficher l'echelle car nous sommes dans la console dcp j ai fais au mieux :)
+    printf("   ");
+    for (int i = 0; i <= jeu->ordre.x -
+                         4; i++) { //si tu comprends pas pourquoi je fais -3 demande à sacha il a fait ça c normal
+        printf("%d ", i);
+    }
+    printf("\n");
+    for (int y = 0; y <= jeu->ordre.y; y++) {
+        if (y < 10) {
+            printf(" ");
+        }
+        printf("%d ", y);
+        for (int x = 0; x <= jeu->ordre.x; x++) {
+            if (jeu->terrain[y][x] == vide) {
+            } else if (jeu->terrain[y][x] == reseau) {
+            } else if (jeu->terrain[y][x] == maison) {
+            } else if (jeu->terrain[y][x] == chateau_deau) {
+            } else if (jeu->terrain[y][x] == usine_electrique) {
+            }
+            printf("%d ", jeu->terrain[y][x]);
         }
         printf("\n");
-        for (int y = 0; y <= jeu->ordre.y; y++) {
-            if (y < 10) {
-                printf(" ");
-            }
-            printf("%d ", y);
-            for (int x = 0; x <= jeu->ordre.x; x++) {
-                if (jeu->terrain[y][x] == vide) {
-                } else if (jeu->terrain[y][x] == reseau) {
-                } else if (jeu->terrain[y][x] == maison) {
-                } else if (jeu->terrain[y][x] == chateau_deau) {
-                } else if (jeu->terrain[y][x] == usine_electrique) {
-                }
-                printf("%d ", jeu->terrain[y][x]);
-            }
-            printf("\n");
+    }
+}
+
+void afficherMatriceConnexiteRoute(Jeu* jeu){
+    for(int i = 0;i < ORDRE_EN_Y;i++){
+        for(int j = 0;j < ORDRE_EN_X;j++) {
+            printf("%d", jeu->matrice_connexite_route[i][j]);
         }
     }
+}
 
