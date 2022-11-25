@@ -1,89 +1,135 @@
 #include "verification.h"
 
-/*void verification_batiment_peut_se_placer(Jeu* jeu, int nomDuBatiment, Vector2 position1, Vector2 co_route){
-    ajout_Batiment_Grille(jeu, nomDuBatiment, position1.x, position1.y, co_route.x, co_route.y);
+// 1 quand pas d obstacle
+// 0 quand obstacle
+
+bool verification_colision_batiment(Jeu* jeu, int nomDuBatiment){
+    int co_x = jeu->selection.x-1;
+    int co_y = jeu->selection.y-1;
+    if (nomDuBatiment == maison){
+        for (int i = 0; i < TAILLE_MAISON ; i++) {
+            for (int j = 0; j < TAILLE_MAISON; j++) {
+                if (co_x + j<0 || co_y + i<0)return 0;
+                else if (jeu->terrain[co_y + i][co_x + j] != 0) return 0;
+            }
+        }
+
+    }
+    else if (nomDuBatiment == usine_electrique || nomDuBatiment == chateau_deau){
+        for (int i = 0; i < LARGEUR_BATIMENTS ; i++) {
+            for (int j = 0; j < LONGUEUR_BATIMENTS; j++) {
+                if (jeu->terrain[co_y + i][co_x + j] != 0){
+                    return 0;
+                }
+            }
+        }
+
+    }
+    return 1;
 }
 
-void ajout_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y, int co_xroute, int co_yroute){
-    bool obstacle = 0;
-    int y_temporaire = co_y;
-
-    if (co_xroute !=-1 || co_yroute != -1){
-        int x_temporaire = co_x;
-        int x_distance=difference_entre_2_nombres_VALEURABSOLUE(co_x, co_xroute), y_distance=difference_entre_2_nombres_VALEURABSOLUE(co_y, co_yroute);
-        for (int i = 0; i < x_distance ; i++) {
-            if (jeu->terrain[co_y][x_temporaire] != 0){
-                obstacle = 1;
-                break;
-            }
-            if (co_x < co_xroute){
-                x_temporaire++;
-            }else x_temporaire--;
-        }
-        for (int i = 0; i <= y_distance ; i++) {
-            if (jeu->terrain[y_temporaire][co_x] != 0){
-                obstacle = 1;
-                break;
-            }
-            if (co_y < co_yroute){
-                y_temporaire++;
-            }else y_temporaire--;
-        }
-        x_temporaire = co_x;
-        y_temporaire = co_y;
-        if (obstacle == 0){
-            for (int i = 0; i < x_distance ; i++) {
-                if (jeu->argent - COUT_ROUTE >= 0){
-                    jeu->terrain[co_y][co_x] = nomDuBatiment;
-                    jeu->argent-= COUT_ROUTE;
-                    if (co_x < co_xroute){
-                        co_x++;
-                    }else co_x--;
+bool verification_batiment_peut_se_placer(Jeu* jeu, int nomDuBatiment, Vector2 pos_ini_batiment, Vector2 co_route){
+    int longueur = 0;
+    int largeur = 0;
+    Vector2 pos_souris = GetMousePosition();
+    if (pos_souris.x <0 || pos_souris.y <0 || pos_souris.x > TAILLE_CASE_GRILLE*jeu->ordre.x || pos_souris.y> TAILLE_CASE_GRILLE*jeu->ordre.y) {
+        return 0;
+    } else{
+        switch (nomDuBatiment) {
+            case maison:
+                longueur = TAILLE_MAISON;
+                largeur = TAILLE_MAISON; //car c'est un carre pour la maison
+                if (pos_ini_batiment.x >= 0 && pos_ini_batiment.y >= 0 && pos_ini_batiment.x + longueur <= jeu->ordre.x+1 && pos_ini_batiment.y + largeur <= jeu->ordre.y+1){
+                    if (verification_colision_batiment(jeu, nomDuBatiment) == 1) return 1;
                 }
-
-            }
-            for (int i = 0; i <= y_distance ; i++) {
-                if (jeu->argent - COUT_ROUTE >= 0){
-                    jeu->terrain[co_y][co_x] = nomDuBatiment;
-                    jeu->argent-= COUT_ROUTE;
-                    if (co_y < co_yroute){
-                        co_y++;
-                    }else co_y--;
+                return 0;
+            case usine_electrique:
+            case chateau_deau:
+                longueur = LONGUEUR_BATIMENTS;
+                largeur = LARGEUR_BATIMENTS;
+                if (pos_ini_batiment.x >= 0 && pos_ini_batiment.y >= 0 && pos_ini_batiment.x + longueur <= jeu->ordre.x && pos_ini_batiment.y + largeur <= jeu->ordre.y) {
+                    if (verification_colision_batiment(jeu, nomDuBatiment) == 1) return 1;
                 }
-
-            }
-            printf("La construction : route, est un succes !\n");
-        } else {
-            printf("Vous ne pouvez pas construire ici, un obstacle vous en empeche !\n");
-            detruireBatiment(jeu,co_x,co_y,nomDuBatiment);
+                return 0;
+            default:
+                return 0;
         }
-    }else{
-        for (int i = 0; i < jeu->batiments[nomDuBatiment]->taille.y ; i++) {
-            for (int j = 0; j < jeu->batiments[nomDuBatiment]->taille.x; j++) {
-                if (jeu->terrain[co_y][co_x + j] != 0){
-                    obstacle = 1;
+    }return 0;
+}
+
+void ajout_batiment_terrain(Jeu* jeu, int nomDuBatiment, Vector2 pos1){
+    for (int i = 0; i < jeu->batiments[nomDuBatiment]->taille.y ; i++) {
+        for (int j = 0; j < jeu->batiments[nomDuBatiment]->taille.x; j++) {
+            jeu->terrain[(int)pos1.y][(int)pos1.x + j] = nomDuBatiment;
+        }pos1.y++;
+    }
+    printf("%s construite\n", jeu->batiments[nomDuBatiment]->nom);
+}
+
+void poser_batiment(Jeu* jeu){
+    Vector2 posBatiment = jeu->selection;
+    posBatiment.x -= 1;
+    posBatiment.y -= 1;
+    if (jeu->page_actuel == en_jeu){
+        if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)){
+            switch (jeu->mode_de_selection) {
+                case mode_neutre:
                     break;
-                }
+                case mode_reseau:
+                    break;
+                case mode_maison:
+                    if (verification_batiment_peut_se_placer(jeu, maison, posBatiment, (Vector2){-1, -1}) == 1){
+                        //ajout batiment
+                        ajouterBatiment_ListeChainee(jeu, posBatiment.x, posBatiment.y, maison);
+                        ajout_batiment_terrain(jeu, maison, posBatiment);
+                    } else {
+                        jeu->timer_affichage = 0;
+                    }
+                    break;
+                case mode_usine:
+                    if (verification_batiment_peut_se_placer(jeu, usine_electrique, posBatiment, (Vector2){-1, -1}) == 1){
+                        //ajout batiment
+                        ajouterBatiment_ListeChainee(jeu, posBatiment.x, posBatiment.y, usine_electrique);
+                        ajout_batiment_terrain(jeu, usine_electrique, posBatiment);
+                    } else {
+                        jeu->timer_affichage = 0;
+                    }
+                    break;
+                case mode_chateauDO:
+                    if (verification_batiment_peut_se_placer(jeu, chateau_deau, posBatiment, (Vector2){-1, -1}) == 1){
+                        //ajout batiment
+                        ajouterBatiment_ListeChainee(jeu, posBatiment.x, posBatiment.y, chateau_deau);
+                        ajout_batiment_terrain(jeu, chateau_deau, posBatiment);
+                    } else {
+                        jeu->timer_affichage = 0;
+                    }
+                    break;
+                case demolition:
+                    break;
             }
-            if (obstacle == 1){
-                break;
-            }
-            y_temporaire ++;
-        }
-        if (obstacle == 0){
-            for (int i = 0; i < jeu->batiments[nomDuBatiment]->taille.y ; i++) {
-                for (int j = 0; j < jeu->batiments[nomDuBatiment]->taille.x; j++) {
-                    jeu->terrain[co_y][co_x + j] = nomDuBatiment;
-                }co_y ++;
-            }
-            printf("La construction : %s, est un succes !\n", jeu->batiments[nomDuBatiment]->nom);
-        } else {
-            printf("Vous ne pouvez pas construire ici, un obstacle vous en empeche !\n");
-            detruireBatiment(jeu,co_x,co_y,nomDuBatiment);
         }
     }
-}*/
+}
 
-void verif_construction_batiment(){
+void maj_batiment_timer(Jeu* jeu){
+    for (int i = 0; i < 3; i++) {
+        if(jeu->batiments[maison + i] != NULL){
+            Batiment* list_maison = jeu->batiments[maison];
+            Batiment* list_usine = jeu->batiments[usine_electrique];
+            Batiment* list_chateauDO = jeu->batiments[chateau_deau];
+            for (int m = 0; m < jeu->nb_maison; m++) {
+                list_maison->timer++;
+                list_maison = list_maison->next;
+            }
+            for (int c = 0; c < jeu->nb_chateau_eau; c++) {
+                list_chateauDO->timer++;
+                list_chateauDO = list_chateauDO->next;
+            }
+            for (int u = 0; u < jeu->nb_usine_electrique; u++) {
+                list_usine->timer++;
+                list_usine = list_usine->next;
+            }
+        }
+    }
 
 }

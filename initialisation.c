@@ -73,9 +73,9 @@ void ini_bouton(Jeu* jeu){
     Rectangle sourceRec = {0, 0, (float)bouton_texture.width, frame_hauteur };
 
     ImageResize(&bouton_image, bouton_texture.width + 100, bouton_texture.height);
-    ImageCrop(&bouton_image, (Rectangle){12, 0, bouton_texture.width + 100, bouton_texture.height});
+    ImageCrop(&bouton_image, (Rectangle){12, 0, bouton_texture.width+100, bouton_texture.height});
 
-    Rectangle sourceRec2 = {0, 0, (float)bouton_texture.width + 100, frame_hauteur };
+    Rectangle sourceRec2 = {0, 0, (float)bouton_texture.width + 88, frame_hauteur };
 
     Texture2D bouton_texture_large = LoadTextureFromImage(bouton_image);
 
@@ -140,7 +140,7 @@ void ini_bouton(Jeu* jeu){
     jeu->tabImages[selection_choix_jeu][img_bouton_Communisme].frame_hauteur = frame_hauteur;
     jeu->tabImages[selection_choix_jeu][img_bouton_Communisme].source_Rec = sourceRec2;
     // Definie l emplacement du boutton sur ecran (la ou l'on veut l afficher)
-    Rectangle pos8 = {RESOLUTION_X / 2.0f +600 - bouton_texture.width / 2.0f, RESOLUTION_Y / 2.0f - bouton_texture.height / NB_FRAMES_BOUTON + (frame_hauteur + 5), (float)bouton_texture.width, frame_hauteur };
+    Rectangle pos8 = {RESOLUTION_X / 2.0f +600 - bouton_texture_large.width / 2.0f, RESOLUTION_Y / 2.0f - bouton_texture.height / NB_FRAMES_BOUTON + (frame_hauteur + 5), (float)bouton_texture_large.width, frame_hauteur };
     jeu->tabImages[selection_choix_jeu][img_bouton_Communisme].pos_Rec = pos8;
 
     //Bouton Capitalisme
@@ -148,7 +148,7 @@ void ini_bouton(Jeu* jeu){
     jeu->tabImages[selection_choix_jeu][img_bouton_Capitalisme].frame_hauteur = frame_hauteur;
     jeu->tabImages[selection_choix_jeu][img_bouton_Capitalisme].source_Rec = sourceRec2;
     // Definie l emplacement du boutton sur ecran (la ou l'on veut l afficher)
-    Rectangle pos9 = {RESOLUTION_X / 2.0f - 600 - bouton_texture.width / 2.0f, RESOLUTION_Y / 2.0f - bouton_texture.height / NB_FRAMES_BOUTON + (frame_hauteur + 5), (float)bouton_texture.width, frame_hauteur };
+    Rectangle pos9 = {RESOLUTION_X / 2.0f - 600 - bouton_texture_large.width / 2.0f, RESOLUTION_Y / 2.0f - bouton_texture.height / NB_FRAMES_BOUTON + (frame_hauteur + 5), (float)bouton_texture_large.width, frame_hauteur };
     jeu->tabImages[selection_choix_jeu][img_bouton_Capitalisme].pos_Rec = pos9;
 
     UnloadImage(bouton_image);

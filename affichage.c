@@ -40,11 +40,24 @@ void affichage_Boucle_G(Jeu* jeu){
         }
         timer++;
         jeu->timer_jeu++;
+        jeu->timer_affichage++;
+        maj_batiment_timer(jeu);
+    }
+    for (int i = 0; i < jeu->ordre.y; i++) {
+        for (int j = 0; j < jeu->ordre.x ;j++) {
+            printf(" %d",jeu->terrain[i][j]);
+        }
+        printf("\n");
     }
     liberationListe(jeu);
     unload_all(jeu);
     CloseAudioDevice();
     CloseWindow();
+}
+void afficher_message(Jeu* jeu, char* message){
+    Vector2 pos = {LARGEUR_FENETRE -500, LONGUEUR_FENETRE/2};
+    DrawRectangle(pos.x, pos.y, 400, 35, WHITE);
+    DrawText(message, pos.x, pos.y, 30, BLACK);
 }
 
 void afficher_fenetre_menu(Jeu* jeu, Vector2 pos_Souris, int* timer, float* rectAplha, float* sonAlpha){
@@ -266,14 +279,23 @@ void afficher_construction_batiment(Jeu* jeu, Vector2 pos_souris){
             DrawTexture(jeu->tabImages[en_jeu][img_route].texture2D, (int)pos_souris.x-TAILLE_CASE_GRILLE/2, (int)pos_souris.y-TAILLE_CASE_GRILLE/2, color_construction);
             break;
         case mode_maison:
+            if (jeu->timer_affichage < 120){
+                afficher_message(jeu, "erreur de construction");
+            }
             jeu->tabImages[en_jeu][img_maison].source_Rec.x = 0 * jeu->tabImages[en_jeu][img_maison].frame_longueur; //c normal c pour me souvenir qu'il faut utiliser la mm structure de code pour augmenter les niv
             DrawTextureRec(jeu->tabImages[en_jeu][img_maison].texture2D, jeu->tabImages[en_jeu][img_maison].source_Rec, pos_souris_maison, color_construction);
             break;
         case mode_usine:
-            DrawTexture(jeu->tabImages[en_jeu][img_usine].texture2D, (int)pos_souris.x-TAILLE_CASE_GRILLE*6/2, (int)pos_souris.y-TAILLE_CASE_GRILLE*4/2, color_construction);
+            if (jeu->timer_affichage < 120){
+                afficher_message(jeu, "erreur de construction");
+            }
+            DrawTexture(jeu->tabImages[en_jeu][img_usine].texture2D, (int)pos_souris.x-(TAILLE_CASE_GRILLE/2)+((-3/2)*(TAILLE_CASE_GRILLE)), (int)pos_souris.y-(TAILLE_CASE_GRILLE/2)+((-3/2)*(TAILLE_CASE_GRILLE)), color_construction);
             break;
         case mode_chateauDO:
-            DrawTexture(jeu->tabImages[en_jeu][img_chateauDO].texture2D, (int)pos_souris.x-TAILLE_CASE_GRILLE*6/2, (int)pos_souris.y-TAILLE_CASE_GRILLE*4/2, color_construction);
+            if (jeu->timer_affichage < 120){
+                afficher_message(jeu, "erreur de construction");
+            }
+            DrawTexture(jeu->tabImages[en_jeu][img_chateauDO].texture2D, (int)pos_souris.x-(TAILLE_CASE_GRILLE/2)+((-3/2)*(TAILLE_CASE_GRILLE)), (int)pos_souris.y-(TAILLE_CASE_GRILLE/2)+((-3/2)*(TAILLE_CASE_GRILLE)), color_construction);
             break;
         default:
             break;
@@ -296,12 +318,15 @@ void afficher_batiment_Raylib(Jeu* jeu){
     }
 
     if(listeMaison != NULL) {
+
         do {
-            printf("Maison %d : x: %d  y: %d    stade: %d\n", nbmaison, listeMaison->co.x, listeMaison->co.y,listeMaison->stadeEvolution);
-            jeu->tabImages[en_jeu][img_maison].source_Rec.x = listeMaison->stadeEvolution * jeu->tabImages[en_jeu][img_maison].frame_longueur;
-            DrawTextureRec(jeu->tabImages[en_jeu][img_maison].texture2D, jeu->tabImages[en_jeu][img_maison].source_Rec, (Vector2){listeMaison->co.x*TAILLE_CASE_GRILLE, listeMaison->co.y*TAILLE_CASE_GRILLE}, WHITE); //TODO : DOIS CHANGER CAR PAS EVOLUTION LA
-            nbmaison++;
-            listeMaison = listeMaison->next;
+            if (jeu->terrain[listeMaison->co.y][listeMaison->co.x] == maison){
+                jeu->tabImages[en_jeu][img_maison].source_Rec.x = listeMaison->stadeEvolution * jeu->tabImages[en_jeu][img_maison].frame_longueur;
+                DrawTextureRec(jeu->tabImages[en_jeu][img_maison].texture2D, jeu->tabImages[en_jeu][img_maison].source_Rec, (Vector2){listeMaison->co.x*TAILLE_CASE_GRILLE, listeMaison->co.y*TAILLE_CASE_GRILLE}, WHITE); //TODO : DOIS CHANGER CAR PAS EVOLUTION LA
+                nbmaison++;
+                listeMaison = listeMaison->next;
+            } else printf("ERROR tu peux pas dessinner une maison alors que le terrain n'a pas de maison\n");
+
 
         } while (listeMaison != jeu->batiments[maison]);
     }
@@ -309,21 +334,23 @@ void afficher_batiment_Raylib(Jeu* jeu){
 
     if(listeChateau != NULL) {
         do {
-            printf("Chateau d'eau %d : x: %d  y: %d\n", nbchateau, listeChateau->co.x, listeChateau->co.y);
-            DrawTexture(jeu->tabImages[en_jeu][img_chateauDO].texture2D, listeChateau->co.x*TAILLE_CASE_GRILLE, listeChateau->co.y*TAILLE_CASE_GRILLE, WHITE); //TODO : DOIS CHANGER CAR PAS EVOLUTION LA
-            nbchateau++;
-            listeChateau = listeChateau->next;
-
+            if (jeu->terrain[listeChateau->co.y][listeChateau->co.x] == chateau_deau) {
+                DrawTexture(jeu->tabImages[en_jeu][img_chateauDO].texture2D, listeChateau->co.x * TAILLE_CASE_GRILLE,
+                            listeChateau->co.y * TAILLE_CASE_GRILLE, WHITE); //TODO : DOIS CHANGER CAR PAS EVOLUTION LA
+                nbchateau++;
+                listeChateau = listeChateau->next;
+            } else printf("ERROR tu peux pas dessinner un chateauDO alors que le terrain n'a pas de chateauDO\n");
         } while (listeChateau != jeu->batiments[chateau_deau]);
     }
     else DrawText("ERROR LISTE CHATEAU VIDE", LONGUEUR_FENETRE + 100, 10, 10, WHITE);
 
     if(listeUsine != NULL) {
         do {
-            printf("Usine electrique %d : x: %d   y: %d\n", nbusine, listeUsine->co.x, listeUsine->co.y);
-            nbusine++;
-            listeUsine = listeUsine->next;
-
+            if (jeu->terrain[listeUsine->co.y][listeUsine->co.x] == usine_electrique) {
+                DrawTexture(jeu->tabImages[en_jeu][img_usine].texture2D, listeUsine->co.x*TAILLE_CASE_GRILLE, listeUsine->co.y*TAILLE_CASE_GRILLE, WHITE); //TODO : DOIS CHANGER CAR PAS EVOLUTION LA
+                nbusine++;
+                listeUsine = listeUsine->next;
+            } else printf("ERROR tu peux pas dessinner un usine alors que le terrain n'a pas d usine\n");
         } while (listeUsine != jeu->batiments[usine_electrique]);
     }
     else DrawText("ERROR LISTE USINE VIDE", LONGUEUR_FENETRE + 100, 20, 10, WHITE);
@@ -349,6 +376,9 @@ void affichage_defilement_fond(Jeu* jeu, int *timer){
     else if (*timer > 60*21 && *timer < 60*23)jeu->tabImages[en_jeu][img_fondJeu4].alpha += alpha_fondu;
     else if (*timer > 60*26 && *timer < 60*28)jeu->tabImages[en_jeu][img_fondJeu4].alpha -= alpha_fondu;
 }
+
+
+
 void afficherJeu(Jeu* jeu, Vector2 pos_souris, int* timer){
     Vector2 playerPosition = { 0, 0 };
     int playerTileX = 0;
@@ -383,6 +413,7 @@ void afficherJeu(Jeu* jeu, Vector2 pos_souris, int* timer){
             DrawRectangleLines(x * TAILLE_CASE_GRILLE, (y) * TAILLE_CASE_GRILLE, TAILLE_CASE_GRILLE, TAILLE_CASE_GRILLE, Fade(WHITE, 0.6f));
         }
     }
+    poser_batiment(jeu);
     afficher_batiment_Raylib(jeu);
     affi_bouton(jeu, jeu->page_actuel, img_boutonRetourMenu, pos_souris, "MENU", timer);
     afficher_jeu_logo_interactionAvecClick(jeu, pos_souris);
@@ -396,12 +427,7 @@ void afficherJeu(Jeu* jeu, Vector2 pos_souris, int* timer){
     EndDrawing();
 }
 
-void print_message_error_construire_hors_map(){
-    printf("\n VOUS NE POUVEZ PAS CONSTRUIRE EN DEHORS DES LIMITES DE LA MAP !!!\n\n");
-}
-void print_message_error_detruire_hors_map(){
-    printf("\n VOUS NE POUVEZ PAS DETRUIRE EN DEHORS DES LIMITES DE LA MAP !!!\n\n");
-}
+
 
 void afficher_menu_console(Jeu* jeu){
     int choix = 0;
@@ -492,7 +518,7 @@ void afficher_choix_joueur(Jeu* jeu) {
             scanf(" %d %d", &co_x1, &co_y1);
             if (co_x < 0 || co_y < 0 || co_x1 < 0 || co_y1 < 0 || co_x > ORDRE_EN_X || co_y > ORDRE_EN_Y ||
                 co_x1 > ORDRE_EN_X || co_y1 > ORDRE_EN_Y) {
-                print_message_error_construire_hors_map();
+
                 break;
             }
             ajout_Batiment_Grille(jeu, reseau, co_x, co_y, co_x1, co_y1);
@@ -503,14 +529,12 @@ void afficher_choix_joueur(Jeu* jeu) {
                 printf("\nCoordonnees ? (x / y)\n");
                 scanf(" %d %d", &co_x, &co_y);
                 if (co_x < 0 || co_y < 0 || co_x > ORDRE_EN_X || co_y > ORDRE_EN_Y) {
-                    print_message_error_construire_hors_map();
                     break;
                 }
                 if(verifier_batiment_a_cote_route(jeu, maison, co_x, co_y) && conditionAchatBatiment(jeu, maison)){
                     printf("Ajout d'une maison ...\n");
                     ajouterBatiment_ListeChainee(jeu, co_x, co_y, choix);
                     ajout_Batiment_Grille(jeu, maison, co_x, co_y, co_x1, co_y1);
-                    sleep(1);
                 }
                 else { printf("Vous ne pouvez pas placer un batiment s'il n'est pas a cote d'une route\n");}
             break;
@@ -519,7 +543,6 @@ void afficher_choix_joueur(Jeu* jeu) {
                 printf("\nCoordonnees ? (x / y)\n");
                 scanf(" %d %d", &co_x, &co_y);
                 if (co_x < 0 || co_y < 0 || co_x > ORDRE_EN_X || co_y > ORDRE_EN_Y) {
-                    print_message_error_construire_hors_map();
                     break;
                 }
                 if(verifier_batiment_a_cote_route(jeu, chateau_deau, co_x, co_y) && conditionAchatBatiment(jeu, chateau_deau)){
@@ -535,7 +558,6 @@ void afficher_choix_joueur(Jeu* jeu) {
                 printf("\nCoordonnees ? (x / y)\n");
                 scanf(" %d %d", &co_x, &co_y);
                 if (co_x < 0 || co_y < 0 || co_x > ORDRE_EN_X || co_y > ORDRE_EN_Y) {
-                    print_message_error_construire_hors_map();
                     break;
                 }
                 if (verifier_batiment_a_cote_route(jeu, usine_electrique, co_x, co_y) && conditionAchatBatiment(jeu, usine_electrique)){
@@ -563,7 +585,6 @@ void afficher_choix_joueur(Jeu* jeu) {
                     scanf(" %d %d", &co_x1, &co_y1);
                     if (co_x < 0 || co_y < 0 || co_x1 < 0 || co_y1 < 0 || co_x > ORDRE_EN_X || co_y > ORDRE_EN_Y ||
                         co_x1 > ORDRE_EN_X || co_y1 > ORDRE_EN_Y) {
-                        print_message_error_detruire_hors_map();
                     }
                     suppression_Batiment_Grille(jeu, reseau, co_x, co_y, co_x1, co_y1);
                     sleep(1);
@@ -573,7 +594,6 @@ void afficher_choix_joueur(Jeu* jeu) {
                     printf("\nCoordonnees ? (x / y)\n");
                     scanf(" %d %d", &co_x, &co_y);
                     if (co_x < 0 || co_y < 0 || co_x > ORDRE_EN_X || co_y > ORDRE_EN_Y) {
-                        print_message_error_detruire_hors_map();
                         break;
                     }
                     co_batiment = position_batiment(*jeu, co_x,co_y);
@@ -592,7 +612,6 @@ void afficher_choix_joueur(Jeu* jeu) {
                     printf("\nCoordonnees ? (x / y)\n");
                     scanf(" %d %d", &co_x, &co_y);
                     if (co_x < 0 || co_y < 0 || co_x > ORDRE_EN_X || co_y > ORDRE_EN_Y) {
-                        print_message_error_detruire_hors_map();
                         break;
                     }
                     co_batiment = position_batiment(*jeu, co_x,co_y);
@@ -611,7 +630,6 @@ void afficher_choix_joueur(Jeu* jeu) {
                     printf("\nCoordonnees ? (x / y)\n");
                     scanf(" %d %d", &co_x, &co_y);
                     if (co_x < 0 || co_y < 0 || co_x > ORDRE_EN_X || co_y > ORDRE_EN_Y) {
-                        print_message_error_detruire_hors_map();
                         break;
                     }
                     co_batiment = position_batiment(*jeu, co_x,co_y);
