@@ -414,7 +414,14 @@ int conditionAchatBatiment(Jeu* jeu,int choix){
 }
 
 void evolutionBatiment(Jeu* jeu){
+    if(jeu->production_elec_restante >= HABITANT_NIVEAU_MAISON1 && jeu->production_eau_restante >= HABITANT_NIVEAU_MAISON1) {
+        if (jeu->choix_politique == capitalisme){
 
+        }
+        else{
+
+        }
+    }
 }
 
 
