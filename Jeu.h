@@ -48,6 +48,7 @@ typedef struct Batiment{
     int nb_batiment;
     int experience;
     struct Batiment* next;
+    int timer;
 }Batiment;
 
 typedef struct Jeu{
@@ -58,17 +59,18 @@ typedef struct Jeu{
     int page_actuel;
     int nb_maison;
     int nb_chateau_eau;
-    int nb_central;
+    int nb_usine_electrique;
     int mode_de_selection;
     int** terrain;
     int** matrice_connexite_route;
     Coordonnee ordre;
-    Coordonnee selection;
+    Vector2 selection;
     int nb_habitants_tot;
     int argent;
     int production_eau_restante;
     int production_elec_restante;
     int timer_jeu;
+    int timer_affichage;
     Batiment* batiments[nb_batiments];
     S_Image tabImages[nb_pages][nb_img];
     Sound tabSon[nb_sons];
