@@ -64,6 +64,7 @@ void ajouterBatiment_ListeChainee(Jeu* jeu, int x, int y, int choix){
         case maison: {
             nouveau->taille.x = TAILLE_MAISON;
             nouveau->taille.y = TAILLE_MAISON;
+            nouveau->cases_adjacentes = initialisation_case_ajacentes(nouveau->co, TAILLE_MAISON, TAILLE_MAISON);
             nouveau->nom = "Maison";
             nouveau->stadeEvolution = 1;
             liste = jeu->batiments[maison];
@@ -74,6 +75,7 @@ void ajouterBatiment_ListeChainee(Jeu* jeu, int x, int y, int choix){
         case chateau_deau: {
             nouveau->taille.x = LONGUEUR_BATIMENTS;
             nouveau->taille.y = LARGEUR_BATIMENTS;
+            nouveau->cases_adjacentes = initialisation_case_ajacentes(nouveau->co, LONGUEUR_BATIMENTS, LARGEUR_BATIMENTS);
             nouveau->nom = "Chateau d'eau";
             nouveau->stadeEvolution = 0;
             liste =  jeu->batiments[chateau_deau];
@@ -84,6 +86,7 @@ void ajouterBatiment_ListeChainee(Jeu* jeu, int x, int y, int choix){
         case usine_electrique: {
             nouveau->taille.x = LONGUEUR_BATIMENTS;
             nouveau->taille.y = LARGEUR_BATIMENTS;
+            nouveau->cases_adjacentes = initialisation_case_ajacentes(nouveau->co, LONGUEUR_BATIMENTS, LARGEUR_BATIMENTS);
             nouveau->nom = "Usine electrique";
             nouveau->stadeEvolution = 0;
             liste =  jeu->batiments[usine_electrique];
@@ -141,7 +144,7 @@ Batiment* maj_destruction_maillon(Batiment* liste,int x,int y,Jeu* jeu) {
         Batiment *parcour = liste;
         Batiment *prev = liste;
 
-        while (parcour->x != x && parcour->y != y) {
+        while (parcour->co.x != x && parcour->co.y != y) {
             parcour = parcour->next;
             if (parcour->next == liste) {
                 printf("Coordonnees invalides\n");

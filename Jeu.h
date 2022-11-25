@@ -41,7 +41,6 @@ typedef struct Batiment{
     Coordonnee co;
     Coordonnee* cases_adjacentes;
     char* nom;
-    int x,y;
     int capacite;
     int nb_habitants;
     bool enCours;

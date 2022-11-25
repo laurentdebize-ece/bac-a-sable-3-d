@@ -297,8 +297,8 @@ Coordonnee position_maison(Jeu jeu, int x, int y){
     Batiment* batiment_actuel = jeu.batiments[maison];
     while(batiment_trouve == FALSE){
         for(int i = 0; i < TAILLE_MAISON; i++){
-            if (x - i == batiment_actuel->x){
-                position_maison.x = batiment_actuel->x;
+            if (x - i == batiment_actuel->co.x){
+                position_maison.x = batiment_actuel->co.x;
             }
             if (y - i == batiment_actuel->co.y){
                 position_maison.y = batiment_actuel->co.y;
@@ -320,8 +320,8 @@ Coordonnee position_usine(Jeu jeu, int x, int y, int type_usine){
     Batiment* batiment_actuel = jeu.batiments[type_usine];
     while(batiment_trouve == FALSE){
         for(int i = 0; i < LONGUEUR_BATIMENTS; i++) {
-            if (x - i == batiment_actuel->x) {
-                position_usine.x = batiment_actuel->x;
+            if (x - i == batiment_actuel->co.x) {
+                position_usine.x = batiment_actuel->co.x;
             }
         }
         for(int i = 0; i < LARGEUR_BATIMENTS; i++) {

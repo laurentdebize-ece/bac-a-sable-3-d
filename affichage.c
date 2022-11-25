@@ -297,9 +297,9 @@ void afficher_batiment_Raylib(Jeu* jeu){
 
     if(listeMaison != NULL) {
         do {
-            printf("Maison %d : x: %d  y: %d    stade: %d\n", nbmaison, listeMaison->x, listeMaison->y,listeMaison->stadeEvolution);
+            printf("Maison %d : x: %d  y: %d    stade: %d\n", nbmaison, listeMaison->co.x, listeMaison->co.y,listeMaison->stadeEvolution);
             jeu->tabImages[en_jeu][img_maison].source_Rec.x = listeMaison->stadeEvolution * jeu->tabImages[en_jeu][img_maison].frame_longueur;
-            DrawTextureRec(jeu->tabImages[en_jeu][img_maison].texture2D, jeu->tabImages[en_jeu][img_maison].source_Rec, (Vector2){listeMaison->x*TAILLE_CASE_GRILLE, listeMaison->y*TAILLE_CASE_GRILLE}, WHITE); //TODO : DOIS CHANGER CAR PAS EVOLUTION LA
+            DrawTextureRec(jeu->tabImages[en_jeu][img_maison].texture2D, jeu->tabImages[en_jeu][img_maison].source_Rec, (Vector2){listeMaison->co.x*TAILLE_CASE_GRILLE, listeMaison->co.y*TAILLE_CASE_GRILLE}, WHITE); //TODO : DOIS CHANGER CAR PAS EVOLUTION LA
             nbmaison++;
             listeMaison = listeMaison->next;
 
@@ -309,8 +309,8 @@ void afficher_batiment_Raylib(Jeu* jeu){
 
     if(listeChateau != NULL) {
         do {
-            printf("Chateau d'eau %d : x: %d  y: %d\n", nbchateau, listeChateau->x, listeChateau->y);
-            DrawTexture(jeu->tabImages[en_jeu][img_chateauDO].texture2D, listeChateau->x*TAILLE_CASE_GRILLE, listeChateau->y*TAILLE_CASE_GRILLE, WHITE); //TODO : DOIS CHANGER CAR PAS EVOLUTION LA
+            printf("Chateau d'eau %d : x: %d  y: %d\n", nbchateau, listeChateau->co.x, listeChateau->co.y);
+            DrawTexture(jeu->tabImages[en_jeu][img_chateauDO].texture2D, listeChateau->co.x*TAILLE_CASE_GRILLE, listeChateau->co.y*TAILLE_CASE_GRILLE, WHITE); //TODO : DOIS CHANGER CAR PAS EVOLUTION LA
             nbchateau++;
             listeChateau = listeChateau->next;
 
@@ -320,7 +320,7 @@ void afficher_batiment_Raylib(Jeu* jeu){
 
     if(listeUsine != NULL) {
         do {
-            printf("Usine electrique %d : x: %d   y: %d\n", nbusine, listeUsine->x, listeUsine->y);
+            printf("Usine electrique %d : x: %d   y: %d\n", nbusine, listeUsine->co.x, listeUsine->co.y);
             nbusine++;
             listeUsine = listeUsine->next;
 
