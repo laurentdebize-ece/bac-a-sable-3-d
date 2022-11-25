@@ -4,7 +4,7 @@
 #include "Macros.h"
 #include "Graphe.h"
 
-void BFS_connexite(int** matrice_connexite_route, Coordonnee tuile, int num_connexite);
+void BFS_connexite(Jeu* jeu, Coordonnee tuile);
 int** init_conexite_route(Jeu* jeu);
 void connexite_route_ajout_batiment(Jeu* jeu, Batiment* nouveau);
 void connexite_route_ajout_route(Jeu* jeu, Coordonnee debut, Coordonnee fin);

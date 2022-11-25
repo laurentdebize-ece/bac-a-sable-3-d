@@ -3,10 +3,10 @@
 // BFS pour les composantes connexes des routes
 // matrices d'adjacences entre les composantes connexe des routes, les centrales, les chateaux d'eaux
 // et les maisons
-void BFS_connexite(int** matrice_connexite_route, Coordonnee tuile, int num_connexite){
+void BFS_connexite(Jeu* jeu, Coordonnee tuile){
     Coordonnee* cases_adjacentes = initialisation_case_ajacentes(tuile, 1, 1 );
     Coordonnee** new_cases_adjacentes;// pour switch
-    matrice_connexite_route[tuile.y][tuile.x] = num_connexite; //route parcourue, route marqué
+    jeu->matrice_connexite_route[tuile.y][tuile.x] = jeu->num_connexite; //route parcourue, route marqué
     // nombre d'adjacences théorique si on prend en comptes toutes les adjacences possiles des cases marquées (même celles avec des coordonnées négatives)
     int nb_adjacence_theorique = 4; // 4 fois le nombre de cases marquées car chaque cases ont 4 adjacences
     int nb_adjacence = 0; // nombre de routes découvertes
@@ -15,12 +15,12 @@ void BFS_connexite(int** matrice_connexite_route, Coordonnee tuile, int num_conn
     for (int i = 0; i < nb_adjacence_theorique; i++){
         // si case adjacente = route pas marquée, valeur_adjacence prend la valeur de la route et on incrémente le nombre de routes découvertes
         if((cases_adjacentes[i].y >= 0) && (cases_adjacentes[i].x) ) {
-            if (matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x] != 0
-                && matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x] != 2
-                && matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x] != 3
-                && matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x] != 4
-                && matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x] != num_connexite) {
-                valeur_adjacence[i] = matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x];
+            if (jeu->matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x] != 0
+                && jeu->matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x] != 2
+                && jeu->matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x] != 3
+                && jeu->matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x] != 4
+                && jeu->matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x] != jeu->num_connexite) {
+                valeur_adjacence[i] = jeu->matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x];
                 nb_adjacence++;
             }
         }
@@ -35,24 +35,24 @@ void BFS_connexite(int** matrice_connexite_route, Coordonnee tuile, int num_conn
                 new_cases_adjacentes[y] = initialisation_case_ajacentes(cases_adjacentes[i], 1, 1);
                 y++;
                 if (valeur_adjacence[i] == 1) {
-                    valeur_adjacence[i] = num_connexite;
+                    valeur_adjacence[i] = jeu->num_connexite;
 
                 } else {
-                    if (valeur_adjacence[i] < num_connexite) {
+                    if (valeur_adjacence[i] < jeu->num_connexite) {
 
                         for (int k = 0; k < ORDRE_EN_Y; k++) {
                             for (int l = 0; l < ORDRE_EN_X; l++) {
-                                if (matrice_connexite_route[k][l] == num_connexite) {
-                                    matrice_connexite_route[k][l] = valeur_adjacence[i];
+                                if (jeu->matrice_connexite_route[k][l] == jeu->num_connexite) {
+                                    jeu->matrice_connexite_route[k][l] = valeur_adjacence[i];
                                 }
                             }
                         }
-                        num_connexite = valeur_adjacence[i];
+                        jeu->num_connexite = valeur_adjacence[i];
                     } else {
                         for (int k = 0; k < ORDRE_EN_Y; k++) {
                             for (int l = 0; l < ORDRE_EN_X; l++) {
-                                if (matrice_connexite_route[k][l] == valeur_adjacence[i]) {
-                                    matrice_connexite_route[k][l] = num_connexite;
+                                if (jeu->matrice_connexite_route[k][l] == valeur_adjacence[i]) {
+                                    jeu->matrice_connexite_route[k][l] = jeu->num_connexite;
                                 }
                             }
                         }
@@ -96,12 +96,12 @@ void BFS_connexite(int** matrice_connexite_route, Coordonnee tuile, int num_conn
             for (int i = 0; i < nb_adjacence_theorique * nb_adjacence; i++) {
                 // si case adjacente = route pas marquée, valeur_adjacence prend la valeur de la route et on incrémente le nombre de routes découvertes
                 if ((cases_adjacentes[i].y >= 0) && (cases_adjacentes[i].x)) {
-                    if (matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x] != 0
-                        && matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x] != 2
-                        && matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x] != 3
-                        && matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x] != 4
-                        && matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x] != num_connexite) {
-                        valeur_adjacence[i] = matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x];
+                    if (jeu->matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x] != 0
+                        && jeu->matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x] != 2
+                        && jeu->matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x] != 3
+                        && jeu->matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x] != 4
+                        && jeu->matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x] != jeu->num_connexite) {
+                        valeur_adjacence[i] = jeu->matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x];
                         new_nb_adjacence++;
                     }
                 }
@@ -114,24 +114,24 @@ void BFS_connexite(int** matrice_connexite_route, Coordonnee tuile, int num_conn
                     new_cases_adjacentes[y] = initialisation_case_ajacentes(cases_adjacentes[i], 1, 1);
                     y++;
                     if (valeur_adjacence[i] == 1) {
-                        valeur_adjacence[i] = num_connexite;
+                        valeur_adjacence[i] = jeu->num_connexite;
 
                     } else {
-                        if (valeur_adjacence[i] < num_connexite) {
+                        if (valeur_adjacence[i] < jeu->num_connexite) {
 
                             for (int k = 0; k < ORDRE_EN_Y; k++) {
                                 for (int l = 0; l < ORDRE_EN_X; l++) {
-                                    if (matrice_connexite_route[k][l] == num_connexite) {
-                                        matrice_connexite_route[k][l] = valeur_adjacence[i];
+                                    if (jeu->matrice_connexite_route[k][l] == jeu->num_connexite) {
+                                        jeu->matrice_connexite_route[k][l] = valeur_adjacence[i];
                                     }
                                 }
                             }
-                            num_connexite = valeur_adjacence[i];
+                            jeu->num_connexite = valeur_adjacence[i];
                         } else {
                             for (int k = 0; k < ORDRE_EN_Y; k++) {
                                 for (int l = 0; l < ORDRE_EN_X; l++) {
-                                    if (matrice_connexite_route[k][l] == valeur_adjacence[i]) {
-                                        matrice_connexite_route[k][l] = num_connexite;
+                                    if (jeu->matrice_connexite_route[k][l] == valeur_adjacence[i]) {
+                                        jeu->matrice_connexite_route[k][l] = jeu->num_connexite;
                                     }
                                 }
                             }
@@ -175,7 +175,7 @@ int** init_conexite_route(Jeu* jeu){
     }
     printf("matrice_connexite_route initialiser\n");
     for (int j = maison; j < nb_batiments ; j++) {
-        batiment->next = jeu->batiments[j]->next;
+        batiment = jeu->batiments[j];
         int nb_batiment;
         switch (j) {
             case maison :
@@ -195,11 +195,11 @@ int** init_conexite_route(Jeu* jeu){
             int num_connexite = 50;
             for (int k=0; k < nb_batiment ; k++) {
                 if (k!=0){
-                    batiment->next = batiment->next->next;
+                    batiment = batiment->next;
                 }
                 for (int i; i < ((longueur + largeur) * 2);i++){
-                    if (matrice_connexite_route[batiment->next->cases_adjacentes[i].y][batiment->next->cases_adjacentes[i].x] == 1) {
-                        BFS_connexite(matrice_connexite_route, batiment->next->cases_adjacentes[i], num_connexite);
+                    if (matrice_connexite_route[batiment->cases_adjacentes[i].y][batiment->cases_adjacentes[i].x] == 1) {
+                        BFS_connexite(jeu, batiment->cases_adjacentes[i]);
                         num_connexite++;
                     }
 
@@ -212,13 +212,13 @@ int** init_conexite_route(Jeu* jeu){
 
 void connexite_route_ajout_batiment(Jeu* jeu, Batiment* nouveau){
     for (int i = 0; i < nouveau->taille.y; i++) {
-        for (int j = 0; j < nouveau->taille.x; ++j) {
+        for (int j = 0; j < nouveau->taille.x; j++) {
             jeu->matrice_connexite_route[nouveau->co.y + i][nouveau->co.x +j] = jeu->terrain[nouveau->co.y + i][nouveau->co.x +j];
         }
     }
     for (int i = 0; i < ((nouveau->taille.x + nouveau->taille.y ) * 2 ); i++) {
         if (jeu->matrice_connexite_route[nouveau->cases_adjacentes[i].y][nouveau->cases_adjacentes[i].x] == 1){
-            BFS_connexite(jeu->matrice_connexite_route,nouveau->cases_adjacentes[i],jeu->num_connexite);
+            BFS_connexite(jeu,nouveau->cases_adjacentes[i]);
             jeu->num_connexite++;
         }
     }
