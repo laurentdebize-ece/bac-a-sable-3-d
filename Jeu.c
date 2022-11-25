@@ -414,12 +414,19 @@ int conditionAchatBatiment(Jeu* jeu,int choix){
 }
 
 void evolutionBatiment(Jeu* jeu){
+    if(jeu->production_elec_restante >= HABITANT_NIVEAU_MAISON1 && jeu->production_eau_restante >= HABITANT_NIVEAU_MAISON1) {
+        if (jeu->choix_politique == capitalisme){
 
+        }
+        else{
+
+        }
+    }
 }
 
 
 Coordonnee* initialisation_case_ajacentes(Coordonnee coordonnee_batiment,int longueur, int hauteur ){
-    Coordonnee* case_adjacente = malloc(longueur*hauteur*2* sizeof(Coordonnee));
+    Coordonnee* case_adjacente = malloc((longueur+hauteur)*2* sizeof(Coordonnee));
     for (int i = 0; i < longueur*hauteur*2; i++) {
         if (i < hauteur){
             case_adjacente[i].x = coordonnee_batiment.x - 1;

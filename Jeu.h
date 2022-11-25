@@ -63,6 +63,7 @@ typedef struct Jeu{
     int mode_de_selection;
     int** terrain;
     int** matrice_connexite_route;
+    int num_connexite;
     Coordonnee ordre;
     Vector2 selection;
     int nb_habitants_tot;

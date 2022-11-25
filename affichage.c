@@ -504,6 +504,7 @@ void afficher_choix_joueur(Jeu* jeu) {
     printf("6 : Detruire batiment\n");
     printf("9 : ~~~~ AFFICHER LA MAP ~~~~\n");
     printf("10 : Quel batiment ?\n");
+    printf("11 : Matrice afficher route\n");
     scanf(" %d", &choix);
     switch (choix) {
         case 0: {
@@ -584,6 +585,7 @@ void afficher_choix_joueur(Jeu* jeu) {
                     scanf(" %d %d", &co_x1, &co_y1);
                     if (co_x < 0 || co_y < 0 || co_x1 < 0 || co_y1 < 0 || co_x > ORDRE_EN_X || co_y > ORDRE_EN_Y ||
                         co_x1 > ORDRE_EN_X || co_y1 > ORDRE_EN_Y) {
+                        print_message_error_detruire_hors_map();
                     }
                     suppression_Batiment_Grille(jeu, reseau, co_x, co_y, co_x1, co_y1);
                     sleep(1);
@@ -658,6 +660,9 @@ void afficher_choix_joueur(Jeu* jeu) {
                 position_batiment(*jeu, a, b); //retourne les coordonnées
                 break;
             }
+            case 11:{
+                afficherMatriceConnexiteRoute(jeu);
+            }
             default : {
                 break;
             }
@@ -688,6 +693,14 @@ void afficher_la_grille(Jeu *jeu) {  ///la fonction ici presente est tres relou 
             printf("%d ", jeu->terrain[y][x]);
         }
         printf("\n");
+    }
+}
+
+void afficherMatriceConnexiteRoute(Jeu* jeu){
+    for(int i = 0;i < ORDRE_EN_Y;i++){
+        for(int j = 0;j < ORDRE_EN_X;j++) {
+            printf("%d", jeu->matrice_connexite_route[i][j]);
+        }
     }
 }
 
