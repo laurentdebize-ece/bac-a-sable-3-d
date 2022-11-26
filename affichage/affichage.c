@@ -8,6 +8,7 @@ void affichage_Boucle_G(Jeu* jeu){
     initialisation_Images(jeu);
     initialisation_Sons(jeu);
     ini_fond_jeu(jeu);
+    ToggleFullscreen();
 
     int ballPositionX = -100;
     int ballRadius = 20;
