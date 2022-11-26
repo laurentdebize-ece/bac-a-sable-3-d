@@ -47,7 +47,7 @@ bool verification_batiment_peut_se_placer(Jeu* jeu, int nomDuBatiment, Vector2 p
             case chateau_deau:
                 longueur = LONGUEUR_BATIMENTS;
                 largeur = LARGEUR_BATIMENTS;
-                if (pos_ini_batiment.x >= 0 && pos_ini_batiment.y >= 0 && pos_ini_batiment.x + longueur <= jeu->ordre.x && pos_ini_batiment.y + largeur <= jeu->ordre.y) {
+                if (pos_ini_batiment.x >= 0 && pos_ini_batiment.y >= 0 && pos_ini_batiment.x + longueur <= jeu->ordre.x+1 && pos_ini_batiment.y + largeur <= jeu->ordre.y+1) {
                     if (verification_colision_batiment(jeu, nomDuBatiment) == 1) return 1;
                 }
                 return 0;
