@@ -1,4 +1,5 @@
 #include "Graphe.h"
+#include "matrice_adjacence.h"
 
 /*Jeu* lire_graphe_console() {
     FILE *ifs = fopen(NOM_DU_FICHIER, "r");
@@ -67,13 +68,12 @@ void lire_graphe(Jeu* jeu) {
         jeu->terrain[i] = (int*) malloc(ordre_x * sizeof(int));
     }
 
-    for (int i = 0; i < nb_batiments; i++){
+    for (int i = 0; i < nb_type_batiments; i++){
         jeu->batiments[i] = (Batiment*) malloc(sizeof (Batiment));
     }
     jeu->batiments[maison] = NULL;
     jeu->batiments[chateau_deau] = NULL;
     jeu->batiments[usine_electrique] = NULL;
-
 
     for (int i = 0; i <= ordre_y; i++) {
         for (int j = 0; j <= ordre_x; j++) {

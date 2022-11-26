@@ -70,6 +70,7 @@ void ajouterBatiment_ListeChainee(Jeu* jeu, int x, int y, int choix){
             liste = jeu->batiments[maison];
             liste = maj_liste_chaine(nouveau, tail, liste);
             jeu->batiments[maison] = liste;
+            compteurNbBatimentListe(jeu,maison);
             break;
         }
         case chateau_deau: {
@@ -81,6 +82,7 @@ void ajouterBatiment_ListeChainee(Jeu* jeu, int x, int y, int choix){
             liste =  jeu->batiments[chateau_deau];
             liste = maj_liste_chaine(nouveau, tail, liste);
             jeu->batiments[chateau_deau] = liste;
+            compteurNbBatimentListe(jeu,chateau_deau);
             break;
         }
         case usine_electrique: {
@@ -92,6 +94,7 @@ void ajouterBatiment_ListeChainee(Jeu* jeu, int x, int y, int choix){
             liste =  jeu->batiments[usine_electrique];
             liste = maj_liste_chaine(nouveau, tail, liste);
             jeu->batiments[usine_electrique] = liste;
+            compteurNbBatimentListe(jeu,usine_electrique);
             break;
         }
         default : {
@@ -175,6 +178,7 @@ void detruireBatiment(Jeu* jeu,int x,int y,int choix) {
                 liste = jeu->batiments[maison];
                 liste = maj_destruction_maillon(liste,x,y,jeu);
                 jeu->batiments[maison] = liste;
+                compteurNbBatimentListe(jeu,maison);
             }
             break;
         }
@@ -182,6 +186,7 @@ void detruireBatiment(Jeu* jeu,int x,int y,int choix) {
             if (jeu->batiments[chateau_deau] != NULL) {
                 liste = maj_destruction_maillon(liste,x,y,jeu);
                 jeu->batiments[chateau_deau] = liste;
+                compteurNbBatimentListe(jeu,chateau_deau);
             }
             break;
         }
@@ -189,6 +194,7 @@ void detruireBatiment(Jeu* jeu,int x,int y,int choix) {
             if (jeu->batiments[usine_electrique] != NULL) {
                 liste = maj_destruction_maillon(liste,x,y,jeu);
                 jeu->batiments[usine_electrique] = liste;
+                compteurNbBatimentListe(jeu,usine_electrique);
             }
             break;
         }
@@ -413,15 +419,132 @@ int conditionAchatBatiment(Jeu* jeu,int choix){
     return 0;
 }
 
-void evolutionBatiment(Jeu* jeu){
-    if(jeu->production_elec_restante >= HABITANT_NIVEAU_MAISON1 && jeu->production_eau_restante >= HABITANT_NIVEAU_MAISON1) {
-        if (jeu->choix_politique == capitalisme){
+Batiment* maj_Compteur(Batiment* liste){
+    Batiment* parcours = liste;
+    int compteur = 0;
+    if(liste != NULL){
+        do{
+            parcours->numero = compteur;
+            compteur++;
+            parcours = parcours->next;
+        }while(parcours != liste);
+    }
+    liste->nb_batiment = compteur;
+    return liste;
+}
 
+void compteurNbBatimentListe(Jeu* jeu,int choix){
+    switch(choix){
+        Batiment* liste = NULL;
+        case maison:{
+            liste = jeu->batiments[maison];
+            liste = maj_Compteur(liste);
+            jeu->batiments[maison] = liste;
+            break;
         }
-        else{
-
+        case chateau_deau:{
+            liste = jeu->batiments[chateau_deau];
+            liste = maj_Compteur(liste);
+            jeu->batiments[chateau_deau] = liste;
+            break;
+        }
+        case usine_electrique:{
+            liste = jeu->batiments[usine_electrique];
+            liste = maj_Compteur(liste);
+            jeu->batiments[usine_electrique] = liste;
+            break;
         }
     }
+
+
+
+}
+
+//Refaire fonction en parcourant la matrice
+void evolutionBatiment(Jeu* jeu,int num) {
+    Batiment* listeMaison = jeu->batiments[maison];
+    Batiment* parcoursMaison = listeMaison;
+    int tabChateauEau[jeu->batiments[chateau_deau]->nb_batiment];
+    int tabChateauEauPlusProche[jeu->batiments[chateau_deau]->nb_batiment];
+    int j = 0;
+    int k =0;
+    int eauDistribueParLeChateau = 0;
+
+    if (jeu->choix_politique == communisme) {
+        Batiment* liste = jeu->batiments[chateau_deau];
+
+        //Récupère tous les chateaux d'eau connexe à la maison
+        for(int i = 0;i < jeu->batiments[chateau_deau]->nb_batiment;i++){
+            if(jeu->matrice_connexite_eau[num][i].connexite >= 1) {
+                tabChateauEau[j] = i;
+                j++;
+            }
+        }
+
+        //Tri des chateau d'eau par rapport à sa distance (ordre croissant)
+        while(k != j) {
+            int plusProche = 10000;
+            for (int i = 0; i <= j; i++) {
+                Batiment *parcours = liste;
+                do {
+                    parcours = parcours->next;
+                } while (parcours->numero != tabChateauEau[i]);
+
+                if (parcours->numero < plusProche) {
+                    tabChateauEauPlusProche[k] = i;
+                    k++;
+                }
+            }
+        }
+
+        //Calcul du nombre d'eau distrib par le chateau d'eau
+        for(int i = 0;i < jeu->batiments[maison]->nb_batiment;i++){
+            eauDistribueParLeChateau = jeu->matrice_connexite_eau[i][tabChateauEauPlusProche[k]].capacite_utilise;
+        }
+
+        do{
+            parcoursMaison = parcoursMaison->next;
+        }while(parcoursMaison != num);
+
+        //On regarde si le chateau peu distribuer plus
+        switch(parcoursMaison->stadeEvolution){
+            case 0:{
+                if(CAPACITE_CHATEAU_EAU - (eauDistribueParLeChateau + HABITANT_NIVEAU_MAISON1) >= 0){
+
+                }
+                break;
+            }
+            case 1:{
+                if(CAPACITE_CHATEAU_EAU - (eauDistribueParLeChateau + HABITANT_NIVEAU_MAISON1) >= 0){
+
+                }
+                break;
+            }
+            case 2:{
+                if(CAPACITE_CHATEAU_EAU - (eauDistribueParLeChateau + HABITANT_NIVEAU_MAISON2) >= 0){
+
+                }
+                break;
+            }
+            case 3:{
+                if(CAPACITE_CHATEAU_EAU - (eauDistribueParLeChateau + HABITANT_NIVEAU_MAISON3) >= 0){
+
+                }
+                break;
+            }
+            case 4:{
+                if(CAPACITE_CHATEAU_EAU - (eauDistribueParLeChateau + HABITANT_NIVEAU_MAISON4) >= 0){
+
+                }
+                break;
+            }
+        }
+
+    }
+    else {
+
+    }
+
 }
 
 
