@@ -100,7 +100,7 @@ void ajouterBatiment_ListeChainee(Jeu* jeu, int x, int y, int choix){
             break;
         }
     }
-    if (nouveau != NULL) {
+    /*if (nouveau != NULL) {
         if (nouveau->cases_adjacentes != NULL) {
             free(nouveau->cases_adjacentes);
             nouveau->cases_adjacentes = NULL;
@@ -123,7 +123,7 @@ void ajouterBatiment_ListeChainee(Jeu* jeu, int x, int y, int choix){
         }
         free(liste);
         liste = NULL;
-    }
+    }*/
 }
 
 void afficherM(Jeu* jeu) {
