@@ -108,6 +108,6 @@ int conditionAchatBatiment(Jeu* jeu,int choix);
 bool verifier_batiment_a_cote_route(Jeu* jeu, int type_de_batiment, int co_x, int co_y);
 void initialisation_case_ajacentes(Coordonnee* case_adjacente, Coordonnee coordonnee_batiment,int longueur, int hauteur );
 void compteurNbBatimentListe(Jeu* jeu,int choix);
-
+//
 
 #endif //TEMPLATE_RAYLIB_JEU_H

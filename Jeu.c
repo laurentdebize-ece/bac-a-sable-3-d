@@ -1,6 +1,6 @@
 #include "Jeu.h"
 #include "time.h"
-
+//
 Jeu* initialisation(){
     Jeu* j;
     printf("Destruction de votre ancien fichier de sauvegarde (si vous en aviez un)\n");

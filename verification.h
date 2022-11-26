@@ -1,6 +1,6 @@
 #ifndef BAC_A_SABLE_2_VERIFICATION_H
 #define BAC_A_SABLE_2_VERIFICATION_H
-
+//
 #include "Jeu.h"
 
 bool verification_batiment_peut_se_placer(Jeu* jeu, int nomDuBatiment, Vector2 pos_ini_batiment, Vector2 co_route);

@@ -2,7 +2,7 @@
 
 // 1 quand pas d obstacle
 // 0 quand obstacle
-
+//
 bool verification_colision_batiment(Jeu* jeu, int nomDuBatiment){
     int co_x = (int)jeu->selection.x-1;
     int co_y = (int)jeu->selection.y-1;

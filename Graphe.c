@@ -1,6 +1,6 @@
 #include "Graphe.h"
 #include "matrice_adjacence.h"
-
+//
 /*Jeu* lire_graphe_console() {
     FILE *ifs = fopen(NOM_DU_FICHIER, "r");
     int ordre_x;

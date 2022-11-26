@@ -1,6 +1,6 @@
 #include "matrice_adjacence.h"
 #include "jeu.h"
-
+//
 void ajouter_batiment_matrice_adjacence(Jeu* jeu, int type_batiment, Coordonnee coordonnee_nouveau){
     switch (type_batiment) {
         case chateau_deau: {

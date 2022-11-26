@@ -1,6 +1,6 @@
 #ifndef BAC_A_SABLE_2_BFS_H
 #define BAC_A_SABLE_2_BFS_H
-
+//
 #include "Macros.h"
 #include "Graphe.h"
 
