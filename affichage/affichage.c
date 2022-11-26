@@ -324,7 +324,7 @@ void afficher_batiment_Raylib(Jeu* jeu){
     if(listeMaison != NULL) {
 
         do {
-            if (jeu->terrain[listeMaison->co.y][listeMaison->co.x] == maison){
+            if (jeu->terrain[(int)listeMaison->co.y][(int)listeMaison->co.x] == maison){
                 jeu->tabImages[en_jeu][img_maison].source_Rec.x = listeMaison->stadeEvolution * jeu->tabImages[en_jeu][img_maison].frame_longueur;
                 DrawTextureRec(jeu->tabImages[en_jeu][img_maison].texture2D, jeu->tabImages[en_jeu][img_maison].source_Rec, (Vector2){listeMaison->co.x*TAILLE_CASE_GRILLE, listeMaison->co.y*TAILLE_CASE_GRILLE}, WHITE); //TODO : DOIS CHANGER CAR PAS EVOLUTION LA
                 nbmaison++;
@@ -338,7 +338,7 @@ void afficher_batiment_Raylib(Jeu* jeu){
 
     if(listeChateau != NULL) {
         do {
-            if (jeu->terrain[listeChateau->co.y][listeChateau->co.x] == chateau_deau) {
+            if (jeu->terrain[(int)listeChateau->co.y][(int)listeChateau->co.x] == chateau_deau) {
                 DrawTexture(jeu->tabImages[en_jeu][img_chateauDO].texture2D, listeChateau->co.x * TAILLE_CASE_GRILLE,
                             listeChateau->co.y * TAILLE_CASE_GRILLE, WHITE); //TODO : DOIS CHANGER CAR PAS EVOLUTION LA
                 nbchateau++;
@@ -350,7 +350,7 @@ void afficher_batiment_Raylib(Jeu* jeu){
 
     if(listeUsine != NULL) {
         do {
-            if (jeu->terrain[listeUsine->co.y][listeUsine->co.x] == usine_electrique) {
+            if (jeu->terrain[(int)listeUsine->co.y][(int)listeUsine->co.x] == usine_electrique) {
                 DrawTexture(jeu->tabImages[en_jeu][img_usine].texture2D, listeUsine->co.x*TAILLE_CASE_GRILLE, listeUsine->co.y*TAILLE_CASE_GRILLE, WHITE); //TODO : DOIS CHANGER CAR PAS EVOLUTION LA
                 nbusine++;
                 listeUsine = listeUsine->next;
