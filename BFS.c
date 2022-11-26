@@ -185,37 +185,39 @@ int** init_conexite_route(Jeu* jeu){
         }
     }
     printf("matrice_connexite_route initialiser\n");
-    for (int j = maison; j < nb_batiments ; j++) {
-        batiment = jeu->batiments[j];
     for (int j = maison; j < nb_type_batiments ; j++) {
-        batiment->next = jeu->batiments[j]->next;
-        int nb_batiment;
-        switch (j) {
-            case maison :
-                nb_batiment = jeu->batiments[maison]->nb_batiment;
-                break;
-            case chateau_deau :
-                nb_batiment = jeu->batiments[chateau_deau]->nb_batiment;
-                break;
-            case usine_electrique :
-                nb_batiment = jeu->batiments[usine_electrique]->nb_batiment;
-                break;
-        }
-        printf("switch case ok %d\n",nb_batiment);
-        int longueur = jeu->batiments[j]->taille.x;
-        int largeur = jeu->batiments[j]->taille.y;
-        if (jeu->batiments[j]->next != NULL) {
-            int num_connexite = 50;
-            for (int k=0; k < nb_batiment ; k++) {
-                if (k!=0){
-                    batiment = batiment->next;
-                }
-                for (int i; i < ((longueur + largeur) * 2);i++){
-                    if (matrice_connexite_route[batiment->cases_adjacentes[i].y][batiment->cases_adjacentes[i].x] == 1) {
-                        BFS_connexite(jeu, batiment->cases_adjacentes[i], 1);
-                        num_connexite++;
+        batiment = jeu->batiments[j];
+        for (int j = maison; j < jeu->batiments[maison]->nb_batiment ; j++) {
+            batiment = batiment->next;
+            int nb_batiment;
+            switch (j) {
+                case maison :
+                    nb_batiment = jeu->batiments[maison]->nb_batiment;
+                    break;
+                case chateau_deau :
+                    nb_batiment = jeu->batiments[chateau_deau]->nb_batiment;
+                    break;
+                case usine_electrique :
+                    nb_batiment = jeu->batiments[usine_electrique]->nb_batiment;
+                    break;
+            }
+            printf("switch case ok %d\n", nb_batiment);
+            int longueur = jeu->batiments[j]->taille.x;
+            int largeur = jeu->batiments[j]->taille.y;
+            if (jeu->batiments[j]->next != NULL) {
+                int num_connexite = 50;
+                for (int k = 0; k < nb_batiment; k++) {
+                    if (k != 0) {
+                        batiment = batiment->next;
                     }
+                    for (int i; i < ((longueur + largeur) * 2); i++) {
+                        if (matrice_connexite_route[batiment->cases_adjacentes[i].y][batiment->cases_adjacentes[i].x] ==
+                            1) {
+                            BFS_connexite(jeu, batiment->cases_adjacentes[i], 1);
+                            num_connexite++;
+                        }
 
+                    }
                 }
             }
         }
