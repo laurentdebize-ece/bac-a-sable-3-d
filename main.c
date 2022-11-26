@@ -11,8 +11,8 @@ int main() {
     affichage_Boucle_G(j);
      */
     int nb_case_adj;
-    Coordonnee* case_adjacente;
-    Coordonnee co_bat;
+    Vector2* case_adjacente;
+    Vector2 co_bat;
     co_bat.x = 6;
     co_bat.y = 6;
     nb_case_adj = initialisation_cases_adjacentes_V2(case_adjacente, 3, co_bat);

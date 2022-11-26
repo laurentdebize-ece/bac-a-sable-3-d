@@ -3,10 +3,10 @@
 // BFS pour les composantes connexes des routes
 // matrices d'adjacences entre les composantes connexe des routes, les centrales, les chateaux d'eaux
 // et les maisons
-void BFS_connexite(Jeu* jeu, Coordonnee tuile,int num_connexite_teste){
-    Coordonnee* cases_adjacentes = NULL;
+void BFS_connexite(Jeu* jeu, Vector2 tuile, int num_connexite_teste){
+    Vector2* cases_adjacentes = NULL;
     //initialisation_case_ajacentes(cases_adjacentes,tuile, 1, 1 );
-    Coordonnee** new_cases_adjacentes = NULL;// pour switch
+    Vector2** new_cases_adjacentes = NULL;// pour switch
     jeu->matrice_connexite_route[tuile.y][tuile.x] = jeu->num_connexite; //route parcourue, route marqué
     // nombre d'adjacences théorique si on prend en comptes toutes les adjacences possiles des cases marquées (même celles avec des coordonnées négatives)
     int nb_adjacence_theorique = 4; // 4 fois le nombre de cases marquées car chaque cases ont 4 adjacences
@@ -28,7 +28,7 @@ void BFS_connexite(Jeu* jeu, Coordonnee tuile,int num_connexite_teste){
     }
     printf("ok 1\n");
     if (nb_adjacence != 0) {
-        new_cases_adjacentes = (Coordonnee **) malloc(nb_adjacence * sizeof(Coordonnee *));
+        new_cases_adjacentes = (Vector2 **) malloc(nb_adjacence * sizeof(Vector2 *));
         int y = 0;
         for (int i = 0; i < nb_adjacence_theorique; i++) {
 
@@ -75,7 +75,7 @@ void BFS_connexite(Jeu* jeu, Coordonnee tuile,int num_connexite_teste){
         if (nb_adjacence != 0) {
 
 
-            cases_adjacentes = calloc(nb_adjacence_theorique * nb_adjacence, sizeof(Coordonnee));
+            cases_adjacentes = calloc(nb_adjacence_theorique * nb_adjacence, sizeof(Vector2));
             int x = 0;
             for (int i = 0; i < nb_adjacence; i++) {
                 for (int j = 0; j < nb_adjacence_theorique; j++) {
@@ -107,7 +107,7 @@ void BFS_connexite(Jeu* jeu, Coordonnee tuile,int num_connexite_teste){
                     }
                 }
             }
-            new_cases_adjacentes = (Coordonnee **) malloc(nb_adjacence * sizeof(Coordonnee *));
+            new_cases_adjacentes = (Vector2 **) malloc(nb_adjacence * sizeof(Vector2 *));
             int y = 0;
             for (int i = 0; i < nb_adjacence_theorique; i++) {
 
@@ -240,10 +240,10 @@ void connexite_route_ajout_batiment(Jeu* jeu, Batiment* nouveau){
     }
 }
 
-void connexite_route_ajout_route(Jeu* jeu, Coordonnee debut, Coordonnee fin){
+void connexite_route_ajout_route(Jeu* jeu, Vector2 debut, Vector2 fin){
     int connexe = 0;
     int batiment_a_cote = 0;
-    Coordonnee* cases_adjacentes = NULL;
+    Vector2* cases_adjacentes = NULL;
     //initialisation_case_ajacentes(cases_adjacentes,debut,debut.x - fin.x + 1, debut.y - fin.y + 1);
     for (int i = 0; i < ((debut.x - fin.x + 1 + debut.y - fin.y + 1) * 2); i++){
         if (jeu->matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x]> 10){

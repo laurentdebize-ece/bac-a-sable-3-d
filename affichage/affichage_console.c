@@ -90,7 +90,7 @@ void afficher_choix_joueur(Jeu* jeu) {
         case 6: {
             printf("Quel type de batiment voulez vous detruire ?\n1 : Route\n2 : Maison\n3 : Chateau d'eau\n4 : Usine electrique\n");
             scanf("%d", &choix);
-            Coordonnee co_batiment;
+            Vector2 co_batiment;
             switch (choix) {
                 case reseau : {
                     printf("\nCoordonnees du point initiale? (x / y)\n");

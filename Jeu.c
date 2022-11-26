@@ -668,7 +668,7 @@ void evolutionBatiment(Jeu* jeu,int num) {
     return nb_cases_adjacentes;
 }*/
 
-int initialisation_cases_adjacentes_V2(Coordonnee *case_adjacente, int type_de_batiment, Coordonnee co_bat) {
+int initialisation_cases_adjacentes_V2(Vector2 *case_adjacente, int type_de_batiment, Vector2 co_bat) {
     int nb_cases_adjacentes = 0;
     int case_rempli = 0;
     switch (type_de_batiment) {
@@ -686,7 +686,7 @@ int initialisation_cases_adjacentes_V2(Coordonnee *case_adjacente, int type_de_b
             if (co_bat.x == ORDRE_EN_X - TAILLE_MAISON - 1) {
                 nb_cases_adjacentes -= TAILLE_MAISON;
             }
-            case_adjacente = malloc(nb_cases_adjacentes * sizeof(Coordonnee));
+            case_adjacente = malloc(nb_cases_adjacentes * sizeof(Vector2));
             for (int i = 0; i < nb_cases_adjacentes + case_rempli; i++) {
                 if (i < TAILLE_MAISON) {
                     if (co_bat.x != 0) {
@@ -737,7 +737,7 @@ int initialisation_cases_adjacentes_V2(Coordonnee *case_adjacente, int type_de_b
             if (co_bat.x == ORDRE_EN_X - LONGUEUR_BATIMENTS - 1) {
                 nb_cases_adjacentes -= LONGUEUR_BATIMENTS;
             }
-            case_adjacente = malloc(nb_cases_adjacentes * sizeof(Coordonnee));
+            case_adjacente = malloc(nb_cases_adjacentes * sizeof(Vector2));
             for (int i = 0; i < nb_cases_adjacentes + case_rempli; i++) {
                 if (i < LARGEUR_BATIMENTS) {
                     if (co_bat.x != 0) {

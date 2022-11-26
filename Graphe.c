@@ -289,8 +289,8 @@ void suppression_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y
 
 
 
-Coordonnee position_maison(Jeu jeu, int x, int y){
-    Coordonnee position_maison;
+Vector2 position_maison(Jeu jeu, int x, int y){
+    Vector2 position_maison;
     position_maison.x = -1;
     position_maison.y = -1;
     bool batiment_trouve = FALSE;
@@ -312,8 +312,8 @@ Coordonnee position_maison(Jeu jeu, int x, int y){
     return position_maison;
 }
 
-Coordonnee position_usine(Jeu jeu, int x, int y, int type_usine){
-    Coordonnee position_usine;
+Vector2 position_usine(Jeu jeu, int x, int y, int type_usine){
+    Vector2 position_usine;
     position_usine.x = -1;
     position_usine.y = -1;
     bool batiment_trouve = FALSE;
@@ -337,8 +337,8 @@ Coordonnee position_usine(Jeu jeu, int x, int y, int type_usine){
     return position_usine;
 }
 
-Coordonnee position_batiment(Jeu jeu, int x, int y){
-    Coordonnee postion_batiment;
+Vector2 position_batiment(Jeu jeu, int x, int y){
+    Vector2 postion_batiment;
     int type_batiment = jeu.terrain[y][x];
     switch (type_batiment) {
         case vide : {
