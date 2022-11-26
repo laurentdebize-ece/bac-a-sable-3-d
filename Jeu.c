@@ -672,6 +672,59 @@ int initialisation_cases_adjacentes_V2(Vector2 *case_adjacente, int type_de_bati
     int nb_cases_adjacentes = 0;
     int case_rempli = 0;
     switch (type_de_batiment) {
+
+        case reseau : {
+            nb_cases_adjacentes =  4;
+            if (co_bat.y == 0) {
+                nb_cases_adjacentes --;
+            }
+            if (co_bat.x == 0) {
+                nb_cases_adjacentes --;
+            }
+             if (co_bat.y == ORDRE_EN_Y - 1 ) {
+                nb_cases_adjacentes --;
+            }
+            if (co_bat.x == ORDRE_EN_X - 1) {
+                nb_cases_adjacentes --;
+            }
+            case_adjacente = malloc(nb_cases_adjacentes * sizeof(Vector2));
+            for (int i = 0; i < nb_cases_adjacentes + case_rempli; i++) {
+                if (i < 1) {
+                    if (co_bat.x != 0) {
+                        case_adjacente[i - case_rempli].x = co_bat.x - 1;
+                        case_adjacente[i - case_rempli].y = co_bat.y + i;
+                    } else {
+                        case_rempli += 1;
+                        i = 1 - 1;
+                    }
+                } else if (i < 1 * 2) {
+                    if (co_bat.y != ORDRE_EN_Y - 1 ) {
+                        case_adjacente[i - case_rempli].x = co_bat.x + i - 1;
+                        case_adjacente[i - case_rempli].y = co_bat.y + 1;
+                    } else {
+                        case_rempli += 1;
+                        i = 1 * 2 - 1;
+                    }
+                } else if (i < 1 * 3) {
+                    if (co_bat.x != ORDRE_EN_X - 1 ) {
+                        case_adjacente[i - case_rempli].x = co_bat.x + 1;
+                        case_adjacente[i - case_rempli].y = co_bat.y - i + 1 * 3 - 1;
+                    } else {
+                        case_rempli += 1;
+                        i = 1 * 3 - 1;
+                    }
+                } else {
+                    if (co_bat.y != 0) {
+                        case_adjacente[i - case_rempli].x = co_bat.x - i + 1 * 4 - 1;
+                        case_adjacente[i - case_rempli].y = co_bat.y - 1;
+                    }
+                }
+
+            }
+            break;
+        }
+
+
         case maison : {
             nb_cases_adjacentes = TAILLE_MAISON * 4;
             if (co_bat.y == 0) {
@@ -680,10 +733,10 @@ int initialisation_cases_adjacentes_V2(Vector2 *case_adjacente, int type_de_bati
             if (co_bat.x == 0) {
                 nb_cases_adjacentes -= TAILLE_MAISON;
             }
-            if (co_bat.y == ORDRE_EN_Y - TAILLE_MAISON - 1) {
+            if (co_bat.y == ORDRE_EN_Y - TAILLE_MAISON ) {
                 nb_cases_adjacentes -= TAILLE_MAISON;
             }
-            if (co_bat.x == ORDRE_EN_X - TAILLE_MAISON - 1) {
+            if (co_bat.x == ORDRE_EN_X - TAILLE_MAISON ) {
                 nb_cases_adjacentes -= TAILLE_MAISON;
             }
             case_adjacente = malloc(nb_cases_adjacentes * sizeof(Vector2));
@@ -697,7 +750,7 @@ int initialisation_cases_adjacentes_V2(Vector2 *case_adjacente, int type_de_bati
                         i = TAILLE_MAISON - 1;
                     }
                 } else if (i < TAILLE_MAISON * 2) {
-                    if (co_bat.y != ORDRE_EN_Y - TAILLE_MAISON - 1) {
+                    if (co_bat.y != ORDRE_EN_Y - TAILLE_MAISON ) {
                         case_adjacente[i - case_rempli].x = co_bat.x + i - TAILLE_MAISON;
                         case_adjacente[i - case_rempli].y = co_bat.y + TAILLE_MAISON;
                     } else {
@@ -705,7 +758,7 @@ int initialisation_cases_adjacentes_V2(Vector2 *case_adjacente, int type_de_bati
                         i = TAILLE_MAISON * 2 - 1;
                     }
                 } else if (i < TAILLE_MAISON * 3) {
-                    if (co_bat.x != ORDRE_EN_X - TAILLE_MAISON - 1) {
+                    if (co_bat.x != ORDRE_EN_X - TAILLE_MAISON ) {
                         case_adjacente[i - case_rempli].x = co_bat.x + TAILLE_MAISON;
                         case_adjacente[i - case_rempli].y = co_bat.y - i + TAILLE_MAISON * 3 - 1;
                     } else {
@@ -731,10 +784,10 @@ int initialisation_cases_adjacentes_V2(Vector2 *case_adjacente, int type_de_bati
             if (co_bat.x == 0) {
                 nb_cases_adjacentes -= LARGEUR_BATIMENTS;
             }
-            if (co_bat.y == ORDRE_EN_Y - LARGEUR_BATIMENTS - 1) {
+            if (co_bat.y == ORDRE_EN_Y - LARGEUR_BATIMENTS ) {
                 nb_cases_adjacentes -= LARGEUR_BATIMENTS;
             }
-            if (co_bat.x == ORDRE_EN_X - LONGUEUR_BATIMENTS - 1) {
+            if (co_bat.x == ORDRE_EN_X - LONGUEUR_BATIMENTS ) {
                 nb_cases_adjacentes -= LONGUEUR_BATIMENTS;
             }
             case_adjacente = malloc(nb_cases_adjacentes * sizeof(Vector2));
@@ -748,7 +801,7 @@ int initialisation_cases_adjacentes_V2(Vector2 *case_adjacente, int type_de_bati
                         i = LARGEUR_BATIMENTS - 1;
                     }
                 } else if (i < LARGEUR_BATIMENTS + LONGUEUR_BATIMENTS) {
-                    if (co_bat.x != ORDRE_EN_X - LONGUEUR_BATIMENTS - 1) {
+                    if (co_bat.x != ORDRE_EN_X - LONGUEUR_BATIMENTS ) {
                         case_adjacente[i - case_rempli].x = co_bat.x + i - LARGEUR_BATIMENTS;
                         case_adjacente[i - case_rempli].y = co_bat.y + LARGEUR_BATIMENTS;
                     } else {
@@ -756,7 +809,7 @@ int initialisation_cases_adjacentes_V2(Vector2 *case_adjacente, int type_de_bati
                         i = LARGEUR_BATIMENTS + LONGUEUR_BATIMENTS - 1;
                     }
                 } else if (i < LARGEUR_BATIMENTS * 2 + LONGUEUR_BATIMENTS) {
-                    if (co_bat.y != ORDRE_EN_Y - LARGEUR_BATIMENTS - 1) {
+                    if (co_bat.y != ORDRE_EN_Y - LARGEUR_BATIMENTS ) {
                         case_adjacente[i - case_rempli].x = co_bat.x + LONGUEUR_BATIMENTS;
                         case_adjacente[i - case_rempli].y = co_bat.y - i + LARGEUR_BATIMENTS * 2 + LONGUEUR_BATIMENTS - 1;
                     } else {
@@ -779,7 +832,7 @@ int initialisation_cases_adjacentes_V2(Vector2 *case_adjacente, int type_de_bati
 
     printf("Nb cases adjacences : %d", nb_cases_adjacentes);
     for (int i = 0; i < nb_cases_adjacentes; ++i) {
-        printf(">> (%d %d)", case_adjacente[i].x, case_adjacente[i].y);
+        printf(">> (%d %d)", (int)case_adjacente[i].x, (int)case_adjacente[i].y);
     }
     return nb_cases_adjacentes;
 }
