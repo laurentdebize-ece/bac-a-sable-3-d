@@ -238,7 +238,6 @@ void initialiser_jeu(Jeu* jeu){
 
 void initialisation_Grille(){
     printf("Creation d'un graphe ... ...\n");
-    sleep(1);
     FILE *ifs = fopen(NOM_DU_FICHIER, "w");
     fprintf(ifs, "%d\n", ORDRE_EN_X);
     fprintf(ifs, "%d\n", ORDRE_EN_Y);

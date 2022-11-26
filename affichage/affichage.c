@@ -165,6 +165,10 @@ void affi_bouton(Jeu* jeu, int page, int image, Vector2 pos_souris, char* nom, i
                     jeu->page_actuel = selection_choix_jeu;
                 } else jeu->page_actuel = en_jeu;
                 break;
+            case img_boutonSauvegarder:
+                enregistrer_Grille(jeu);
+                printf("enregistrement effectue");
+                break;
             case img_bouton_suppSave:
                 printf("Destruction de votre ancien fichier de sauvegarde (si vous en aviez un)\n");
                 remove(NOM_DU_FICHIER);

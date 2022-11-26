@@ -103,33 +103,33 @@ void lire_graphe(Jeu* jeu) {
 
 
 void enregistrer_Grille(Jeu* jeu){
-    Batiment* parcours = jeu->batiments[maison];
+    Batiment* parcoursMaison = jeu->batiments[maison];
     FILE *ifs = fopen(NOM_DU_FICHIER, "w");
     if(ifs==NULL){
-        printf("Erreur lors de l'1ouverture d'un fichier");
+        printf("Erreur lors de l'ouverture d'un fichier");
         exit(1);
     }
-    fprintf(ifs, "%d\n",jeu->ordre.x);
-    fprintf(ifs, "%d\n",jeu->ordre.y);
+    fprintf(ifs, "%d\n",(int)jeu->ordre.x);
+    fprintf(ifs, "%d\n",(int)jeu->ordre.y);
     fprintf(ifs, "%d\n",jeu->argent);
     fprintf(ifs,"%d\n",jeu->choix_politique);
-    for (int i = 0; i <= jeu->ordre.y; i++) {
-        for (int j = 0; j <= jeu->ordre.x; j++) {
+    for (int y = 0; y <= (int)jeu->ordre.y; y++) {
+        for (int x = 0; x <= (int)jeu->ordre.x; x++) {
             bool passe = FALSE;
-            if(jeu->terrain[i][j] == 2 && jeu->batiments[maison] != NULL){
+            if(jeu->terrain[y][x] == 2 && jeu->batiments[maison] != NULL){
                 do{
-                    if(i == parcours->co.y && j == parcours->co.x){
-                        fprintf(ifs, "%d ", jeu->terrain[i][j] + 18 + parcours->stadeEvolution);
+                    if(y == (int)parcoursMaison->co.y && x == (int)parcoursMaison->co.x){
+                        fprintf(ifs, "%d ", jeu->terrain[y][x] + 18 + parcoursMaison->stadeEvolution);
                         passe = TRUE;
                     }
-                    parcours = parcours->next;
-                }while(parcours == jeu->batiments[maison]);
+                    parcoursMaison = parcoursMaison->next;
+                    if (jeu->batiments[maison]->nb_batiment == 1) break;
+                }while(parcoursMaison == jeu->batiments[maison]);
                 if(passe == FALSE){
-                    fprintf(ifs, "%d ", jeu->terrain[i][j]);
+                    fprintf(ifs, "%d ", jeu->terrain[y][x]);
                 }
-
             }
-            else{fprintf(ifs, "%d ", jeu->terrain[i][j]);}
+            else{fprintf(ifs, "%d ", jeu->terrain[y][x]);}
         }
         fprintf(ifs, "\n");
     }

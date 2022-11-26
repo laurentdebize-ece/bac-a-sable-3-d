@@ -1,7 +1,6 @@
 #include "Jeu.h"
 
 int main() {
-    /*
     ChangeDirectory(GetApplicationDirectory());
     ChangeDirectory("../FILE");
     Jeu* j = (Jeu *) malloc(sizeof(Jeu));
@@ -9,7 +8,6 @@ int main() {
     lire_graphe(j);
     j->page_actuel = animation_Lancement;
     affichage_Boucle_G(j);
-     */
     int nb_case_adj;
     Vector2* case_adjacente;
     Vector2 co_bat;
