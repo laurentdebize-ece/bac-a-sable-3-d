@@ -34,6 +34,13 @@ typedef struct S_Image{
     bool action_sur_click;
 }S_Image;
 
+typedef struct {
+    Coordonnee batiments[2];
+    int distance;
+    int connexite;
+    int capacite_utilise
+}Matrice_batiment;
+
 typedef struct Batiment{
     bool alimente_eau;
     bool alimente_elec;

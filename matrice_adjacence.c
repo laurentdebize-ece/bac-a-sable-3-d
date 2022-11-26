@@ -1,15 +1,61 @@
 #include "matrice_adjacence.h"
 #include "jeu.h"
 
-int** creer_matrice_adjacence(Jeu* jeu, int type_batiment){
+int** ajouter_batiment_matrice_adjacence(Jeu* jeu, int type_batiment, Coordonnee coordonnee_nouveau){
     switch (type_batiment) {
         case chateau_deau: {
-            Matrice_batiment** matrice = (Matrice_batiment **) calloc(jeu->batiments[maison]->nb_batiment, sizeof(Matrice_batiment *));
+            Matrice_batiment** matrice = (Matrice_batiment **) calloc(jeu->batiments[maison]->nb_batiment,
+                                                                      sizeof(Matrice_batiment *));
             for (int i = 0; i < jeu->batiments[maison]->nb_batiment; i++) {
-                matrice[i] = (Matrice_batiment*) calloc(jeu->batiments[chateau_deau]->nb_batiment + 1, sizeof(Matrice_batiment));
+                matrice[i] = (Matrice_batiment *) calloc(jeu->batiments[chateau_deau]->nb_batiment + 1, sizeof(Matrice_batiment));
             }
-            return matrice;
+            for (int i = 0; i < jeu->batiments[maison]->nb_batiment; i++) {
+                for (int j = 0; j < (jeu->batiments[chateau_deau]->nb_batiment + 1); j++) {
+                    if (j == (jeu->batiments[chateau_deau]->nb_batiment)) {
+                        matrice[i][j].batiments[0].x = jeu->matrice_connexite_eau[i][j - 1].batiments[0].x;
+                        matrice[i][j].batiments[0].y = jeu->matrice_connexite_eau[i][j - 1].batiments[0].y;
+                        matrice[i][j].batiments[1].x = coordonnee_nouveau.x;
+                        matrice[i][j].batiments[1].y = coordonnee_nouveau.y;
+                    } else {
+                        matrice[i][j].batiments[0].x = jeu->matrice_connexite_eau[i][j].batiments[0].x;
+                        matrice[i][j].batiments[0].y = jeu->matrice_connexite_eau[i][j].batiments[0].y;
+                        matrice[i][j].batiments[1].x = jeu->matrice_connexite_eau[i][j].batiments[1].x;
+                        matrice[i][j].batiments[1].y = jeu->matrice_connexite_eau[i][j].batiments[1].y;
+                        matrice[i][j].distance = jeu->matrice_connexite_eau[i][j].distance;
+                        matrice[i][j].connexite = jeu->matrice_connexite_eau[i][j].connexite;
+                        matrice[i][j].capacite_utilise = jeu->matrice_connexite_eau[i][j].capacite_utilise;
+                    }
+                }
+            }
+            for (int i = 0; i < jeu->batiments[maison]->nb_batiment; i++) {
+                free(jeu->matrice_connexite_eau[i]);
+                jeu->matrice_connexite_eau[i] = NULL;
+            }
+            free(jeu->matrice_connexite_eau);
+            jeu->matrice_connexite_eau = NULL;
+            jeu->matrice_connexite_eau = (Matrice_batiment **) calloc(jeu->batiments[maison]->nb_batiment,sizeof(Matrice_batiment *));
+            for (int i = 0; i < jeu->batiments[maison]->nb_batiment; i++) {
+                jeu->matrice_connexite_eau[i] = (Matrice_batiment *) calloc(jeu->batiments[chateau_deau]->nb_batiment + 1, sizeof(Matrice_batiment));
+            }
+            for (int i = 0; i < jeu->batiments[maison]->nb_batiment; i++) {
+                for (int j = 0; j < (jeu->batiments[chateau_deau]->nb_batiment + 1); j++) {
+                    jeu->matrice_connexite_eau[i][j].batiments[0].x = matrice[i][j].batiments[0].x;
+                    jeu->matrice_connexite_eau[i][j].batiments[0].y = matrice[i][j].batiments[0].y;
+                    jeu->matrice_connexite_eau[i][j].batiments[1].x = matrice[i][j].batiments[1].x;
+                    jeu->matrice_connexite_eau[i][j].batiments[1].y = matrice[i][j].batiments[1].y;
+                    jeu->matrice_connexite_eau[i][j].distance = matrice[i][j].distance;
+                    jeu->matrice_connexite_eau[i][j].connexite = matrice[i][j].connexite;
+                    jeu->matrice_connexite_eau[i][j].capacite_utilise = matrice[i][j].capacite_utilise;
+                }
+            }
+            for (int i = 0; i < jeu->batiments[maison]->nb_batiment ; i++) {
+                free(matrice[i]);
+                matrice[i]=NULL;
+            }
+            free(matrice);
+            matrice = NULL;
         }
+
         case usine_electrique: {
             Matrice_batiment **matrice = (Matrice_batiment **) calloc(jeu->batiments[maison]->nb_batiment,
                                                                       sizeof(Matrice_batiment *));
@@ -46,6 +92,114 @@ int** creer_matrice_adjacence(Jeu* jeu, int type_batiment){
             }
             for (int i = 0; i < jeu->batiments[maison]->nb_batiment; i++) {
                 for (int j = 0; j < (jeu->batiments[usine_electrique]->nb_batiment + 1); j++) {
+                    jeu->matrice_connexite_electricite[i][j].batiments[0].x = matrice[i][j].batiments[0].x;
+                    jeu->matrice_connexite_electricite[i][j].batiments[0].y = matrice[i][j].batiments[0].y;
+                    jeu->matrice_connexite_electricite[i][j].batiments[1].x = matrice[i][j].batiments[1].x;
+                    jeu->matrice_connexite_electricite[i][j].batiments[1].y = matrice[i][j].batiments[1].y;
+                    jeu->matrice_connexite_electricite[i][j].distance = matrice[i][j].distance;
+                    jeu->matrice_connexite_electricite[i][j].connexite = matrice[i][j].connexite;
+                    jeu->matrice_connexite_electricite[i][j].capacite_utilise = matrice[i][j].capacite_utilise;
+                }
+            }
+            for (int i = 0; i < jeu->batiments[maison]->nb_batiment ; i++) {
+                free(matrice[i]);
+                matrice[i]=NULL;
+            }
+            free(matrice);
+            matrice = NULL;
+        }
+        case maison : {
+            Matrice_batiment** matrice = (Matrice_batiment **) calloc(jeu->batiments[maison]->nb_batiment + 1,sizeof(Matrice_batiment *));
+            for (int i = 0; i < (jeu->batiments[maison]->nb_batiment + 1); i++) {
+                matrice[i] = (Matrice_batiment *) calloc(jeu->batiments[chateau_deau]->nb_batiment , sizeof(Matrice_batiment));
+            }
+            for (int i = 0; i < (jeu->batiments[maison]->nb_batiment + 1); i++) {
+                for (int j = 0; j < jeu->batiments[chateau_deau]->nb_batiment; j++) {
+                    if (i == (jeu->batiments[chateau_deau]->nb_batiment)) {
+                        matrice[i][j].batiments[1].x = jeu->matrice_connexite_eau[i - 1][j].batiments[1].x;
+                        matrice[i][j].batiments[1].y = jeu->matrice_connexite_eau[i - 1][j].batiments[1].y;
+                        matrice[i][j].batiments[0].x = coordonnee_nouveau.x;
+                        matrice[i][j].batiments[0].y = coordonnee_nouveau.y;
+                    } else {
+                        matrice[i][j].batiments[0].x = jeu->matrice_connexite_eau[i][j].batiments[0].x;
+                        matrice[i][j].batiments[0].y = jeu->matrice_connexite_eau[i][j].batiments[0].y;
+                        matrice[i][j].batiments[1].x = jeu->matrice_connexite_eau[i][j].batiments[1].x;
+                        matrice[i][j].batiments[1].y = jeu->matrice_connexite_eau[i][j].batiments[1].y;
+                        matrice[i][j].distance = jeu->matrice_connexite_eau[i][j].distance;
+                        matrice[i][j].connexite = jeu->matrice_connexite_eau[i][j].connexite;
+                        matrice[i][j].capacite_utilise = jeu->matrice_connexite_eau[i][j].capacite_utilise;
+                    }
+                }
+            }
+            for (int i = 0; i < jeu->batiments[maison]->nb_batiment; i++) {
+                free(jeu->matrice_connexite_eau[i]);
+                jeu->matrice_connexite_eau[i] = NULL;
+            }
+            free(jeu->matrice_connexite_eau);
+            jeu->matrice_connexite_eau = NULL;
+            jeu->matrice_connexite_eau = (Matrice_batiment **) calloc(jeu->batiments[maison]->nb_batiment + 1,sizeof(Matrice_batiment *));
+            for (int i = 0; i < (jeu->batiments[maison]->nb_batiment + 1); i++) {
+                jeu->matrice_connexite_eau[i] = (Matrice_batiment *) calloc(jeu->batiments[chateau_deau]->nb_batiment, sizeof(Matrice_batiment));
+            }
+            for (int i = 0; i < (jeu->batiments[maison]->nb_batiment + 1); i++) {
+                for (int j = 0; j < jeu->batiments[chateau_deau]->nb_batiment ; j++) {
+                    jeu->matrice_connexite_eau[i][j].batiments[0].x = matrice[i][j].batiments[0].x;
+                    jeu->matrice_connexite_eau[i][j].batiments[0].y = matrice[i][j].batiments[0].y;
+                    jeu->matrice_connexite_eau[i][j].batiments[1].x = matrice[i][j].batiments[1].x;
+                    jeu->matrice_connexite_eau[i][j].batiments[1].y = matrice[i][j].batiments[1].y;
+                    jeu->matrice_connexite_eau[i][j].distance = matrice[i][j].distance;
+                    jeu->matrice_connexite_eau[i][j].connexite = matrice[i][j].connexite;
+                    jeu->matrice_connexite_eau[i][j].capacite_utilise = matrice[i][j].capacite_utilise;
+                }
+            }
+            for (int i = 0; i < (jeu->batiments[maison]->nb_batiment + 1); i++) {
+                free(matrice[i]);
+                matrice[i]=NULL;
+            }
+            free(matrice);
+            matrice = NULL;
+
+
+
+
+
+
+
+            matrice = (Matrice_batiment **) calloc(jeu->batiments[maison]->nb_batiment + 1,sizeof(Matrice_batiment *));
+            for (int i = 0; i < (jeu->batiments[maison]->nb_batiment + 1) ; i++) {
+                matrice[i] = (Matrice_batiment *) calloc(jeu->batiments[usine_electrique]->nb_batiment, sizeof(Matrice_batiment));
+            }
+            for (int i = 0; i < (jeu->batiments[maison]->nb_batiment + 1); i++) {
+                for (int j = 0; j < jeu->batiments[usine_electrique]->nb_batiment ; j++) {
+                    if (i == (jeu->batiments[usine_electrique]->nb_batiment)) {
+                        matrice[i][j].batiments[1].x = jeu->matrice_connexite_electricite[i - 1][j].batiments[1].x;
+                        matrice[i][j].batiments[1].y = jeu->matrice_connexite_electricite[i - 1][j].batiments[1].y;
+                        matrice[i][j].batiments[0].x = coordonnee_nouveau.x;
+                        matrice[i][j].batiments[0].y = coordonnee_nouveau.y;
+                    } else {
+                        matrice[i][j].batiments[0].x = jeu->matrice_connexite_electricite[i][j].batiments[0].x;
+                        matrice[i][j].batiments[0].y = jeu->matrice_connexite_electricite[i][j].batiments[0].y;
+                        matrice[i][j].batiments[1].x = jeu->matrice_connexite_electricite[i][j].batiments[1].x;
+                        matrice[i][j].batiments[1].y = jeu->matrice_connexite_electricite[i][j].batiments[1].y;
+                        matrice[i][j].distance = jeu->matrice_connexite_electricite[i][j].distance;
+                        matrice[i][j].connexite = jeu->matrice_connexite_electricite[i][j].connexite;
+                        matrice[i][j].capacite_utilise = jeu->matrice_connexite_electricite[i][j].capacite_utilise;
+                    }
+                }
+            }
+            for (int i = 0; i < jeu->batiments[maison]->nb_batiment; i++) {
+                free(jeu->matrice_connexite_electricite[i]);
+                jeu->matrice_connexite_electricite[i] = NULL;
+            }
+            free(jeu->matrice_connexite_electricite);
+            jeu->matrice_connexite_electricite = NULL;
+
+            jeu->matrice_connexite_electricite = (Matrice_batiment **) calloc(jeu->batiments[maison]->nb_batiment + 1,sizeof(Matrice_batiment *));
+            for (int i = 0; i < (jeu->batiments[maison]->nb_batiment + 1); i++) {
+                jeu->matrice_connexite_electricite[i] = (Matrice_batiment *) calloc(jeu->batiments[usine_electrique]->nb_batiment, sizeof(Matrice_batiment));
+            }
+            for (int i = 0; i < (jeu->batiments[maison]->nb_batiment + 1); i++) {
+                for (int j = 0; j < jeu->batiments[usine_electrique]->nb_batiment ; j++) {
                     jeu->matrice_connexite_electricite[i][j].batiments[0].x = matrice[i][j].batiments[0].x;
                     jeu->matrice_connexite_electricite[i][j].batiments[0].y = matrice[i][j].batiments[0].y;
                     jeu->matrice_connexite_electricite[i][j].batiments[1].x = matrice[i][j].batiments[1].x;
