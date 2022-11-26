@@ -5,6 +5,7 @@ void affichage_Boucle_G(Jeu* jeu){
     InitAudioDevice();      // Initialise le haut-parleur
     jeu->quitter = 0;
     jeu->onClickSouris =false;
+    jeu->niveau = 0;
     jeu->mode_de_selection = mode_neutre;
     initialisation_Images(jeu);
     initialisation_Sons(jeu);
@@ -203,14 +204,26 @@ void affi_bouton(Jeu* jeu, int page, int image, Vector2 pos_souris, char* nom, i
 void afficher_jeu_logo_interactionAvecClick(Jeu* jeu, Vector2 pos_souris){
     float alphalogojeu1 = 0.5f;
     float alphalogojeu2 = 0.85f;
+    //RECTANGLE DETECTION POUR BARRE DES CONSTRUCTIONS
     Rectangle logo_reseau = {0, TAILLE_CASE_GRILLE*(jeu->ordre.y), jeu->tabImages[en_jeu][img_logosJeu].frame_hauteur, jeu->tabImages[en_jeu][img_logosJeu].frame_hauteur};
     Rectangle logo_maison = {90, TAILLE_CASE_GRILLE*(jeu->ordre.y), jeu->tabImages[en_jeu][img_logosJeu].frame_hauteur, jeu->tabImages[en_jeu][img_logosJeu].frame_hauteur};
     Rectangle logo_usine = {180, TAILLE_CASE_GRILLE*(jeu->ordre.y), jeu->tabImages[en_jeu][img_logosJeu].frame_hauteur, jeu->tabImages[en_jeu][img_logosJeu].frame_hauteur};
     Rectangle logo_chateauDO = {270, TAILLE_CASE_GRILLE*(jeu->ordre.y), jeu->tabImages[en_jeu][img_logosJeu].frame_hauteur, jeu->tabImages[en_jeu][img_logosJeu].frame_hauteur};
     Rectangle logo_demolition = {360, TAILLE_CASE_GRILLE*(jeu->ordre.y), jeu->tabImages[en_jeu][img_logosJeu].frame_hauteur, jeu->tabImages[en_jeu][img_logosJeu].frame_hauteur};
+    //RECTANGLE DETECTION POUR CHOIX DU NIVEAU D'AFFICHAGE
+    Rectangle logo_niveau_affichage = {LARGEUR_FENETRE-122, LONGUEUR_FENETRE-122, jeu->tabImages[en_jeu][img_niveau_0].texture2D.width, jeu->tabImages[en_jeu][img_niveau_0].texture2D.height};
+
     int selection = -1;
     DrawRectangle(0, TAILLE_CASE_GRILLE*(jeu->ordre.y), jeu->tabImages[en_jeu][img_logosJeu].texture2D.width, jeu->tabImages[en_jeu][img_logosJeu].frame_hauteur,Fade(BLUE, 0.7f));
     DrawTexture(jeu->tabImages[en_jeu][img_logosJeu].texture2D, 0, TAILLE_CASE_GRILLE*(jeu->ordre.y), WHITE);
+
+    if (jeu->niveau == 0){
+        DrawTexture(jeu->tabImages[en_jeu][img_niveau_0].texture2D, LARGEUR_FENETRE-122, LONGUEUR_FENETRE-122, WHITE);
+    }else if (jeu->niveau == -1){
+        DrawTexture(jeu->tabImages[en_jeu][img_niveau_1].texture2D, LARGEUR_FENETRE-122, LONGUEUR_FENETRE-122, WHITE);
+    }else if (jeu->niveau == -2){
+        DrawTexture(jeu->tabImages[en_jeu][img_niveau_2].texture2D, LARGEUR_FENETRE-122, LONGUEUR_FENETRE-122, WHITE);
+    }
     if (CheckCollisionPointRec(pos_souris, logo_reseau)){
         selection = reseau;
     }
@@ -225,6 +238,14 @@ void afficher_jeu_logo_interactionAvecClick(Jeu* jeu, Vector2 pos_souris){
     }
     if (CheckCollisionPointRec(pos_souris, logo_demolition)){
         selection = demolition;
+    }
+    if (CheckCollisionPointRec(pos_souris, logo_niveau_affichage)){
+        DrawRectangle((int)logo_niveau_affichage.x, (int)logo_niveau_affichage.y, (int)logo_niveau_affichage.width, (int)logo_niveau_affichage.height,Fade(BLACK, 0.1f));
+        if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)){
+            DrawRectangle((int)logo_niveau_affichage.x, (int)logo_niveau_affichage.y, (int)logo_niveau_affichage.width, (int)logo_niveau_affichage.height,Fade(WHITE, 0.1f));
+            jeu->niveau--;
+            if (jeu->niveau < -2) jeu->niveau = 0;
+        }
     }
     if (selection != -1){
         switch (selection) {
@@ -317,10 +338,18 @@ void afficher_batiment_Raylib(Jeu* jeu){
     Batiment *listeChateau = jeu->batiments[chateau_deau];
     Batiment *listeUsine = jeu->batiments[usine_electrique];
 
-    for (int y = 0; y < jeu->ordre.y; y++) {
-        for (int x = 0; x < jeu->ordre.x; x++) {
+    for (int y = 0; y < (int)jeu->ordre.y; y++) {
+        for (int x = 0; x < (int)jeu->ordre.x; x++) {
             if (jeu->terrain[y][x] == reseau){
-                DrawTexture(jeu->tabImages[en_jeu][img_route].texture2D, x*TAILLE_CASE_GRILLE, y*TAILLE_CASE_GRILLE, WHITE);
+                if (jeu->niveau == 0){
+                    DrawTexture(jeu->tabImages[en_jeu][img_route].texture2D, x*TAILLE_CASE_GRILLE, y*TAILLE_CASE_GRILLE, WHITE);
+                }
+                else if (jeu->niveau == -1){
+                    DrawRectangle(x*TAILLE_CASE_GRILLE, y*TAILLE_CASE_GRILLE, TAILLE_CASE_GRILLE, TAILLE_CASE_GRILLE,Fade(BLUE, 0.8f));
+                }
+                else if (jeu->niveau == -2){
+                    DrawRectangle(x*TAILLE_CASE_GRILLE, y*TAILLE_CASE_GRILLE, TAILLE_CASE_GRILLE, TAILLE_CASE_GRILLE,Fade(YELLOW, 0.85f));
+                }
             }
         }
     }
