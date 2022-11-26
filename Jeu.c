@@ -1,6 +1,6 @@
 #include "Jeu.h"
 #include "time.h"
-//
+
 Jeu* initialisation(){
     Jeu* j;
     printf("Destruction de votre ancien fichier de sauvegarde (si vous en aviez un)\n");
@@ -456,22 +456,22 @@ Batiment* maj_Compteur(Batiment* liste){
     return liste;
 }
 
-void compteurNbBatimentListe(Jeu* jeu,int choix){
-    Batiment* liste = NULL;
-    switch(choix){
-        case maison:{
+void compteurNbBatimentListe(Jeu* jeu,int choix) {
+    Batiment *liste = NULL;
+    switch (choix) {
+        case maison: {
             liste = jeu->batiments[maison];
             liste = maj_Compteur(liste);
             jeu->batiments[maison] = liste;
             break;
         }
-        case chateau_deau:{
+        case chateau_deau: {
             liste = jeu->batiments[chateau_deau];
             liste = maj_Compteur(liste);
             jeu->batiments[chateau_deau] = liste;
             break;
         }
-        case usine_electrique:{
+        case usine_electrique: {
             liste = jeu->batiments[usine_electrique];
             liste = maj_Compteur(liste);
             jeu->batiments[usine_electrique] = liste;
@@ -480,227 +480,190 @@ void compteurNbBatimentListe(Jeu* jeu,int choix){
     }
 }
 
+
+int verificationElec(Jeu* jeu,int num,int nbHabitantEnPlus) {
+    int elecDistribueParUsine = 0;
+    Stockage_batiment tabUsineElec[jeu->batiments[usine_electrique]->nb_batiment];
+    int nbCaseTab = 0;
+
+    for (int i = 0; i < jeu->batiments[usine_electrique]->nb_batiment; i++) {
+        if (jeu->matrice_connexite_electricite[num][i].connexite >= 1) {
+            tabUsineElec[nbCaseTab].numero_batiment = i;
+            tabUsineElec[i].numero_maison = num;
+            nbCaseTab++;
+        }
+    }
+
+    for (int i = 0; i < nbCaseTab; i++) {
+        for (int j = 0; j < jeu->batiments[maison]->nb_batiment; j++) {
+            elecDistribueParUsine = jeu->matrice_connexite_electricite[i][tabUsineElec[i].numero_batiment].capacite_utilise;
+        }
+    }
+
+    if (elecDistribueParUsine + nbHabitantEnPlus <= CAPACITE_USINE * nbCaseTab) {
+        return 1;
+    }
+    return 0;
+}
+
 //Refaire fonction en parcourant la matrice
-/*void evolutionBatiment(Jeu* jeu,int num) {
-    Batiment* listeMaison = jeu->batiments[maison];
-    Batiment* parcoursMaison = listeMaison;
-    int tabChateauEau[jeu->batiments[chateau_deau]->nb_batiment];
-    int tabChateauEauPlusProche[jeu->batiments[chateau_deau]->nb_batiment];
-    int j = 0;
-    int k =0;
+void evolutionBatiment(Jeu* jeu,int num) {
+    Batiment *listeMaison = jeu->batiments[maison];
+    Batiment *parcoursMaison = listeMaison;
+    Stockage_batiment tabChateauEau[jeu->batiments[chateau_deau]->nb_batiment];
+    Stockage_batiment tabChateauEauPlusProche[jeu->batiments[chateau_deau]->nb_batiment];
+    int nbCaseTabChateauEau = 0, nbCasetabChateauEauPlusProche = 0;
     int eauDistribueParLeChateau = 0;
 
     if (jeu->choix_politique == communisme) {
-        Batiment* liste = jeu->batiments[chateau_deau];
+
+        /*for(int i = 0;i < jeu->batiments[maison]->nb_batiment;i++){
+            for(int j = 0;j < jeu->batiments[chateau_deau]->nb_batiment;j++){
+                if(jeu->matrice_connexite_eau[i][j].distance > 0){
+                    tabChateauEau[nbCaseTabChateauEau].distance = jeu->matrice_connexite_eau[i][j].distance;
+                    tabChateauEau[nbCaseTabChateauEau].numero_chateau_eau = j;
+                    tabChateauEau[nbCaseTabChateauEau].numero_maison = i;
+                    nbCaseTabChateauEau++;
+                }
+            }
+        }
+
+        while(nbCaseTabChateauEau != nbCasetabChateauEauPlusProche) {
+            int plusProche = 10000;
+            for (int i = 0; i <= nbCaseTabChateauEau; i++) {
+                if ( tabChateauEau[nbCaseTabChateauEau].distance< plusProche) {
+                    tabChateauEauPlusProche[nbCasetabChateauEauPlusProche].distance = tabChateauEau[nbCaseTabChateauEau].distance;
+                    tabChateauEauPlusProche[nbCasetabChateauEauPlusProche].numero_chateau_eau = tabChateauEau[nbCaseTabChateauEau].numero_chateau_eau;
+                    tabChateauEauPlusProche[nbCasetabChateauEauPlusProche].numero_maison = tabChateauEau[nbCaseTabChateauEau].numero_maison;
+                    plusProche = tabChateauEau[nbCaseTabChateauEau].distance;
+                    nbCasetabChateauEauPlusProche++;
+                }
+            }
+        }*/
 
         //Récupère tous les chateaux d'eau connexe à la maison
-        for(int i = 0;i < jeu->batiments[chateau_deau]->nb_batiment;i++){
-            if(jeu->matrice_connexite_eau[num][i].connexite >= 1) {
-                tabChateauEau[j] = i;
-                j++;
+        for (int i = 0; i < jeu->batiments[chateau_deau]->nb_batiment; i++) {
+            if (jeu->matrice_connexite_eau[num][i].connexite >= 1) {
+                tabChateauEau[nbCaseTabChateauEau].distance = jeu->matrice_connexite_eau[num][i].distance;
+                tabChateauEau[nbCaseTabChateauEau].numero_maison = num;
+                tabChateauEau[nbCaseTabChateauEau].numero_batiment = i;
+                nbCaseTabChateauEau++;
             }
         }
 
         //Tri des chateau d'eau par rapport à sa distance (ordre croissant)
-        while(k != j) {
+        while (nbCasetabChateauEauPlusProche != nbCaseTabChateauEau) {
             int plusProche = 10000;
-            for (int i = 0; i <= j; i++) {
-                Batiment *parcours = liste;
-                do {
-                    parcours = parcours->next;
-                } while (parcours->numero != tabChateauEau[i]);
-
-                if (parcours->numero < plusProche) {
-                    tabChateauEauPlusProche[k] = i;
-                    k++;
+            for (int i = 0; i <= nbCaseTabChateauEau; i++) {
+                if (tabChateauEauPlusProche[nbCasetabChateauEauPlusProche].distance < plusProche) {
+                    tabChateauEauPlusProche[nbCasetabChateauEauPlusProche].distance = i;
+                    tabChateauEauPlusProche[nbCasetabChateauEauPlusProche].numero_batiment = tabChateauEau[i].numero_batiment;
+                    tabChateauEauPlusProche[nbCasetabChateauEauPlusProche].numero_maison = num;
+                    nbCasetabChateauEauPlusProche++;
                 }
             }
         }
 
-        //Calcul du nombre d'eau distrib par le chateau d'eau
-        for(int i = 0;i < jeu->batiments[maison]->nb_batiment;i++){
-            eauDistribueParLeChateau = jeu->matrice_connexite_eau[i][tabChateauEauPlusProche[k]].capacite_utilise;
-        }
-
-        do{
-            parcoursMaison = parcoursMaison->next;
-        }while(parcoursMaison != num);
-
-        //On regarde si le chateau peu distribuer plus
-        switch(parcoursMaison->stadeEvolution){
-            case 0:{
-                if(CAPACITE_CHATEAU_EAU - (eauDistribueParLeChateau + HABITANT_NIVEAU_MAISON1) >= 0){
-
-                }
-                break;
+        //Faire boucle
+        //for(int k = 0;k <= nbCasetabChateauEauPlusProche;k++) {
+        int k = 0;
+        bool finBoucle = FALSE;
+        while (k != nbCasetabChateauEauPlusProche || finBoucle != TRUE) {
+            //Calcul du nombre d'eau distrib par le chateau d'eau
+            for (int i = 0; i < jeu->batiments[maison]->nb_batiment; i++) {
+                eauDistribueParLeChateau = jeu->matrice_connexite_eau[i][tabChateauEauPlusProche[k].numero_batiment].capacite_utilise;
             }
-            case 1:{
-                if(CAPACITE_CHATEAU_EAU - (eauDistribueParLeChateau + HABITANT_NIVEAU_MAISON1) >= 0){
 
+
+            do {
+                parcoursMaison = parcoursMaison->next;
+            } while (parcoursMaison->numero != num);
+
+            if (eauDistribueParLeChateau < CAPACITE_CHATEAU_EAU) {
+                //On regarde si le chateau peu distribuer plus
+                switch (parcoursMaison->stadeEvolution) {
+                    case 0: {
+                        if (CAPACITE_CHATEAU_EAU - (eauDistribueParLeChateau + HABITANT_NIVEAU_MAISON1) >= 0) {
+                            if (verificationElec(jeu, num, HABITANT_NIVEAU_MAISON1)) {
+                                finBoucle = TRUE;
+                                parcoursMaison->stadeEvolution++;
+                                //appel fonction recalcul distrib eau
+                            }
+                        } else {
+                            parcoursMaison->stadeEvolution++;
+                            //appel fonction recalcul distrib eau
+                        }
+                        break;
+                    }
+                    case 1: {
+                        if (CAPACITE_CHATEAU_EAU - (eauDistribueParLeChateau + HABITANT_NIVEAU_MAISON2) >= 0) {
+                            if (verificationElec(jeu, num, HABITANT_NIVEAU_MAISON2)) {
+                                finBoucle = TRUE;
+                                parcoursMaison->stadeEvolution++;
+                            } else {
+                                parcoursMaison->stadeEvolution++;
+                                //appel fonction recalcul distrib eau
+                            }
+                        }
+                        break;
+                    }
+                    case 2: {
+                        if (CAPACITE_CHATEAU_EAU - (eauDistribueParLeChateau + HABITANT_NIVEAU_MAISON3) >= 0) {
+                            if (verificationElec(jeu, num, HABITANT_NIVEAU_MAISON3)) {
+                                finBoucle = TRUE;
+                                parcoursMaison->stadeEvolution++;
+                            } else {
+                                parcoursMaison->stadeEvolution++;
+                                //appel fonction recalcul distrib eau
+                            }
+                        }
+                        break;
+                    }
+                    case 3: {
+                        if (CAPACITE_CHATEAU_EAU - (eauDistribueParLeChateau + HABITANT_NIVEAU_MAISON4) >= 0) {
+                            if (verificationElec(jeu, num, HABITANT_NIVEAU_MAISON4)) {
+                                finBoucle = TRUE;
+                                parcoursMaison->stadeEvolution++;
+                            } else {
+                                parcoursMaison->stadeEvolution++;
+                                //appel fonction recalcul distrib eau
+                            }
+                        }
+                        break;
+                    }
                 }
-                break;
-            }
-            case 2:{
-                if(CAPACITE_CHATEAU_EAU - (eauDistribueParLeChateau + HABITANT_NIVEAU_MAISON2) >= 0){
-
-                }
-                break;
-            }
-            case 3:{
-                if(CAPACITE_CHATEAU_EAU - (eauDistribueParLeChateau + HABITANT_NIVEAU_MAISON3) >= 0){
-
-                }
-                break;
-            }
-            case 4:{
-                if(CAPACITE_CHATEAU_EAU - (eauDistribueParLeChateau + HABITANT_NIVEAU_MAISON4) >= 0){
-
-                }
-                break;
-            }
-        }
-
-    }
-    else {
-
-    }
-
-}*/
-
-/*
-void initialisation_case_ajacentes(Coordonnee* case_adjacente,Coordonnee coordonnee_batiment,int longueur, int hauteur ){
-    if((case_adjacente->x != 0) || (case_adjacente->y != 0) || (case_adjacente->x != 44) || (case_adjacente->y != 44) ) {
-        case_adjacente = malloc((longueur + hauteur) * 2 * sizeof(Coordonnee));
-        for (int i = 0; i < longueur * hauteur * 2; i++) {
-            if (i < hauteur) {
-                case_adjacente[i].x = coordonnee_batiment.x - 1;
-                case_adjacente[i].y = coordonnee_batiment.y + i;
-            } else if (i < (hauteur + longueur)) {
-                case_adjacente[i].x = coordonnee_batiment.x + i - hauteur;
-                case_adjacente[i].y = coordonnee_batiment.y + hauteur;
-            } else if (i < (hauteur * 2 + longueur)) {
-                case_adjacente[i].x = coordonnee_batiment.x + longueur;
-                case_adjacente[i].y = coordonnee_batiment.y - i + hauteur * 2 + longueur;
-            } else {
-                case_adjacente[i].x = coordonnee_batiment.x - i + hauteur * 2 + longueur * 2;
-                case_adjacente[i].y = coordonnee_batiment.y - 1;
             }
         }
     }
-}*/
+}
 
-int initialisation_cases_adjacentes_V2(Coordonnee *case_adjacente, int type_de_batiment, Coordonnee co_bat) {
-    int nb_cases_adjacentes = 0;
-    int case_rempli = 0;
-    switch (type_de_batiment) {
-        case maison : {
-            nb_cases_adjacentes = TAILLE_MAISON * 4;
-            if (co_bat.y == 0) {
-                nb_cases_adjacentes -= TAILLE_MAISON;
-            }
-            if (co_bat.x == 0) {
-                nb_cases_adjacentes -= TAILLE_MAISON;
-            }
-            if (co_bat.y == ORDRE_EN_Y - TAILLE_MAISON - 1) {
-                nb_cases_adjacentes -= TAILLE_MAISON;
-            }
-            if (co_bat.x == ORDRE_EN_X - TAILLE_MAISON - 1) {
-                nb_cases_adjacentes -= TAILLE_MAISON;
-            }
-            case_adjacente = malloc(nb_cases_adjacentes * sizeof(Coordonnee));
-            for (int i = 0; i < nb_cases_adjacentes + case_rempli; i++) {
-                if (i < TAILLE_MAISON) {
-                    if (co_bat.x != 0) {
-                        case_adjacente[i - case_rempli].x = co_bat.x - 1;
-                        case_adjacente[i - case_rempli].y = co_bat.y + i;
-                    } else {
-                        case_rempli += TAILLE_MAISON;
-                        i = TAILLE_MAISON - 1;
-                    }
-                } else if (i < TAILLE_MAISON * 2) {
-                    if (co_bat.y != ORDRE_EN_Y - TAILLE_MAISON - 1) {
-                        case_adjacente[i - case_rempli].x = co_bat.x + i - TAILLE_MAISON;
-                        case_adjacente[i - case_rempli].y = co_bat.y + TAILLE_MAISON;
-                    } else {
-                        case_rempli += TAILLE_MAISON;
-                        i = TAILLE_MAISON * 2 - 1;
-                    }
-                } else if (i < TAILLE_MAISON * 3) {
-                    if (co_bat.x != ORDRE_EN_X - TAILLE_MAISON - 1) {
-                        case_adjacente[i - case_rempli].x = co_bat.x + TAILLE_MAISON;
-                        case_adjacente[i - case_rempli].y = co_bat.y - i + TAILLE_MAISON * 3 - 1;
-                    } else {
-                        case_rempli += TAILLE_MAISON;
-                        i = TAILLE_MAISON * 3 - 1;
-                    }
-                } else {
-                    if (co_bat.y != 0) {
-                        case_adjacente[i - case_rempli].x = co_bat.x - i + TAILLE_MAISON * 4 - 1;
-                        case_adjacente[i - case_rempli].y = co_bat.y - 1;
-                    }
-                }
 
-            }
-            break;
+/*Coordonnee* initialisation_case_ajacentes(Coordonnee coordonnee_batiment,int longueur, int hauteur ){
+    Coordonnee* case_adjacente = malloc((longueur+hauteur)*2* sizeof(Coordonnee));
+    for (int i = 0; i < longueur*hauteur*2; i++) {
+        if (i < hauteur){
+            case_adjacente[i].x = coordonnee_batiment.x - 1;
+            case_adjacente[i].y = coordonnee_batiment.y + i;
         }
-        case chateau_deau :
-        case usine_electrique : {
-            nb_cases_adjacentes = LARGEUR_BATIMENTS * 2 + LONGUEUR_BATIMENTS * 2;
-            if (co_bat.y == 0) {
-                nb_cases_adjacentes -= LONGUEUR_BATIMENTS;
-            }
-            if (co_bat.x == 0) {
-                nb_cases_adjacentes -= LARGEUR_BATIMENTS;
-            }
-            if (co_bat.y == ORDRE_EN_Y - LARGEUR_BATIMENTS - 1) {
-                nb_cases_adjacentes -= LARGEUR_BATIMENTS;
-            }
-            if (co_bat.x == ORDRE_EN_X - LONGUEUR_BATIMENTS - 1) {
-                nb_cases_adjacentes -= LONGUEUR_BATIMENTS;
-            }
-            case_adjacente = malloc(nb_cases_adjacentes * sizeof(Coordonnee));
-            for (int i = 0; i < nb_cases_adjacentes + case_rempli; i++) {
-                if (i < LARGEUR_BATIMENTS) {
-                    if (co_bat.x != 0) {
-                        case_adjacente[i - case_rempli].x = co_bat.x - 1;
-                        case_adjacente[i - case_rempli].y = co_bat.y + i;
-                    } else {
-                        case_rempli += LARGEUR_BATIMENTS;
-                        i = LARGEUR_BATIMENTS - 1;
-                    }
-                } else if (i < LARGEUR_BATIMENTS + LONGUEUR_BATIMENTS) {
-                    if (co_bat.x != ORDRE_EN_X - LONGUEUR_BATIMENTS - 1) {
-                        case_adjacente[i - case_rempli].x = co_bat.x + i - LARGEUR_BATIMENTS;
-                        case_adjacente[i - case_rempli].y = co_bat.y + LARGEUR_BATIMENTS;
-                    } else {
-                        case_rempli += LONGUEUR_BATIMENTS;
-                        i = LARGEUR_BATIMENTS + LONGUEUR_BATIMENTS - 1;
-                    }
-                } else if (i < LARGEUR_BATIMENTS * 2 + LONGUEUR_BATIMENTS) {
-                    if (co_bat.y != ORDRE_EN_Y - LARGEUR_BATIMENTS - 1) {
-                        case_adjacente[i - case_rempli].x = co_bat.x + LONGUEUR_BATIMENTS;
-                        case_adjacente[i - case_rempli].y = co_bat.y - i + LARGEUR_BATIMENTS * 2 + LONGUEUR_BATIMENTS - 1;
-                    } else {
-                        case_rempli += LARGEUR_BATIMENTS;
-                        i = LARGEUR_BATIMENTS * 2 + LONGUEUR_BATIMENTS - 1;
-                    }
-                } else {
-                    if (co_bat.y != 0) {
-                        case_adjacente[i - case_rempli].x = co_bat.x - i + LARGEUR_BATIMENTS * 2 + LONGUEUR_BATIMENTS * 2 - 1;
-                        case_adjacente[i - case_rempli].y = co_bat.y - 1;
-                    }
-                }
-            }
-            break;
+        else if ( i < (hauteur + longueur)){
+            case_adjacente[i].x = coordonnee_batiment.x + i - hauteur;
+            case_adjacente[i].y = coordonnee_batiment.y + hauteur;
         }
-        default: {
-            break;
+        else if (i < (hauteur*2 + longueur)){
+            case_adjacente[i].x = coordonnee_batiment.x + longueur;
+            case_adjacente[i].y = coordonnee_batiment.y - i + hauteur*2 + longueur;
+        }
+        else{
+            case_adjacente[i].x = coordonnee_batiment.x - i + hauteur*2 + longueur*2;
+            case_adjacente[i].y = coordonnee_batiment.y - 1;
         }
     }
+    return case_adjacente;
+}
 
     printf("Nb cases adjacences : %d", nb_cases_adjacentes);
     for (int i = 0; i < nb_cases_adjacentes; ++i) {
         printf(">> (%d %d)", case_adjacente[i].x, case_adjacente[i].y);
     }
     return nb_cases_adjacentes;
-}
+}*/

@@ -20,6 +20,20 @@ typedef struct Coordonnee {
     int y;
 }Coordonnee;
 
+typedef struct {
+    int distance;
+    int capacite_utilise;
+    int connexite;
+    Coordonnee batiments[2];
+}Matrice_batiment;
+
+typedef struct {
+    int distance;
+    int numero_batiment;
+    int numero_maison;
+}Stockage_batiment;
+
+
 typedef struct S_Image{
     bool charge;
     Texture2D texture2D;
