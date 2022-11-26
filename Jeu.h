@@ -60,6 +60,7 @@ typedef struct Batiment{
 }Batiment;
 
 typedef struct Jeu{
+    bool onClickSouris;
     bool en_cours;
     bool fichier;
     bool quitter;

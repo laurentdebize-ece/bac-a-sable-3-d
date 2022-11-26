@@ -6,14 +6,17 @@
 bool verification_colision_batiment(Jeu* jeu, int nomDuBatiment){
     int co_x = (int)jeu->selection.x-1;
     int co_y = (int)jeu->selection.y-1;
-    if (nomDuBatiment == maison){
+    if (nomDuBatiment == reseau){
+        if ((co_x + 1)<0 || (co_y + 1)<0) return 0;
+        else if (jeu->terrain[co_y + 1][co_x + 1] != 0) return 0;
+    }
+    else if (nomDuBatiment == maison){
         for (int i = 0; i < TAILLE_MAISON ; i++) {
             for (int j = 0; j < TAILLE_MAISON; j++) {
                 if ((co_x + j)<0 || (co_y + i)<0) return 0;
                 else if (jeu->terrain[co_y + i][co_x + j] != 0) return 0;
             }
         }
-
     }
     else if (nomDuBatiment == usine_electrique || nomDuBatiment == chateau_deau){
         for (int i = 0; i < LARGEUR_BATIMENTS ; i++) {
@@ -28,7 +31,7 @@ bool verification_colision_batiment(Jeu* jeu, int nomDuBatiment){
     return 1;
 }
 
-bool verification_batiment_peut_se_placer(Jeu* jeu, int nomDuBatiment, Vector2 pos_ini_batiment, Vector2 co_route){
+bool verification_batiment_peut_se_placer(Jeu* jeu, int nomDuBatiment, Vector2 pos_ini_batiment){
     int longueur = 0;
     int largeur = 0;
     Vector2 pos_souris = GetMousePosition();
@@ -36,10 +39,15 @@ bool verification_batiment_peut_se_placer(Jeu* jeu, int nomDuBatiment, Vector2 p
         return 0;
     } else{
         switch (nomDuBatiment) {
+            case reseau:
+                if (pos_ini_batiment.x >= 0 && pos_ini_batiment.y >= 0 && pos_ini_batiment.x <= jeu->ordre.x && pos_ini_batiment.y <= jeu->ordre.y){
+                    if (verification_colision_batiment(jeu, nomDuBatiment) == 1) return 1;
+                }
+                return 0;
             case maison:
                 longueur = TAILLE_MAISON;
                 largeur = TAILLE_MAISON; //car c'est un carre pour la maison
-                if (pos_ini_batiment.x >= 0 && pos_ini_batiment.y >= 0 && pos_ini_batiment.x + longueur <= jeu->ordre.x+1 && pos_ini_batiment.y + largeur <= jeu->ordre.y+1){
+                if (pos_ini_batiment.x >= 0 && pos_ini_batiment.y >= 0 && pos_ini_batiment.x + longueur <= jeu->ordre.x && pos_ini_batiment.y + largeur <= jeu->ordre.y){
                     if (verification_colision_batiment(jeu, nomDuBatiment) == 1) return 1;
                 }
                 return 0;
@@ -47,47 +55,65 @@ bool verification_batiment_peut_se_placer(Jeu* jeu, int nomDuBatiment, Vector2 p
             case chateau_deau:
                 longueur = LONGUEUR_BATIMENTS;
                 largeur = LARGEUR_BATIMENTS;
-                if (pos_ini_batiment.x >= 0 && pos_ini_batiment.y >= 0 && pos_ini_batiment.x + longueur <= jeu->ordre.x+1 && pos_ini_batiment.y + largeur <= jeu->ordre.y+1) {
+                if (pos_ini_batiment.x >= 0 && pos_ini_batiment.y >= 0 && pos_ini_batiment.x + longueur <= jeu->ordre.x && pos_ini_batiment.y + largeur <= jeu->ordre.y) {
                     if (verification_colision_batiment(jeu, nomDuBatiment) == 1) return 1;
                 }
                 return 0;
             default:
                 return 0;
         }
-    }return 0;
+    }
 }
 
-void ajout_batiment_terrain(Jeu* jeu, int nomDuBatiment, Vector2 pos1){
-    for (int y = 0; y < jeu->batiments[nomDuBatiment]->taille.y ; y++) {
-        for (int x = 0; x < jeu->batiments[nomDuBatiment]->taille.x; x++) {
-            jeu->terrain[(int)pos1.y + y][(int)pos1.x + x] = nomDuBatiment;
+void ajout_batiment_terrain(Jeu* jeu, int nomDuBatiment, Vector2 pos1) {
+    if (nomDuBatiment != reseau) {
+        for (int y = 0; y < jeu->batiments[nomDuBatiment]->taille.y; y++) {
+            for (int x = 0; x < jeu->batiments[nomDuBatiment]->taille.x; x++) {
+                jeu->terrain[(int) pos1.y + y][(int) pos1.x + x] = nomDuBatiment;
+            }
         }
+        printf("%s construite\n", jeu->batiments[nomDuBatiment]->nom);
+    } else {
+        jeu->terrain[(int) pos1.y][(int) pos1.x] = reseau;
     }
-    printf("%s construite\n", jeu->batiments[nomDuBatiment]->nom);
 }
 
 void poser_batiment(Jeu* jeu){
     Vector2 posBatiment = jeu->selection;
     posBatiment.x -= 1;
     posBatiment.y -= 1;
-    if (jeu->page_actuel == en_jeu){
-        if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)){
-            switch (jeu->mode_de_selection) {
-                case mode_neutre:
-                    break;
-                case mode_reseau:
-                    break;
-                case mode_maison:
-                    if (verification_batiment_peut_se_placer(jeu, maison, posBatiment, (Vector2){-1, -1}) == 1){
+    if (jeu->page_actuel == en_jeu) {
+        switch (jeu->mode_de_selection) {
+            case mode_neutre:
+                break;
+            case mode_reseau:
+                if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+                    jeu->onClickSouris = true;
+                }
+                if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)){
+                    jeu->onClickSouris = false;
+                }
+                if (jeu->onClickSouris == true){
+                    if (verification_batiment_peut_se_placer(jeu, reseau, jeu->selection) == 1) {
+                        ajout_batiment_terrain(jeu, reseau, jeu->selection);
+                    } else jeu->timer_affichage = 0;
+                }
+                break;
+            case mode_maison:
+                if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)){
+                    if (verification_batiment_peut_se_placer(jeu, maison, posBatiment) == 1) {
                         //ajout batiment
                         ajouterBatiment_ListeChainee(jeu, posBatiment.x, posBatiment.y, maison);
                         ajout_batiment_terrain(jeu, maison, posBatiment);
                     } else {
                         jeu->timer_affichage = 0;
                     }
-                    break;
-                case mode_usine:
-                    if (verification_batiment_peut_se_placer(jeu, usine_electrique, posBatiment, (Vector2){-1, -1}) == 1){
+
+                }
+                break;
+            case mode_usine:
+                if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
+                    if (verification_batiment_peut_se_placer(jeu, usine_electrique, posBatiment) == 1) {
                         //ajout batiment
                         ajouterBatiment_ListeChainee(jeu, posBatiment.x, posBatiment.y, usine_electrique);
                         ajout_batiment_terrain(jeu, usine_electrique, posBatiment);
@@ -95,19 +121,25 @@ void poser_batiment(Jeu* jeu){
                     } else {
                         jeu->timer_affichage = 0;
                     }
-                    break;
-                case mode_chateauDO:
-                    if (verification_batiment_peut_se_placer(jeu, chateau_deau, posBatiment, (Vector2){-1, -1}) == 1){
+
+                }
+                break;
+            case mode_chateauDO:
+                if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
+                    if (verification_batiment_peut_se_placer(jeu, chateau_deau, posBatiment) == 1) {
                         //ajout batiment
                         ajouterBatiment_ListeChainee(jeu, posBatiment.x, posBatiment.y, chateau_deau);
                         ajout_batiment_terrain(jeu, chateau_deau, posBatiment);
                     } else {
                         jeu->timer_affichage = 0;
                     }
-                    break;
-                case demolition:
-                    break;
-            }
+                }
+                break;
+            case demolition:
+                if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
+
+                }
+                break;
         }
     }
 }

@@ -28,8 +28,8 @@
 
 //PARAMETRAGE DU JEU
 
-#define ORDRE_EN_X 45
-#define ORDRE_EN_Y 35
+#define ORDRE_EN_X 46
+#define ORDRE_EN_Y 36
 
 #define NOM_DU_FICHIER "Grille_de_jeu.txt"
 
