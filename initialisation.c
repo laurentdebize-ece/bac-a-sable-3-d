@@ -168,10 +168,10 @@ void unload_all(Jeu* jeu){
 }
 void initialisation_Sons(Jeu* jeu){
     jeu->tabSon[son_Bouton] = LoadSound("bouton_son.mp3");
-    SetSoundVolume(jeu->tabSon[img_boutonoff], VOLUME_GLOBAL-0.2f);
+    //SetSoundVolume(jeu->tabSon[img_boutonoff], VOLUME_GLOBAL-0.2f);
 
     jeu->tabSon[son_menu] = LoadSound("musique_ambiance_menu.mp3");
-    SetSoundVolume(jeu->tabSon[son_menu], VOLUME_GLOBAL);
+    //SetSoundVolume(jeu->tabSon[son_menu], VOLUME_GLOBAL);
 }
 
 

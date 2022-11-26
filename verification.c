@@ -4,12 +4,12 @@
 // 0 quand obstacle
 
 bool verification_colision_batiment(Jeu* jeu, int nomDuBatiment){
-    int co_x = jeu->selection.x-1;
-    int co_y = jeu->selection.y-1;
+    int co_x = (int)jeu->selection.x-1;
+    int co_y = (int)jeu->selection.y-1;
     if (nomDuBatiment == maison){
         for (int i = 0; i < TAILLE_MAISON ; i++) {
             for (int j = 0; j < TAILLE_MAISON; j++) {
-                if (co_x + j<0 || co_y + i<0)return 0;
+                if ((co_x + j)<0 || (co_y + i)<0) return 0;
                 else if (jeu->terrain[co_y + i][co_x + j] != 0) return 0;
             }
         }
@@ -58,10 +58,10 @@ bool verification_batiment_peut_se_placer(Jeu* jeu, int nomDuBatiment, Vector2 p
 }
 
 void ajout_batiment_terrain(Jeu* jeu, int nomDuBatiment, Vector2 pos1){
-    for (int i = 0; i < jeu->batiments[nomDuBatiment]->taille.y ; i++) {
-        for (int j = 0; j < jeu->batiments[nomDuBatiment]->taille.x; j++) {
-            jeu->terrain[(int)pos1.y][(int)pos1.x + j] = nomDuBatiment;
-        }pos1.y++;
+    for (int y = 0; y < jeu->batiments[nomDuBatiment]->taille.y ; y++) {
+        for (int x = 0; x < jeu->batiments[nomDuBatiment]->taille.x; x++) {
+            jeu->terrain[(int)pos1.y + y][(int)pos1.x + x] = nomDuBatiment;
+        }
     }
     printf("%s construite\n", jeu->batiments[nomDuBatiment]->nom);
 }
@@ -112,24 +112,25 @@ void poser_batiment(Jeu* jeu){
 }
 
 void maj_batiment_timer(Jeu* jeu){
-    for (int i = 0; i < 3; i++) {
-        if(jeu->batiments[maison + i] != NULL){
-            Batiment* list_maison = jeu->batiments[maison];
-            Batiment* list_usine = jeu->batiments[usine_electrique];
-            Batiment* list_chateauDO = jeu->batiments[chateau_deau];
-            for (int m = 0; m < jeu->nb_maison; m++) {
-                list_maison->timer++;
-                list_maison = list_maison->next;
-            }
-            for (int c = 0; c < jeu->nb_chateau_eau; c++) {
-                list_chateauDO->timer++;
-                list_chateauDO = list_chateauDO->next;
-            }
-            for (int u = 0; u < jeu->nb_usine_electrique; u++) {
-                list_usine->timer++;
-                list_usine = list_usine->next;
-            }
+    if(jeu->batiments[maison] != NULL) {
+        Batiment *list_maison = jeu->batiments[maison];
+        for (int m = 0; m < jeu->batiments[maison]->nb_batiment; m++) {
+            list_maison->timer++;
+            list_maison = list_maison->next;
         }
     }
-
+    if(jeu->batiments[chateau_deau] != NULL) {
+        Batiment *list_chateauDO = jeu->batiments[chateau_deau];
+        for (int c = 0; c < jeu->batiments[chateau_deau]->nb_batiment; c++) {
+            list_chateauDO->timer++;
+            list_chateauDO = list_chateauDO->next;
+        }
+    }
+    if(jeu->batiments[usine_electrique] != NULL){
+        Batiment* list_usine = jeu->batiments[usine_electrique];
+        for (int u = 0; u < jeu->batiments[usine_electrique]->nb_batiment; u++) {
+            list_usine->timer++;
+            list_usine = list_usine->next;
+        }
+    }
 }

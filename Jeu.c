@@ -28,7 +28,6 @@ void detecterCoordonneDouble(Jeu* jeu,int x,int y,int choix){
         while (parcours->next != liste) {
             if (parcours->co.x == x && parcours->co.y == y) {
                 printf("Coordonnees invalides\n");
-                afficher_choix_joueur(jeu);
             }
             parcours = parcours->next;
         }
@@ -51,9 +50,9 @@ Batiment* maj_liste_chaine(Batiment *nouveau,Batiment *tail,Batiment * liste){
 }
 
 void ajouterBatiment_ListeChainee(Jeu* jeu, int x, int y, int choix){
-    Batiment *nouveau = NULL;
-    Batiment * tail = NULL;
-    Batiment * liste = NULL;
+    Batiment* nouveau = NULL;
+    Batiment* tail = NULL;
+    Batiment* liste = NULL;
 
     detecterCoordonneDouble(jeu,x,y,choix);
     nouveau = calloc(1,sizeof(Batiment));
@@ -434,8 +433,8 @@ Batiment* maj_Compteur(Batiment* liste){
 }
 
 void compteurNbBatimentListe(Jeu* jeu,int choix){
+    Batiment* liste = NULL;
     switch(choix){
-        Batiment* liste = NULL;
         case maison:{
             liste = jeu->batiments[maison];
             liste = maj_Compteur(liste);
@@ -461,7 +460,7 @@ void compteurNbBatimentListe(Jeu* jeu,int choix){
 }
 
 //Refaire fonction en parcourant la matrice
-void evolutionBatiment(Jeu* jeu,int num) {
+/*void evolutionBatiment(Jeu* jeu,int num) {
     Batiment* listeMaison = jeu->batiments[maison];
     Batiment* parcoursMaison = listeMaison;
     int tabChateauEau[jeu->batiments[chateau_deau]->nb_batiment];
@@ -545,7 +544,7 @@ void evolutionBatiment(Jeu* jeu,int num) {
 
     }
 
-}
+}*/
 
 
 Coordonnee* initialisation_case_ajacentes(Coordonnee coordonnee_batiment,int longueur, int hauteur ){

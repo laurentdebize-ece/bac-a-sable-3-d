@@ -34,11 +34,11 @@ typedef struct S_Image{
     bool action_sur_click;
 }S_Image;
 
-typedef struct {
+typedef struct Matrice_batiment {
     Coordonnee batiments[2];
     int distance;
     int connexite;
-    int capacite_utilise
+    int capacite_utilise;
 }Matrice_batiment;
 
 typedef struct Batiment{
@@ -88,11 +88,13 @@ typedef struct Jeu{
 
 #include "Macros.h"
 #include "initialisation.h"
-#include "affichage.h"
+#include "affichage/affichage.h"
 #include "raylib.h"
 #include "Graphe.h"
 #include "reasings.h"
 #include "verification.h"
+#include "affichage/Sacha_affichage.h"
+#include "affichage/affichage_console.h"
 
 
 int difference_entre_2_nombres_VALEURABSOLUE(int a, int b);
