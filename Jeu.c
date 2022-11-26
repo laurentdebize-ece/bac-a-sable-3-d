@@ -63,7 +63,7 @@ void ajouterBatiment_ListeChainee(Jeu* jeu, int x, int y, int choix){
         case maison: {
             nouveau->taille.x = TAILLE_MAISON;
             nouveau->taille.y = TAILLE_MAISON;
-            nouveau->cases_adjacentes = initialisation_case_ajacentes(nouveau->co, TAILLE_MAISON, TAILLE_MAISON);
+            initialisation_case_ajacentes(nouveau->cases_adjacentes,nouveau->co, TAILLE_MAISON, TAILLE_MAISON);
             nouveau->nom = "Maison";
             nouveau->stadeEvolution = 0;
             liste = jeu->batiments[maison];
@@ -75,7 +75,7 @@ void ajouterBatiment_ListeChainee(Jeu* jeu, int x, int y, int choix){
         case chateau_deau: {
             nouveau->taille.x = LONGUEUR_BATIMENTS;
             nouveau->taille.y = LARGEUR_BATIMENTS;
-            nouveau->cases_adjacentes = initialisation_case_ajacentes(nouveau->co, LONGUEUR_BATIMENTS, LARGEUR_BATIMENTS);
+            initialisation_case_ajacentes(nouveau->cases_adjacentes,nouveau->co, TAILLE_MAISON, TAILLE_MAISON);
             nouveau->nom = "Chateau d'eau";
             nouveau->stadeEvolution = 0;
             liste =  jeu->batiments[chateau_deau];
@@ -87,7 +87,7 @@ void ajouterBatiment_ListeChainee(Jeu* jeu, int x, int y, int choix){
         case usine_electrique: {
             nouveau->taille.x = LONGUEUR_BATIMENTS;
             nouveau->taille.y = LARGEUR_BATIMENTS;
-            nouveau->cases_adjacentes = initialisation_case_ajacentes(nouveau->co, LONGUEUR_BATIMENTS, LARGEUR_BATIMENTS);
+            initialisation_case_ajacentes(nouveau->cases_adjacentes,nouveau->co, TAILLE_MAISON, TAILLE_MAISON);
             nouveau->nom = "Usine electrique";
             nouveau->stadeEvolution = 0;
             liste =  jeu->batiments[usine_electrique];
@@ -100,12 +100,30 @@ void ajouterBatiment_ListeChainee(Jeu* jeu, int x, int y, int choix){
             break;
         }
     }
-    free(nouveau->cases_adjacentes);
-    free(nouveau);
-    free(tail->cases_adjacentes);
-    free(tail);
-    free(liste->cases_adjacentes);
-    free(liste);
+    if (nouveau != NULL) {
+        if (nouveau->cases_adjacentes != NULL) {
+            free(nouveau->cases_adjacentes);
+            nouveau->cases_adjacentes = NULL;
+        }
+        free(nouveau);
+        nouveau = NULL;
+    }
+    if (tail != NULL){
+        if (tail->cases_adjacentes != NULL){
+            free(tail->cases_adjacentes);
+            tail->cases_adjacentes = NULL;
+        }
+        free(tail);
+        tail = NULL;
+    }
+    if (liste != NULL) {
+        if (liste->cases_adjacentes != NULL) {
+            free(liste->cases_adjacentes);
+            liste->cases_adjacentes = NULL;
+        }
+        free(liste);
+        liste = NULL;
+    }
 }
 
 void afficherM(Jeu* jeu) {
@@ -550,8 +568,8 @@ void compteurNbBatimentListe(Jeu* jeu,int choix){
 }*/
 
 
-Coordonnee* initialisation_case_ajacentes(Coordonnee coordonnee_batiment,int longueur, int hauteur ){
-    Coordonnee* case_adjacente = malloc((longueur+hauteur)*2* sizeof(Coordonnee));
+void initialisation_case_ajacentes(Coordonnee* case_adjacente,Coordonnee coordonnee_batiment,int longueur, int hauteur ){
+    case_adjacente = malloc((longueur+hauteur)*2* sizeof(Coordonnee));
     for (int i = 0; i < longueur*hauteur*2; i++) {
         if (i < hauteur){
             case_adjacente[i].x = coordonnee_batiment.x - 1;
@@ -570,6 +588,5 @@ Coordonnee* initialisation_case_ajacentes(Coordonnee coordonnee_batiment,int lon
             case_adjacente[i].y = coordonnee_batiment.y - 1;
         }
     }
-    return case_adjacente;
 }
 
