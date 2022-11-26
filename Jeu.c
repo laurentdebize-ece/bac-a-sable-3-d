@@ -100,6 +100,12 @@ void ajouterBatiment_ListeChainee(Jeu* jeu, int x, int y, int choix){
             break;
         }
     }
+    free(nouveau->cases_adjacentes);
+    free(nouveau);
+    free(tail->cases_adjacentes);
+    free(tail);
+    free(liste->cases_adjacentes);
+    free(liste);
 }
 
 void afficherM(Jeu* jeu) {
@@ -454,9 +460,6 @@ void compteurNbBatimentListe(Jeu* jeu,int choix){
             break;
         }
     }
-
-
-
 }
 
 //Refaire fonction en parcourant la matrice

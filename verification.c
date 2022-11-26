@@ -82,6 +82,7 @@ void poser_batiment(Jeu* jeu){
                         //ajout batiment
                         ajouterBatiment_ListeChainee(jeu, posBatiment.x, posBatiment.y, maison);
                         ajout_batiment_terrain(jeu, maison, posBatiment);
+                        jeu->mode_de_selection = mode_neutre;
                     } else {
                         jeu->timer_affichage = 0;
                     }
@@ -91,6 +92,8 @@ void poser_batiment(Jeu* jeu){
                         //ajout batiment
                         ajouterBatiment_ListeChainee(jeu, posBatiment.x, posBatiment.y, usine_electrique);
                         ajout_batiment_terrain(jeu, usine_electrique, posBatiment);
+                        jeu->mode_de_selection = mode_neutre;
+
                     } else {
                         jeu->timer_affichage = 0;
                     }
@@ -100,6 +103,8 @@ void poser_batiment(Jeu* jeu){
                         //ajout batiment
                         ajouterBatiment_ListeChainee(jeu, posBatiment.x, posBatiment.y, chateau_deau);
                         ajout_batiment_terrain(jeu, chateau_deau, posBatiment);
+                        jeu->mode_de_selection = mode_neutre;
+
                     } else {
                         jeu->timer_affichage = 0;
                     }
