@@ -5,7 +5,7 @@
 // et les maisons
 void BFS_connexite(Jeu* jeu, Coordonnee tuile,int num_connexite_teste){
     Coordonnee* cases_adjacentes = NULL;
-    initialisation_case_ajacentes(cases_adjacentes,tuile, 1, 1 );
+    //initialisation_case_ajacentes(cases_adjacentes,tuile, 1, 1 );
     Coordonnee** new_cases_adjacentes = NULL;// pour switch
     jeu->matrice_connexite_route[tuile.y][tuile.x] = jeu->num_connexite; //route parcourue, route marqué
     // nombre d'adjacences théorique si on prend en comptes toutes les adjacences possiles des cases marquées (même celles avec des coordonnées négatives)
@@ -33,7 +33,7 @@ void BFS_connexite(Jeu* jeu, Coordonnee tuile,int num_connexite_teste){
         for (int i = 0; i < nb_adjacence_theorique; i++) {
 
             if (valeur_adjacence[i] != 0) {
-                initialisation_case_ajacentes(new_cases_adjacentes[y],cases_adjacentes[i], 1, 1);
+                //initialisation_case_ajacentes(new_cases_adjacentes[y],cases_adjacentes[i], 1, 1);
                 y++;
                 if (valeur_adjacence[i] == num_connexite_teste) {
                     valeur_adjacence[i] = jeu->num_connexite;
@@ -112,7 +112,7 @@ void BFS_connexite(Jeu* jeu, Coordonnee tuile,int num_connexite_teste){
             for (int i = 0; i < nb_adjacence_theorique; i++) {
 
                 if (valeur_adjacence[i] != 0) {
-                    initialisation_case_ajacentes(new_cases_adjacentes[y],cases_adjacentes[i], 1, 1);
+                    //initialisation_case_ajacentes(new_cases_adjacentes[y],cases_adjacentes[i], 1, 1);
                     y++;
                     if (valeur_adjacence[i] == num_connexite_teste) {
                         valeur_adjacence[i] = jeu->num_connexite;
@@ -244,7 +244,7 @@ void connexite_route_ajout_route(Jeu* jeu, Coordonnee debut, Coordonnee fin){
     int connexe = 0;
     int batiment_a_cote = 0;
     Coordonnee* cases_adjacentes = NULL;
-    initialisation_case_ajacentes(cases_adjacentes,debut,debut.x - fin.x + 1, debut.y - fin.y + 1);
+    //initialisation_case_ajacentes(cases_adjacentes,debut,debut.x - fin.x + 1, debut.y - fin.y + 1);
     for (int i = 0; i < ((debut.x - fin.x + 1 + debut.y - fin.y + 1) * 2); i++){
         if (jeu->matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x]> 10){
             if (connexe == 0) {

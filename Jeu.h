@@ -107,6 +107,7 @@ void liberationListe(Jeu* jeu);
 int conditionAchatBatiment(Jeu* jeu,int choix);
 bool verifier_batiment_a_cote_route(Jeu* jeu, int type_de_batiment, int co_x, int co_y);
 void initialisation_case_ajacentes(Coordonnee* case_adjacente, Coordonnee coordonnee_batiment,int longueur, int hauteur );
+int initialisation_cases_adjacentes_V2(Coordonnee* case_adjacente, int type_de_batiment, Coordonnee co_bat);
 void compteurNbBatimentListe(Jeu* jeu,int choix);
 //
 

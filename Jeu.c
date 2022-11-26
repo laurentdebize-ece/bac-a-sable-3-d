@@ -63,7 +63,7 @@ void ajouterBatiment_ListeChainee(Jeu* jeu, int x, int y, int choix){
         case maison: {
             nouveau->taille.x = TAILLE_MAISON;
             nouveau->taille.y = TAILLE_MAISON;
-            initialisation_case_ajacentes(nouveau->cases_adjacentes,nouveau->co, TAILLE_MAISON, TAILLE_MAISON);
+            //initialisation_case_ajacentes(nouveau->cases_adjacentes,nouveau->co, TAILLE_MAISON, TAILLE_MAISON);
             nouveau->nom = "Maison";
             nouveau->stadeEvolution = 0;
             liste = jeu->batiments[maison];
@@ -75,7 +75,7 @@ void ajouterBatiment_ListeChainee(Jeu* jeu, int x, int y, int choix){
         case chateau_deau: {
             nouveau->taille.x = LONGUEUR_BATIMENTS;
             nouveau->taille.y = LARGEUR_BATIMENTS;
-            initialisation_case_ajacentes(nouveau->cases_adjacentes,nouveau->co, TAILLE_MAISON, TAILLE_MAISON);
+            //initialisation_case_ajacentes(nouveau->cases_adjacentes,nouveau->co, TAILLE_MAISON, TAILLE_MAISON);
             nouveau->nom = "Chateau d'eau";
             nouveau->stadeEvolution = 0;
             liste =  jeu->batiments[chateau_deau];
@@ -87,7 +87,7 @@ void ajouterBatiment_ListeChainee(Jeu* jeu, int x, int y, int choix){
         case usine_electrique: {
             nouveau->taille.x = LONGUEUR_BATIMENTS;
             nouveau->taille.y = LARGEUR_BATIMENTS;
-            initialisation_case_ajacentes(nouveau->cases_adjacentes,nouveau->co, TAILLE_MAISON, TAILLE_MAISON);
+            //initialisation_case_ajacentes(nouveau->cases_adjacentes,nouveau->co, TAILLE_MAISON, TAILLE_MAISON);
             nouveau->nom = "Usine electrique";
             nouveau->stadeEvolution = 0;
             liste =  jeu->batiments[usine_electrique];
@@ -567,7 +567,7 @@ void compteurNbBatimentListe(Jeu* jeu,int choix){
 
 }*/
 
-
+/*
 void initialisation_case_ajacentes(Coordonnee* case_adjacente,Coordonnee coordonnee_batiment,int longueur, int hauteur ){
     if((case_adjacente->x != 0) || (case_adjacente->y != 0) || (case_adjacente->x != 44) || (case_adjacente->y != 44) ) {
         case_adjacente = malloc((longueur + hauteur) * 2 * sizeof(Coordonnee));
@@ -586,7 +586,121 @@ void initialisation_case_ajacentes(Coordonnee* case_adjacente,Coordonnee coordon
                 case_adjacente[i].y = coordonnee_batiment.y - 1;
             }
         }
-    } else if ()
+    }
+}*/
+
+int initialisation_cases_adjacentes_V2(Coordonnee *case_adjacente, int type_de_batiment, Coordonnee co_bat) {
+    int nb_cases_adjacentes = 0;
+    int case_rempli = 0;
+    switch (type_de_batiment) {
+        case maison : {
+            nb_cases_adjacentes = TAILLE_MAISON * 4;
+            if (co_bat.y == 0) {
+                nb_cases_adjacentes -= TAILLE_MAISON;
+            }
+            if (co_bat.x == 0) {
+                nb_cases_adjacentes -= TAILLE_MAISON;
+            }
+            if (co_bat.y == ORDRE_EN_Y - TAILLE_MAISON - 1) {
+                nb_cases_adjacentes -= TAILLE_MAISON;
+            }
+            if (co_bat.x == ORDRE_EN_X - TAILLE_MAISON - 1) {
+                nb_cases_adjacentes -= TAILLE_MAISON;
+            }
+            case_adjacente = malloc(nb_cases_adjacentes * sizeof(Coordonnee));
+            for (int i = 0; i < nb_cases_adjacentes + case_rempli; i++) {
+                if (i < TAILLE_MAISON) {
+                    if (co_bat.x != 0) {
+                        case_adjacente[i - case_rempli].x = co_bat.x - 1;
+                        case_adjacente[i - case_rempli].y = co_bat.y + i;
+                    } else {
+                        case_rempli += TAILLE_MAISON;
+                        i = TAILLE_MAISON - 1;
+                    }
+                } else if (i < TAILLE_MAISON * 2) {
+                    if (co_bat.y != ORDRE_EN_Y - TAILLE_MAISON - 1) {
+                        case_adjacente[i - case_rempli].x = co_bat.x + i - TAILLE_MAISON;
+                        case_adjacente[i - case_rempli].y = co_bat.y + TAILLE_MAISON;
+                    } else {
+                        case_rempli += TAILLE_MAISON;
+                        i = TAILLE_MAISON * 2 - 1;
+                    }
+                } else if (i < TAILLE_MAISON * 3) {
+                    if (co_bat.x != ORDRE_EN_X - TAILLE_MAISON - 1) {
+                        case_adjacente[i - case_rempli].x = co_bat.x + TAILLE_MAISON;
+                        case_adjacente[i - case_rempli].y = co_bat.y - i + TAILLE_MAISON * 3 - 1;
+                    } else {
+                        case_rempli += TAILLE_MAISON;
+                        i = TAILLE_MAISON * 3 - 1;
+                    }
+                } else {
+                    if (co_bat.y != 0) {
+                        case_adjacente[i - case_rempli].x = co_bat.x - i + TAILLE_MAISON * 4 - 1;
+                        case_adjacente[i - case_rempli].y = co_bat.y - 1;
+                    }
+                }
+
+            }
+            break;
+        }
+        case chateau_deau :
+        case usine_electrique : {
+            nb_cases_adjacentes = LARGEUR_BATIMENTS * 2 + LONGUEUR_BATIMENTS * 2;
+            if (co_bat.y == 0) {
+                nb_cases_adjacentes -= LONGUEUR_BATIMENTS;
+            }
+            if (co_bat.x == 0) {
+                nb_cases_adjacentes -= LARGEUR_BATIMENTS;
+            }
+            if (co_bat.y == ORDRE_EN_Y - LARGEUR_BATIMENTS - 1) {
+                nb_cases_adjacentes -= LARGEUR_BATIMENTS;
+            }
+            if (co_bat.x == ORDRE_EN_X - LONGUEUR_BATIMENTS - 1) {
+                nb_cases_adjacentes -= LONGUEUR_BATIMENTS;
+            }
+            case_adjacente = malloc(nb_cases_adjacentes * sizeof(Coordonnee));
+            for (int i = 0; i < nb_cases_adjacentes + case_rempli; i++) {
+                if (i < LARGEUR_BATIMENTS) {
+                    if (co_bat.x != 0) {
+                        case_adjacente[i - case_rempli].x = co_bat.x - 1;
+                        case_adjacente[i - case_rempli].y = co_bat.y + i;
+                    } else {
+                        case_rempli += LARGEUR_BATIMENTS;
+                        i = LARGEUR_BATIMENTS - 1;
+                    }
+                } else if (i < LARGEUR_BATIMENTS + LONGUEUR_BATIMENTS) {
+                    if (co_bat.x != ORDRE_EN_X - LONGUEUR_BATIMENTS - 1) {
+                        case_adjacente[i - case_rempli].x = co_bat.x + i - LARGEUR_BATIMENTS;
+                        case_adjacente[i - case_rempli].y = co_bat.y + LARGEUR_BATIMENTS;
+                    } else {
+                        case_rempli += LONGUEUR_BATIMENTS;
+                        i = LARGEUR_BATIMENTS + LONGUEUR_BATIMENTS - 1;
+                    }
+                } else if (i < LARGEUR_BATIMENTS * 2 + LONGUEUR_BATIMENTS) {
+                    if (co_bat.y != ORDRE_EN_Y - LARGEUR_BATIMENTS - 1) {
+                        case_adjacente[i - case_rempli].x = co_bat.x + LONGUEUR_BATIMENTS;
+                        case_adjacente[i - case_rempli].y = co_bat.y - i + LARGEUR_BATIMENTS * 2 + LONGUEUR_BATIMENTS - 1;
+                    } else {
+                        case_rempli += LARGEUR_BATIMENTS;
+                        i = LARGEUR_BATIMENTS * 2 + LONGUEUR_BATIMENTS - 1;
+                    }
+                } else {
+                    if (co_bat.y != 0) {
+                        case_adjacente[i - case_rempli].x = co_bat.x - i + LARGEUR_BATIMENTS * 2 + LONGUEUR_BATIMENTS * 2 - 1;
+                        case_adjacente[i - case_rempli].y = co_bat.y - 1;
+                    }
+                }
+            }
+            break;
+        }
+        default: {
+            break;
+        }
+    }
+
+    printf("Nb cases adjacences : %d", nb_cases_adjacentes);
+    for (int i = 0; i < nb_cases_adjacentes; ++i) {
+        printf(">> (%d %d)", case_adjacente[i].x, case_adjacente[i].y);
+    }
+    return nb_cases_adjacentes;
 }
-
-
