@@ -207,13 +207,12 @@ Batiment* maj_destruction_maillon(Batiment* liste,int x,int y,Jeu* jeu) {
         Batiment *parcour = liste;
         Batiment *prev = liste;
 
-        do{
+        while (parcour->co.x != x && parcour->co.y != y){
             parcour = parcour->next;
             if (parcour->next == liste) {
                 printf("Coordonnees invalides\n");
             }
         }
-        while (parcour->co.x != x || parcour->co.y != y);
 
         do{
             prev = prev->next;

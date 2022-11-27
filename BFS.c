@@ -4,7 +4,7 @@
 // matrices d'adjacences entre les composantes connexe des routes, les centrales, les chateaux d'eaux
 // et les maisons
 
-void BFS_connexite(Jeu* jeu, Vector2 tuile, int num_connexite_teste){
+/*void BFS_connexite(Jeu* jeu, Vector2 tuile, int num_connexite_teste){
     Vector2* cases_adjacentes = NULL;
     Vector2* case_adjacentes_theorique = NULL;
     Vector2 position_case;
@@ -184,7 +184,7 @@ void BFS_connexite(Jeu* jeu, Vector2 tuile, int num_connexite_teste){
         }
     }
 }
-/*
+
 void BFS_PCC(Jeu* jeu, Vector2 tuile, int num_connexite_teste, Matrice_batiment* matriceBatiment){
     Vector2* cases_adjacentes = NULL;
     Vector2* case_adjacentes_theorique = NULL;
@@ -379,7 +379,7 @@ void BFS_PCC_ajout_construction(Jeu* jeu, int num_batiment){
         }
         BFS_PCC(matrice,b_chateau_eau->cases_adjacentes,1,)
     }
-}*/
+}
 int** init_conexite_route(Jeu* jeu){
     Batiment* batiment = calloc(1, sizeof(Batiment));
 
@@ -559,3 +559,4 @@ void connexite_route_destruction_route(Jeu* jeu,Vector2 route){
     }
     jeu->matrice_connexite_route[(int)route.y][(int)route.x] = 0;
 }
+*/
