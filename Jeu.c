@@ -208,16 +208,19 @@ Batiment* maj_destruction_maillon(Batiment* liste,int x,int y,Jeu* jeu) {
         Batiment *parcour = liste;
         Batiment *prev = liste;
 
-        while (parcour->co.x != x && parcour->co.y != y) {
+        do{
             parcour = parcour->next;
             if (parcour->next == liste) {
                 printf("Coordonnees invalides\n");
             }
         }
-        while (prev->numero != (parcour->numero-1)) {
+        while (parcour->co.x != x || parcour->co.y != y);
+
+        do{
             prev = prev->next;
         }
-        if (prev->numero == parcour->numero-1) printf("OUI prev est bien au numero-1 du next\n");
+        while (prev->next != parcour);
+
         if (parcour == liste) {
             liste = liste->next;
         }
@@ -225,8 +228,6 @@ Batiment* maj_destruction_maillon(Batiment* liste,int x,int y,Jeu* jeu) {
         if (liste == parcour) {
             liste = NULL;
         }
-        printf("maillon detruit : %dx %dy\n", parcour->co.x, parcour->co.y);
-        jeu->numero_maillon_supprime = parcour->numero;
         free(parcour);
     }
     else{printf("Liste vide.\n");}
@@ -242,7 +243,7 @@ void detruireBatiment(Jeu* jeu,int x,int y,int choix) {
                 liste = jeu->batiments[maison];
                 liste = maj_destruction_maillon(liste,x,y,jeu);
                 jeu->batiments[maison] = liste;
-                decompteurNbBatimentListe(jeu,maison);
+                compteurNbBatimentListe(jeu,maison);
             }
             break;
         }
@@ -251,7 +252,7 @@ void detruireBatiment(Jeu* jeu,int x,int y,int choix) {
                 liste = jeu->batiments[chateau_deau];
                 liste = maj_destruction_maillon(liste,x,y,jeu);
                 jeu->batiments[chateau_deau] = liste;
-                decompteurNbBatimentListe(jeu,chateau_deau);
+                compteurNbBatimentListe(jeu,chateau_deau);
             }
             break;
         }
@@ -260,7 +261,7 @@ void detruireBatiment(Jeu* jeu,int x,int y,int choix) {
                 liste = jeu->batiments[usine_electrique];
                 liste = maj_destruction_maillon(liste,x,y,jeu);
                 jeu->batiments[usine_electrique] = liste;
-                decompteurNbBatimentListe(jeu,usine_electrique);
+                compteurNbBatimentListe(jeu,usine_electrique);
             }
             break;
         }
@@ -494,8 +495,8 @@ Batiment* maj_Compteur(Batiment* liste){
             compteur++;
             parcours = parcours->next;
         }while(parcours != liste);
+        liste->nb_batiment = compteur;
     }
-    liste->nb_batiment = compteur;
     return liste;
 }
 
@@ -557,8 +558,8 @@ void maj_reatribution_eau(Jeu* jeu,int numeroChateauEau){
     }
 
     //Attribution
-    while(eauDistrib != jeu->batiments[chateau_deau]->nb_batiment * CAPACITE_CHATEAU_EAU){
-    }
+    //while(eauDistrib != jeu->batiments[chateau_deau]->nb_batiment * CAPACITE_CHATEAU_EAU){
+    //}
 
 }
 
