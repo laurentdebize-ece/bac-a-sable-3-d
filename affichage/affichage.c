@@ -326,6 +326,35 @@ void afficher_construction_batiment(Jeu* jeu, Vector2 pos_souris){
             break;
     }
 }
+void actualiser_nb_habitants_maison(Batiment* liste_maison){
+    switch (liste_maison->stadeEvolution) {
+        case 0 : {
+            liste_maison->nb_habitants = 0;
+            break;
+        }
+        case 1 : {
+            liste_maison->nb_habitants = HABITANT_NIVEAU_MAISON1;
+            break;
+        }
+        case 2 : {
+            liste_maison->nb_habitants = HABITANT_NIVEAU_MAISON2;
+            break;
+        }
+        case 3 : {
+            liste_maison->nb_habitants = HABITANT_NIVEAU_MAISON3;
+            break;
+        }
+        case 4 : {
+            liste_maison->nb_habitants = HABITANT_NIVEAU_MAISON4;
+            break;
+        }
+        default : {
+            break;
+        }
+    }
+}
+
+
 void afficher_batiment_Raylib(Jeu* jeu){
     int nbmaison = 1;
     int nbchateau = 1;
@@ -352,22 +381,28 @@ void afficher_batiment_Raylib(Jeu* jeu){
     }
 
     if(listeMaison != NULL) {
-
         do {
             if (jeu->terrain[(int)listeMaison->co.y][(int)listeMaison->co.x] == maison){
                 if (listeMaison->timer > 60*15){
+                    jeu->argent += jeu->nb_habitants_tot * IMPOTS_PAR_HABITANT;
                     if (listeMaison->stadeEvolution == 5){
                         listeMaison->stadeEvolution = 1;
                     } else if (listeMaison->stadeEvolution < 4){
                         listeMaison->stadeEvolution++;
+                        int nb_habitants = listeMaison->nb_habitants;
+                        actualiser_nb_habitants_maison(listeMaison);
+                        nb_habitants = listeMaison->nb_habitants - nb_habitants;
+                        jeu->nb_habitants_tot += nb_habitants;
                         listeMaison->timer = 0;
                     }
                 }
+
                 jeu->tabImages[en_jeu][img_maison].source_Rec.x = listeMaison->stadeEvolution * jeu->tabImages[en_jeu][img_maison].frame_longueur;
                 DrawTextureRec(jeu->tabImages[en_jeu][img_maison].texture2D, jeu->tabImages[en_jeu][img_maison].source_Rec, (Vector2){listeMaison->co.x*TAILLE_CASE_GRILLE, listeMaison->co.y*TAILLE_CASE_GRILLE}, WHITE); //TODO : DOIS CHANGER CAR PAS EVOLUTION LA
             } else printf("ERROR tu peux pas dessinner une maison alors que le terrain n'a pas de maison\n");
             listeMaison = listeMaison->next;
         } while (listeMaison != jeu->batiments[maison]);
+
     }
     else DrawText("ERROR LISTE MAISON VIDE", LONGUEUR_FENETRE + 100, LONGUEUR_FENETRE-100, 10, WHITE);
 
