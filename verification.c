@@ -151,9 +151,9 @@ void poser_batiment(Jeu* jeu){
                 }
                 break;
             case mode_maison:
-                do{
+                /*do{
                     parcours = parcours->next;
-                }while(liste != parcours);
+                }while(liste != parcours);*/
                 if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)){
                     if (verification_batiment_peut_se_placer(jeu, maison, posBatiment) == 1) {
                         if(verifier_batiment_a_cote_route(jeu, maison, posBatiment.x, posBatiment.y) == true) {
