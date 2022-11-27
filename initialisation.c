@@ -33,6 +33,13 @@ void initialisation_Images(Jeu* jeu){
     jeu->tabImages[en_jeu][img_logosJeu].frame_longueur = 90;
     jeu->tabImages[en_jeu][img_logosJeu].frame_hauteur = 90;
 
+    jeu->tabImages[en_jeu][img_niveau_0].texture2D = LoadTexture("logo_niveau_0.png");
+    jeu->tabImages[en_jeu][img_niveau_0].charge = 1;
+    jeu->tabImages[en_jeu][img_niveau_1].texture2D = LoadTexture("logo_niveau_1.png");
+    jeu->tabImages[en_jeu][img_niveau_1].charge = 1;
+    jeu->tabImages[en_jeu][img_niveau_2].texture2D = LoadTexture("logo_niveau_2.png");
+    jeu->tabImages[en_jeu][img_niveau_2].charge = 1;
+
     jeu->tabImages[en_jeu][img_route].texture2D = LoadTexture("route.png");
     jeu->tabImages[en_jeu][img_route].charge = 1;
     jeu->tabImages[en_jeu][img_usine].texture2D = LoadTexture("usine.png");
@@ -238,7 +245,6 @@ void initialiser_jeu(Jeu* jeu){
 
 void initialisation_Grille(){
     printf("Creation d'un graphe ... ...\n");
-    sleep(1);
     FILE *ifs = fopen(NOM_DU_FICHIER, "w");
     fprintf(ifs, "%d\n", ORDRE_EN_X);
     fprintf(ifs, "%d\n", ORDRE_EN_Y);

@@ -90,7 +90,7 @@ void afficher_choix_joueur(Jeu* jeu) {
         case 6: {
             printf("Quel type de batiment voulez vous detruire ?\n1 : Route\n2 : Maison\n3 : Chateau d'eau\n4 : Usine electrique\n");
             scanf("%d", &choix);
-            Coordonnee co_batiment;
+            Vector2 co_batiment;
             switch (choix) {
                 case reseau : {
                     printf("\nCoordonnees du point initiale? (x / y)\n");
@@ -111,7 +111,7 @@ void afficher_choix_joueur(Jeu* jeu) {
                         break;
                     }
                     co_batiment = position_batiment(*jeu, co_x,co_y);
-                    if ((co_batiment.x == -1 && co_batiment.y == -1)|| jeu->terrain[co_batiment.y][co_batiment.x] != maison){
+                    if ((co_batiment.x == -1 && co_batiment.y == -1)|| jeu->terrain[(int)co_batiment.y][(int)co_batiment.x] != maison){
                         printf("La destruction n'est pas possible : coordonnees invalides\n");
                     }
                     else {
@@ -129,7 +129,7 @@ void afficher_choix_joueur(Jeu* jeu) {
                         break;
                     }
                     co_batiment = position_batiment(*jeu, co_x,co_y);
-                    if ((co_batiment.x == -1 && co_batiment.y == -1) || jeu->terrain[co_batiment.y][co_batiment.x] != chateau_deau){
+                    if ((co_batiment.x == -1 && co_batiment.y == -1) || jeu->terrain[(int)co_batiment.y][(int)co_batiment.x] != chateau_deau){
                         printf("La destruction n'est pas possible : coordonnees invalides\n");
                     }
                     else {
@@ -147,7 +147,7 @@ void afficher_choix_joueur(Jeu* jeu) {
                         break;
                     }
                     co_batiment = position_batiment(*jeu, co_x,co_y);
-                    if ((co_batiment.x == -1 && co_batiment.y == -1)|| jeu->terrain[co_batiment.y][co_batiment.x] != usine_electrique) {
+                    if ((co_batiment.x == -1 && co_batiment.y == -1)|| jeu->terrain[(int)co_batiment.y][(int)co_batiment.x] != usine_electrique) {
                         printf("La destruction n'est pas possible : coordonnees invalides\n");
                     }
                     else {
