@@ -134,7 +134,7 @@ void enregistrer_Grille(Jeu* jeu){
                     }
                     parcoursMaison = parcoursMaison->next;
                     if (jeu->batiments[maison]->nb_batiment == 1) break;
-                }while(parcoursMaison == jeu->batiments[maison]);
+                }while(parcoursMaison != jeu->batiments[maison]);
                 if(passe == FALSE){
                     fprintf(ifs, "%d ", jeu->terrain[y][x]);
                 }
