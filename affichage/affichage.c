@@ -5,8 +5,6 @@ void affichage_Boucle_G(Jeu* jeu){
     SetWindowPosition(0, 15);
     InitAudioDevice();      // Initialise le haut-parleur
     jeu->quitter = 0;
-    jeu->mois = 0;
-    jeu->annee = 2777;
     jeu->onClickSouris =false;
     jeu->niveau = 0;
     jeu->mode_de_selection = mode_neutre;
