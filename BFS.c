@@ -364,6 +364,13 @@ void BFS_PCC_ajout_construction(Jeu* jeu, int num_batiment){
         }
         BFS_PCC(jeu,b_chateau_eau->co,1,matrice,i);
     }
+    for (int i = 0; i < jeu->batiments[maison]->nb_batiment; i++) {
+        for (int j = 0; j < jeu->batiments[chateau_deau]->nb_batiment; j++) {
+            if(jeu->matrice_connexite_eau[i][j].distance == 0){
+                jeu->matrice_connexite_eau[i][j].connexite = 0;
+            }
+        }
+    }
 }
 int** init_conexite_route(Jeu* jeu){
     Batiment* batiment = calloc(1, sizeof(Batiment));
