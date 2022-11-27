@@ -110,8 +110,8 @@ void chargementListe(Jeu* jeu,int num,int y,int* x,FILE **ifs,int stadeEvo);
 void liberationListe(Jeu* jeu);
 int conditionAchatBatiment(Jeu* jeu,int choix);
 bool verifier_batiment_a_cote_route(Jeu* jeu, int type_de_batiment, int co_x, int co_y);
-void initialisation_case_ajacentes(Vector2* case_adjacente, Vector2 coordonnee_batiment, int longueur, int hauteur );
-int initialisation_cases_adjacentes_V2(Vector2* case_adjacente, int type_de_batiment, Vector2 co_bat);
+//void initialisation_case_ajacentes(Vector2* case_adjacente, Vector2 coordonnee_batiment, int longueur, int hauteur );
+int initialisation_cases_adjacentes(Vector2* case_adjacente, int type_de_batiment, Vector2 co_bat);
 void compteurNbBatimentListe(Jeu* jeu,int choix);
 //
 

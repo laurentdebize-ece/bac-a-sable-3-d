@@ -703,7 +703,7 @@ void evolutionBatiment(Jeu* jeu,int num) {
     return nb_cases_adjacentes;
 }*/
 
-int initialisation_cases_adjacentes_V2(Vector2 *case_adjacente, int type_de_batiment, Vector2 co_bat) {
+int initialisation_cases_adjacentes(Vector2 *case_adjacente, int type_de_batiment, Vector2 co_bat) {
     int nb_cases_adjacentes = 0;
     int case_rempli = 0;
     switch (type_de_batiment) {

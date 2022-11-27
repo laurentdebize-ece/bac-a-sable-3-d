@@ -168,3 +168,162 @@ void maj_batiment_timer(Jeu* jeu){
         }
     }
 }
+
+int verif_nb_cases_adjacentes(Jeu* jeu, Vector2 coordonnee_batiment, Vector2 taille){
+    int nb_cases_adjacentes = (int)(taille.y + taille.x)*2;
+    if (coordonnee_batiment.y == 0 || (coordonnee_batiment.y + taille.y) == ORDRE_EN_Y){
+        nb_cases_adjacentes -= (int)taille.x;
+    }
+    if (coordonnee_batiment.x == 0 || (coordonnee_batiment.x + taille.x) == ORDRE_EN_X){
+        nb_cases_adjacentes -= (int)taille.y;
+    }
+    return nb_cases_adjacentes;
+}
+int verif_liaison_maison_chateau(Jeu* jeu, Vector2 position){
+    int connexite = jeu->matrice_connexite_route[(int)position.y][(int)position.x];
+    Batiment* batiment_maison = (Batiment*) calloc(1, sizeof(Batiment));
+    Batiment* batiment_chateau = (Batiment*) calloc(1, sizeof(Batiment));
+    batiment_maison = jeu->batiments[maison];
+    batiment_chateau = jeu->batiments[chateau_deau];
+    int ok = 0;
+    int ok2 = 0;
+    for (int i = 0; i < jeu->batiments[maison]->nb_batiment; i++) {
+        if(ok ==0 ){
+            int num_connexite = verif_nb_cases_adjacentes(jeu,batiment_maison->co,batiment_maison->taille);
+            for (int j = 0; j < num_connexite; j++) {
+                if((ok == 0) && (jeu->matrice_connexite_route[(int)batiment_maison->cases_adjacentes[j].y][(int)batiment_maison->cases_adjacentes[j].y] == num_connexite)) {
+                    ok = num_connexite;
+                }
+            }
+            batiment_maison = batiment_maison->next;
+        }
+    }
+    for (int i = 0; i < jeu->batiments[chateau_deau]->nb_batiment; i++) {
+        if(ok2 ==0 ){
+            int num_connexite = verif_nb_cases_adjacentes(jeu,batiment_chateau->co,batiment_chateau->taille);
+            for (int j = 0; j < num_connexite; j++) {
+                if((ok2 == 0) && (jeu->matrice_connexite_route[(int)batiment_chateau->cases_adjacentes[j].y][(int)batiment_chateau->cases_adjacentes[j].y] == num_connexite)) {
+                    ok2 = num_connexite;
+                }
+            }
+            batiment_chateau = batiment_chateau->next;
+        }
+    }
+    if (ok && ok2){
+        return ok;
+    }
+    else {
+        return 0;
+    }
+}
+
+int verif_liaison_maison_usine_elec(Jeu* jeu, Vector2 position){
+    int connexite = jeu->matrice_connexite_route[(int)position.y][(int)position.x];
+    Batiment* batiment_maison = (Batiment*) calloc(1, sizeof(Batiment));
+    Batiment* batiment_usine_elec = (Batiment*) calloc(1, sizeof(Batiment));
+    batiment_maison = jeu->batiments[maison];
+    batiment_usine_elec = jeu->batiments[usine_electrique];
+    int ok = 0;
+    int ok2 = 0;
+    for (int i = 0; i < jeu->batiments[maison]->nb_batiment; i++) {
+        if(ok ==0 ){
+            int num_connexite = verif_nb_cases_adjacentes(jeu,batiment_maison->co,batiment_maison->taille);
+            for (int j = 0; j < num_connexite; j++) {
+                if((ok == 0) && (jeu->matrice_connexite_route[(int)batiment_maison->cases_adjacentes[j].y][(int)batiment_maison->cases_adjacentes[j].y] == num_connexite)) {
+                    ok = num_connexite;
+                }
+            }
+            batiment_maison = batiment_maison->next;
+        }
+    }
+    for (int i = 0; i < jeu->batiments[usine_electrique]->nb_batiment; i++) {
+        if(ok2 ==0 ){
+            int num_connexite = verif_nb_cases_adjacentes(jeu,batiment_usine_elec->co,batiment_usine_elec->taille);
+            for (int j = 0; j < num_connexite; j++) {
+                if((ok2 == 0) && (jeu->matrice_connexite_route[(int)batiment_usine_elec->cases_adjacentes[j].y][(int)batiment_usine_elec->cases_adjacentes[j].y] == num_connexite)) {
+                    ok2 = num_connexite;
+                }
+            }
+            batiment_usine_elec = batiment_usine_elec->next;
+        }
+    }
+    if (ok && ok2){
+        return ok;
+    }
+    else {
+        return 0;
+    }
+}
+
+/*int* verif_liaison_maison_chateau(Jeu* jeu){
+    int nb_cases_adjacentes = 0;
+    int nb_cases_adjacentes_prec = 0;
+    int num_connexites_maison_chateau[100];
+    int x = 0;
+    for (int i = 0; i < 100; i++) {
+        num_connexites_maison_chateau[i]=0;
+    }
+    int num_connexite;
+    int pas_de_connexite_maison = jeu->batiments[maison]->nb_batiment* 12;
+    int pas_de_connexite_chateau = jeu->batiments[chateau_deau]->nb_batiment* 20;
+    int num_connexite_maison[jeu->batiments[maison]->nb_batiment * TAILLE_MAISON*4];
+    int num_connexite_chateau_eau[jeu->batiments[chateau_deau]->nb_batiment* 20];
+    Batiment* batiment = (Batiment*) calloc(1, sizeof(Batiment));
+    batiment = jeu->batiments[maison];
+    for (int i = 0; i < jeu->batiments[maison]->nb_batiment; i++) {
+        nb_cases_adjacentes_prec = nb_cases_adjacentes;
+        nb_cases_adjacentes += verif_nb_cases_adjacentes(jeu,jeu->matrice_connexite_eau[i][0].batiments[0], jeu->batiments[maison]->taille);
+        for (int j = nb_cases_adjacentes_prec; j < nb_cases_adjacentes; j++) {
+            num_connexite_maison[j] = jeu->matrice_connexite_route[(int)batiment->cases_adjacentes->y][(int)batiment->cases_adjacentes->x];
+        }
+        batiment = batiment->next;
+    }
+    batiment = jeu->batiments[chateau_deau];
+    for (int i = 0; i < jeu->batiments[chateau_deau]->nb_batiment; i++) {
+        nb_cases_adjacentes_prec = nb_cases_adjacentes;
+        nb_cases_adjacentes += verif_nb_cases_adjacentes(jeu,jeu->matrice_connexite_eau[i][1].batiments[0], jeu->batiments[chateau_deau]->taille);
+        for (int j = nb_cases_adjacentes_prec; j < nb_cases_adjacentes; j++) {
+            num_connexite_chateau_eau[j] = jeu->matrice_connexite_route[(int)batiment->cases_adjacentes->y][(int)batiment->cases_adjacentes->x];
+        }
+        batiment = batiment->next;
+    }
+    if (batiment != NULL){
+        free(batiment);
+        batiment = NULL;
+    }
+    while((pas_de_connexite_maison && pas_de_connexite_chateau) != 0){
+        pas_de_connexite_maison = jeu->batiments[maison]->nb_batiment* 12;
+        pas_de_connexite_chateau = jeu->batiments[chateau_deau]->nb_batiment* 20;
+        int ok1 = 0;
+        int ok2 = 0;
+
+        for (int i = 0; i < jeu->batiments[maison]->nb_batiment * TAILLE_MAISON*4; i++) {
+            if ((ok1 == 0) && (num_connexite_maison[i]!= 0)){
+                ok1 = num_connexite_maison[i];
+                num_connexite_maison[i] = 0;
+            }
+            if(num_connexite_maison[i] == ok1){
+                num_connexite_maison[i]=0;
+            }
+            if (num_connexite_maison[i] == 0){
+                pas_de_connexite_maison--;
+            }
+
+        }
+        for (int i = 0; i < jeu->batiments[chateau_deau]->nb_batiment* 20; i++) {
+            if (num_connexite_chateau_eau[i] == ok1){
+                ok2 = ok1;
+                num_connexite_chateau_eau[i] == 0;
+            }
+
+            if (num_connexite_chateau_eau[i] == 0){
+                pas_de_connexite_chateau--;
+            }
+        }
+        while(num_connexites_maison_chateau[x] != 0){
+            x++;
+        }
+        num_connexites_maison_chateau[x] = ok2;
+    }
+    return num_connexites_maison_chateau;
+}*/
