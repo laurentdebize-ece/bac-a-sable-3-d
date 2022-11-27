@@ -334,6 +334,7 @@ void afficher_batiment_Raylib(Jeu* jeu){
     Batiment *listeChateau = jeu->batiments[chateau_deau];
     Batiment *listeUsine = jeu->batiments[usine_electrique];
 
+
     for (int y = 0; y < (int)jeu->ordre.y; y++) {
         for (int x = 0; x < (int)jeu->ordre.x; x++) {
             if (jeu->terrain[y][x] == reseau){
@@ -354,13 +355,21 @@ void afficher_batiment_Raylib(Jeu* jeu){
 
         do {
             if (jeu->terrain[(int)listeMaison->co.y][(int)listeMaison->co.x] == maison){
+                if (listeMaison->timer > 60*15){
+                    if (listeMaison->stadeEvolution == 5){
+                        listeMaison->stadeEvolution = 1;
+                    } else if (listeMaison->stadeEvolution < 4){
+                        listeMaison->stadeEvolution++;
+                        listeMaison->timer = 0;
+                    }
+                }
                 jeu->tabImages[en_jeu][img_maison].source_Rec.x = listeMaison->stadeEvolution * jeu->tabImages[en_jeu][img_maison].frame_longueur;
                 DrawTextureRec(jeu->tabImages[en_jeu][img_maison].texture2D, jeu->tabImages[en_jeu][img_maison].source_Rec, (Vector2){listeMaison->co.x*TAILLE_CASE_GRILLE, listeMaison->co.y*TAILLE_CASE_GRILLE}, WHITE); //TODO : DOIS CHANGER CAR PAS EVOLUTION LA
             } else printf("ERROR tu peux pas dessinner une maison alors que le terrain n'a pas de maison\n");
             listeMaison = listeMaison->next;
         } while (listeMaison != jeu->batiments[maison]);
     }
-    else DrawText("ERROR LISTE MAISON VIDE", LONGUEUR_FENETRE + 100, 30, 10, WHITE);
+    else DrawText("ERROR LISTE MAISON VIDE", LONGUEUR_FENETRE + 100, LONGUEUR_FENETRE-100, 10, WHITE);
 
     if(listeChateau != NULL) {
         do {
@@ -371,7 +380,7 @@ void afficher_batiment_Raylib(Jeu* jeu){
             listeChateau = listeChateau->next;
         } while (listeChateau != jeu->batiments[chateau_deau]);
     }
-    else DrawText("ERROR LISTE CHATEAU VIDE", LONGUEUR_FENETRE + 100, 10, 10, WHITE);
+    else DrawText("ERROR LISTE CHATEAU VIDE", LONGUEUR_FENETRE + 100, LONGUEUR_FENETRE-110, 10, WHITE);
 
     if(listeUsine != NULL) {
         do {
@@ -384,7 +393,7 @@ void afficher_batiment_Raylib(Jeu* jeu){
             listeUsine = listeUsine->next;
         } while (listeUsine != jeu->batiments[usine_electrique]);
     }
-    else DrawText("ERROR LISTE USINE VIDE", LONGUEUR_FENETRE + 100, 20, 10, WHITE);
+    else DrawText("ERROR LISTE USINE VIDE", LONGUEUR_FENETRE + 100, LONGUEUR_FENETRE-120, 10, WHITE);
 }
 
 void affichage_defilement_fond(Jeu* jeu, int *timer){
@@ -444,6 +453,16 @@ void afficherJeu(Jeu* jeu, Vector2 pos_souris, int* timer){
             DrawRectangleLines(x * TAILLE_CASE_GRILLE, (y) * TAILLE_CASE_GRILLE, TAILLE_CASE_GRILLE, TAILLE_CASE_GRILLE, Fade(WHITE, 0.6f));
         }
     }
+    //draw les ressources du jeu à droite de la grille
+    DrawTexture(jeu->tabImages[en_jeu][img_logo_argent].texture2D, ORDRE_EN_X*TAILLE_CASE_GRILLE, 5, Fade(WHITE, 0.7f));
+    DrawTexture(jeu->tabImages[en_jeu][img_logo_habitant].texture2D, ORDRE_EN_X*TAILLE_CASE_GRILLE, 105, Fade(WHITE, 0.7f));
+    DrawTexture(jeu->tabImages[en_jeu][img_logo_eau].texture2D, ORDRE_EN_X*TAILLE_CASE_GRILLE, 205, WHITE);
+    DrawTexture(jeu->tabImages[en_jeu][img_logo_elec].texture2D, ORDRE_EN_X*TAILLE_CASE_GRILLE, 305, Fade(WHITE, 0.7f));
+    DrawText(TextFormat("%d ", jeu->argent), ORDRE_EN_X*TAILLE_CASE_GRILLE+100, 30, 50, Fade(WHITE, 0.85f));
+    DrawText(TextFormat("%d ", jeu->nb_habitants_tot), ORDRE_EN_X*TAILLE_CASE_GRILLE+100, 130, 50, Fade(WHITE, 0.85f));
+    DrawText(TextFormat("%d ", jeu->production_eau_restante), ORDRE_EN_X*TAILLE_CASE_GRILLE+100, 230, 50, Fade(WHITE, 0.85f));
+    DrawText(TextFormat("%d ", jeu->production_elec_restante), ORDRE_EN_X*TAILLE_CASE_GRILLE+100, 330, 50, Fade(WHITE, 0.85f));
+
     poser_batiment(jeu);
     afficher_batiment_Raylib(jeu);
     affi_bouton(jeu, jeu->page_actuel, img_boutonRetourMenu, pos_souris, "MENU", timer);

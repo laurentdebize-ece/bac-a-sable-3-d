@@ -32,6 +32,15 @@ void initialisation_Images(Jeu* jeu){
     jeu->tabImages[en_jeu][img_logosJeu].frame_longueur = 90;
     jeu->tabImages[en_jeu][img_logosJeu].frame_hauteur = 90;
 
+    jeu->tabImages[en_jeu][img_logo_argent].texture2D = LoadTexture("logo_argent.png");
+    jeu->tabImages[en_jeu][img_logo_argent].charge = 1;
+    jeu->tabImages[en_jeu][img_logo_eau].texture2D = LoadTexture("logo_eau.png");
+    jeu->tabImages[en_jeu][img_logo_eau].charge = 1;
+    jeu->tabImages[en_jeu][img_logo_elec].texture2D = LoadTexture("logo_elec.png");
+    jeu->tabImages[en_jeu][img_logo_elec].charge = 1;
+    jeu->tabImages[en_jeu][img_logo_habitant].texture2D = LoadTexture("logo_habitant.png");
+    jeu->tabImages[en_jeu][img_logo_habitant].charge = 1;
+
     jeu->tabImages[en_jeu][img_demolition].texture2D = LoadTexture("demolition.png");
     jeu->tabImages[en_jeu][img_demolition].charge = 1;
 

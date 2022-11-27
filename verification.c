@@ -3,6 +3,13 @@
 // 1 quand pas d obstacle
 // 0 quand obstacle
 //
+bool verif_achat_route(Jeu* jeu){
+    if (jeu->argent >= COUT_ROUTE){
+        jeu->argent -= COUT_ROUTE;
+        return 1;
+    }else return 0;
+}
+
 bool verification_colision_batiment(Jeu* jeu, int nomDuBatiment){
     int co_x = (int)jeu->selection.x-1;
     int co_y = (int)jeu->selection.y-1;
@@ -137,7 +144,9 @@ void poser_batiment(Jeu* jeu){
                 if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) jeu->onClickSouris = false;
                 if (jeu->onClickSouris == true){
                     if (verification_batiment_peut_se_placer(jeu, reseau, jeu->selection) == 1) {
-                        ajout_batiment_terrain(jeu, reseau, jeu->selection);
+                        if (verif_achat_route(jeu) == true){
+                            ajout_batiment_terrain(jeu, reseau, jeu->selection);
+                        }
                     } else jeu->timer_affichage = 0;
                 }
                 break;
@@ -148,8 +157,10 @@ void poser_batiment(Jeu* jeu){
                 if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)){
                     if (verification_batiment_peut_se_placer(jeu, maison, posBatiment) == 1) {
                         if(verifier_batiment_a_cote_route(jeu, maison, posBatiment.x, posBatiment.y) == true) {
-                            ajouterBatiment_ListeChainee(jeu, (int) posBatiment.x, (int) posBatiment.y, maison);
-                            ajout_batiment_terrain(jeu, maison, posBatiment);
+                            if (conditionAchatBatiment(jeu, maison) == true){
+                                ajouterBatiment_ListeChainee(jeu, (int) posBatiment.x, (int) posBatiment.y, maison);
+                                ajout_batiment_terrain(jeu, maison, posBatiment);
+                            }
                         }
                     } else {
                         jeu->timer_affichage = 0;
@@ -161,8 +172,10 @@ void poser_batiment(Jeu* jeu){
                 if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
                     if (verification_batiment_peut_se_placer(jeu, usine_electrique, posBatiment) == 1) {
                         if(verifier_batiment_a_cote_route(jeu, usine_electrique, posBatiment.x, posBatiment.y) == true) {
-                            ajouterBatiment_ListeChainee(jeu, (int) posBatiment.x, (int) posBatiment.y,usine_electrique);
-                            ajout_batiment_terrain(jeu, usine_electrique, posBatiment);
+                            if (conditionAchatBatiment(jeu, usine_electrique) == true) {
+                                ajouterBatiment_ListeChainee(jeu, (int) posBatiment.x, (int) posBatiment.y,usine_electrique);
+                                ajout_batiment_terrain(jeu, usine_electrique, posBatiment);
+                            }
                         }
                     } else {
                         jeu->timer_affichage = 0;
@@ -174,8 +187,10 @@ void poser_batiment(Jeu* jeu){
                 if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
                     if (verification_batiment_peut_se_placer(jeu, chateau_deau, posBatiment) == 1) {
                         if(verifier_batiment_a_cote_route(jeu, chateau_deau, posBatiment.x, posBatiment.y) == true) {
-                            ajouterBatiment_ListeChainee(jeu, (int) posBatiment.x, (int) posBatiment.y, chateau_deau);
-                            ajout_batiment_terrain(jeu, chateau_deau, posBatiment);
+                            if (conditionAchatBatiment(jeu, chateau_deau) == true) {
+                                ajouterBatiment_ListeChainee(jeu, (int) posBatiment.x, (int) posBatiment.y,chateau_deau);
+                                ajout_batiment_terrain(jeu, chateau_deau, posBatiment);
+                            }
                         }
                     } else {
                         jeu->timer_affichage = 0;
