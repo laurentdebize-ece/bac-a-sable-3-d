@@ -99,6 +99,7 @@ void ajouterBatiment_ListeChainee(Jeu* jeu, int x, int y, int choix){
             break;
         }
     }
+
     /*if (nouveau != NULL) {
         if (nouveau->cases_adjacentes != NULL) {
             free(nouveau->cases_adjacentes);

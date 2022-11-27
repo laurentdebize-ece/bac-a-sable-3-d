@@ -6,6 +6,7 @@
 #include "verification.h"
 
 void BFS_connexite(Jeu* jeu, Vector2 tuile, int num_connexite_teste);
+void BFS_PCC(Jeu* jeu, Vector2 tuile, int num_connexite_teste, Matrice_batiment* matriceBatiment);
 int** init_conexite_route(Jeu* jeu);
 void connexite_route_ajout_batiment(Jeu* jeu, Batiment* nouveau);
 void connexite_route_ajout_route(Jeu* jeu, Vector2 route);
