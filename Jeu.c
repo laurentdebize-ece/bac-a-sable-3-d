@@ -468,6 +468,7 @@ int conditionAchatBatiment(Jeu* jeu,int choix){
         }
         case chateau_deau:{
             if(jeu->argent >= COUT_CHATEAU_EAU){
+                jeu->production_eau_restante += CAPACITE_CHATEAU_EAU;
                 jeu->argent = jeu->argent - COUT_CHATEAU_EAU;
                 return 1;
             }
@@ -475,6 +476,7 @@ int conditionAchatBatiment(Jeu* jeu,int choix){
         }
         case usine_electrique:{
             if(jeu->argent >= COUT_USINE_ELECTRIQUE){
+                jeu->production_elec_restante += CAPACITE_USINE;
                 jeu->argent = jeu->argent - COUT_USINE_ELECTRIQUE;
                 return 1;
             }
