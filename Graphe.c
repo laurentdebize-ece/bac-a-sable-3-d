@@ -59,7 +59,12 @@ void lire_graphe(Jeu* jeu) {
 
     fscanf(ifs, "%d", &ordre_x);
     fscanf(ifs, "%d", &ordre_y);
+    fscanf(ifs, "%d", &jeu->annee);
+    fscanf(ifs, "%d", &jeu->mois);
     fscanf(ifs, "%d", &argent);
+    fscanf(ifs, "%d", &jeu->nb_habitants_tot);
+    fscanf(ifs, "%d", &jeu->production_eau_restante);
+    fscanf(ifs, "%d", &jeu->production_elec_restante);
     fscanf(ifs, "%d", &politique);
 
     if(jeu->en_cours ==0)jeu->terrain = (int**) malloc(ordre_y * sizeof(int*));
@@ -111,7 +116,12 @@ void enregistrer_Grille(Jeu* jeu){
     }
     fprintf(ifs, "%d\n",(int)jeu->ordre.x);
     fprintf(ifs, "%d\n",(int)jeu->ordre.y);
+    fprintf(ifs, "%d\n",(int)jeu->annee);
+    fprintf(ifs, "%d\n",(int)jeu->mois);
     fprintf(ifs, "%d\n",jeu->argent);
+    fprintf(ifs, "%d\n", jeu->nb_habitants_tot);
+    fprintf(ifs, "%d\n", jeu->production_eau_restante);
+    fprintf(ifs, "%d\n", jeu->production_elec_restante);
     fprintf(ifs,"%d\n",jeu->choix_politique);
     for (int y = 0; y <= (int)jeu->ordre.y; y++) {
         for (int x = 0; x <= (int)jeu->ordre.x; x++) {

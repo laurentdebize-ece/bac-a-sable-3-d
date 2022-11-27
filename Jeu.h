@@ -67,6 +67,8 @@ typedef struct Jeu{
     bool onClickSouris;
     bool en_cours;
     bool quitter;
+    int annee;
+    int mois;
     int numero_maillon_supprime;
     int niveau;
     int choix_politique;

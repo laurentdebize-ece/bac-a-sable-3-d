@@ -5,6 +5,8 @@ void affichage_Boucle_G(Jeu* jeu){
     SetWindowPosition(0, 15);
     InitAudioDevice();      // Initialise le haut-parleur
     jeu->quitter = 0;
+    jeu->mois = 0;
+    jeu->annee = 2777;
     jeu->onClickSouris =false;
     jeu->niveau = 0;
     jeu->mode_de_selection = mode_neutre;
@@ -348,10 +350,36 @@ void afficher_construction_batiment(Jeu* jeu, Vector2 pos_souris){
             break;
     }
 }
+void actualiser_nb_habitants_maison(Batiment* liste_maison){
+    switch (liste_maison->stadeEvolution) {
+        case 0 : {
+            liste_maison->nb_habitants = 0;
+            break;
+        }
+        case 1 : {
+            liste_maison->nb_habitants = HABITANT_NIVEAU_MAISON1;
+            break;
+        }
+        case 2 : {
+            liste_maison->nb_habitants = HABITANT_NIVEAU_MAISON2;
+            break;
+        }
+        case 3 : {
+            liste_maison->nb_habitants = HABITANT_NIVEAU_MAISON3;
+            break;
+        }
+        case 4 : {
+            liste_maison->nb_habitants = HABITANT_NIVEAU_MAISON4;
+            break;
+        }
+        default : {
+            break;
+        }
+    }
+}
+
+
 void afficher_batiment_Raylib(Jeu* jeu){
-    int nbmaison = 1;
-    int nbchateau = 1;
-    int nbusine = 1;
     Batiment *listeMaison = jeu->batiments[maison];
     Batiment *listeChateau = jeu->batiments[chateau_deau];
     Batiment *listeUsine = jeu->batiments[usine_electrique];
@@ -374,14 +402,19 @@ void afficher_batiment_Raylib(Jeu* jeu){
     }
 
     if(listeMaison != NULL) {
-
         do {
             if (jeu->terrain[(int)listeMaison->co.y][(int)listeMaison->co.x] == maison){
                 if (listeMaison->timer > 60*15){
                     if (listeMaison->stadeEvolution == 5){
+                        listeMaison->nb_habitants = 0;
+                        actualiser_nb_habitants_maison(listeMaison);
                         listeMaison->stadeEvolution = 1;
                     } else if (listeMaison->stadeEvolution < 4){
                         listeMaison->stadeEvolution++;
+                        int nb_habitants = listeMaison->nb_habitants;
+                        actualiser_nb_habitants_maison(listeMaison);
+                        nb_habitants = listeMaison->nb_habitants - nb_habitants;
+                        jeu->nb_habitants_tot += nb_habitants;
                         listeMaison->timer = 0;
                     }
                 }
@@ -390,6 +423,7 @@ void afficher_batiment_Raylib(Jeu* jeu){
             } else printf("ERROR tu peux pas dessinner une maison alors que le terrain n'a pas de maison\n");
             listeMaison = listeMaison->next;
         } while (listeMaison != jeu->batiments[maison]);
+
     }
     else DrawText("ERROR LISTE MAISON VIDE", LONGUEUR_FENETRE + 100, LONGUEUR_FENETRE-100, 10, WHITE);
 
@@ -453,15 +487,20 @@ void afficherJeu(Jeu* jeu, Vector2 pos_souris, int* timer){
     if (playerPosition.y < 0) playerPosition.y = 0;
     else if ((playerPosition.y + PLAYER_SIZE) > ((jeu->ordre.y +1)* TAILLE_CASE_GRILLE )) playerPosition.y = (jeu->ordre.y+1) * TAILLE_CASE_GRILLE - PLAYER_SIZE;
 
+    if (jeu->timer_jeu >= 60*15){
+        jeu->argent += jeu->nb_habitants_tot * IMPOTS_PAR_HABITANT;
+        jeu->mois++;
+        if (jeu->mois >= 13){
+            jeu->mois = 0;
+            jeu->annee++;
+        }
+        jeu->timer_jeu = 0;
+    }
 
     playerTileX = (int)((playerPosition.x + TAILLE_CASE_GRILLE / 2) / TAILLE_CASE_GRILLE);
     playerTileY = (int)((playerPosition.y + TAILLE_CASE_GRILLE / 2) / TAILLE_CASE_GRILLE);
 
     ClearBackground(RAYWHITE);
-    /*for (int y = 0; y < jeu->ordre.y; y++)
-        for (int x = 0; x < jeu->ordre.x; x++)
-            if (ordre.tileFog[y * ordre.x + x] == 0) DrawRectangle(x, y, 1, 1, WHITE);
-            else if (ordre.tileFog[y * ordre.x + x] == 2) DrawRectangle(x, y, 1, 1, Fade(WHITE, 0.8f));*/
     BeginDrawing();
 
     ClearBackground(BLACK);
@@ -484,6 +523,10 @@ void afficherJeu(Jeu* jeu, Vector2 pos_souris, int* timer){
     DrawText(TextFormat("%d ", jeu->nb_habitants_tot), ORDRE_EN_X*TAILLE_CASE_GRILLE+100, 130, 50, Fade(WHITE, 0.85f));
     DrawText(TextFormat("%d ", jeu->production_eau_restante), ORDRE_EN_X*TAILLE_CASE_GRILLE+100, 230, 50, Fade(WHITE, 0.85f));
     DrawText(TextFormat("%d ", jeu->production_elec_restante), ORDRE_EN_X*TAILLE_CASE_GRILLE+100, 330, 50, Fade(WHITE, 0.85f));
+
+    DrawRectangle(450, ORDRE_EN_Y*TAILLE_CASE_GRILLE, 500, 40,Fade(BLUE, 0.7f));
+    DrawText(TextFormat("Année Numéro: %d\t Mois Numéro: %d", jeu->annee, jeu->mois), 460, (ORDRE_EN_Y*TAILLE_CASE_GRILLE)+10, 25,
+             Fade(WHITE, 0.85f));
 
     poser_batiment(jeu);
     afficher_batiment_Raylib(jeu);
