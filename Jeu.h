@@ -34,6 +34,7 @@ typedef struct S_Image{
     float frame_hauteur;
     float frame_longueur;
     float alpha;
+    bool colision_souris;
     bool action_sur_click;
 }S_Image;
 

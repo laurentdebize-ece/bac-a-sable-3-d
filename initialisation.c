@@ -5,13 +5,11 @@ void initialisation_Images(Jeu* jeu){
     // TODO: NE PAS OUBLIER DE Unload des imgs apres les avoir mises en texture /!\
     //  AVEC CA :  UnloadImage(jeu->tabImages[NOMDELIMAGE].image2D);
 
-    //exemple d'init img et redimension
-    /*jeu->tabImages[boutonoff].image2D = LoadImage("off-button.png");
-    int x = jeu->tabImages[boutonoff].image2D.width;
-    int y = jeu->tabImages[boutonoff].image2D.height;
-    ImageCrop(&jeu->tabImages[boutonoff].image2D, (Rectangle){0, 0, x / 1.5, y / 1.5 });
-    ImageResize(&jeu->tabImages[boutonoff].image2D, jeu->tabImages[boutonoff].x = x / 11, jeu->tabImages[boutonoff].y = y / 11);
-    jeu->tabImages[boutonoff].texture2D = LoadTextureFromImage(jeu->tabImages[boutonoff].image2D);*/
+    for (int i = 0; i < nb_pages; i++) {
+        for (int j = 0; j < nb_img; j++) {
+            jeu->tabImages[i][j].colision_souris = false;
+        }
+    }
 
     //pour init une img en boutton
     ini_bouton(jeu);

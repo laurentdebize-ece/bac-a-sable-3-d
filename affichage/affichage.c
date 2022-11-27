@@ -134,6 +134,24 @@ void afficher_choix_communisme(Jeu* jeu, Vector2 pos_Souris, int* timer){
     DrawTexture(jeu->tabImages[selection_choix_jeu][img_fond_ChoixJeu].texture2D, 0, 0, WHITE);
     affi_bouton(jeu, jeu->page_actuel, img_bouton_Capitalisme, pos_Souris, "CAPITALISME", timer);
     affi_bouton(jeu, jeu->page_actuel, img_bouton_Communisme, pos_Souris, "COMMUNISME", timer);
+    if (jeu->tabImages[selection_choix_jeu][img_bouton_Capitalisme].colision_souris == true){
+        DrawRectangle((LARGEUR_FENETRE/2)+40, 290, 880, 360, Fade(BLUE, 0.68f));
+        DrawText("Capitalisme : Dans ce mode, une construction \npasse systématiquement au stade supérieur, que les \n"
+                 "ressources (eau+électricité) soient disponibles ou\n pas. L'évolution de l'ensemble des \n"
+                 "constructions s'en trouve alors bouleversée, toujours\n dans le respect des règles de \n"
+                 "régression qui maximisent le nombre d'habitants\n total de la ville.", (LARGEUR_FENETRE/2)+50, 300, 30, WHITE);
+    } else if (jeu->tabImages[selection_choix_jeu][img_bouton_Communisme].colision_souris == true){
+        DrawRectangle(40, 190, 910, 590, Fade(RED, 0.68f));
+        DrawText("Communiste : Dans ce mode, une construction n'évolue\npas si les ressources (eau+électricité) \n"
+                 "nécessaires à sa croissance ne sont pas disponibles.\nLa construction va donc :\n"
+                 "- Evoluer à chaque cycle si les conditions eau+électricité \ndu jeu le permettent. \n"
+                 "- Conserver son stade actuel tant que les conditions \neau+électricité le permettent, et"
+                 "qu'elle n'a \npas pu évoluer. \n"
+                 "- Régresser au stade précédent si les conditions ne lui \npermettent plus de se "
+                 "maintenir ou \nd'évoluer (une cabane régresse au stade de ruine avant \nd'évoluer de"
+                 "nouveau)", 50, 200, 30, WHITE);
+    }
+
     EndDrawing();
 }
 void affi_bouton(Jeu* jeu, int page, int image, Vector2 pos_souris, char* nom, int* timer){
@@ -146,8 +164,12 @@ void affi_bouton(Jeu* jeu, int page, int image, Vector2 pos_souris, char* nom, i
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) btnState = 2;
         else btnState = 1;
         if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) btnAction = true;
+        jeu->tabImages[page][image].colision_souris = true;
     }
-    else btnState = 0;
+    else {
+        jeu->tabImages[page][image].colision_souris = false;
+        btnState = 0;
+    }
     if (btnAction)
     {
         PlaySound(jeu->tabSon[son_Bouton]); // +ce qu'on souhaite faire en appuyant sur l'image
