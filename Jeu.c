@@ -614,6 +614,7 @@ void evolutionBatiment(Jeu* jeu,int num) {
     Stockage_batiment tabChateauEauPlusProche[jeu->batiments[chateau_deau]->nb_batiment];
     int nbCaseTabChateauEau = 0, nbCasetabChateauEauPlusProche = 0;
     int eauDistribueParLeChateau = 0;
+    int eauDispoParLesChateauxConnexes = 0;
 
     if (jeu->choix_politique == communisme) {
 
@@ -623,6 +624,7 @@ void evolutionBatiment(Jeu* jeu,int num) {
                 tabChateauEau[nbCaseTabChateauEau].distance = jeu->matrice_connexite_eau[num][i].distance;
                 tabChateauEau[nbCaseTabChateauEau].numero_maison = num;
                 tabChateauEau[nbCaseTabChateauEau].numero_batiment = i;
+                eauDispoParLesChateauxConnexes = CAPACITE_CHATEAU_EAU - jeu->matrice_connexite_eau[num][i].capacite_utilise;
                 nbCaseTabChateauEau++;
             }
         }
@@ -640,8 +642,6 @@ void evolutionBatiment(Jeu* jeu,int num) {
             }
         }
 
-        //Faire boucle
-        //for(int k = 0;k <= nbCasetabChateauEauPlusProche;k++) {
         int k = 0;
         bool finBoucle = FALSE;
         while (k != nbCasetabChateauEauPlusProche || finBoucle != TRUE) {
@@ -666,8 +666,10 @@ void evolutionBatiment(Jeu* jeu,int num) {
                                 ajoutEau(jeu,num,tabChateauEauPlusProche[k].numero_batiment,HABITANT_NIVEAU_MAISON1);
                             }
                         } else {
-                            parcoursMaison->stadeEvolution++;
-                            //appel fonction recalcul distrib eau
+                            if(eauDispoParLesChateauxConnexes >= HABITANT_NIVEAU_MAISON1){
+                                ajoutEau(jeu,num,tabChateauEauPlusProche[k].numero_batiment,CAPACITE_CHATEAU_EAU-eauDistribueParLeChateau);
+                                parcoursMaison->stadeEvolution++;
+                            }
                         }
                         break;
                     }
@@ -678,8 +680,10 @@ void evolutionBatiment(Jeu* jeu,int num) {
                                 parcoursMaison->stadeEvolution++;
                                 ajoutEau(jeu,num,tabChateauEauPlusProche[k].numero_batiment,HABITANT_NIVEAU_MAISON1);
                             } else {
-                                parcoursMaison->stadeEvolution++;
-                                //appel fonction recalcul distrib eau
+                                if(eauDispoParLesChateauxConnexes >= HABITANT_NIVEAU_MAISON2){
+                                    ajoutEau(jeu,num,tabChateauEauPlusProche[k].numero_batiment,CAPACITE_CHATEAU_EAU-eauDistribueParLeChateau);
+                                    parcoursMaison->stadeEvolution++;
+                                }
                             }
                         }
                         break;
@@ -691,8 +695,10 @@ void evolutionBatiment(Jeu* jeu,int num) {
                                 parcoursMaison->stadeEvolution++;
                                 ajoutEau(jeu,num,tabChateauEauPlusProche[k].numero_batiment,HABITANT_NIVEAU_MAISON1);
                             } else {
-                                parcoursMaison->stadeEvolution++;
-                                //appel fonction recalcul distrib eau
+                                if(eauDispoParLesChateauxConnexes >= HABITANT_NIVEAU_MAISON3){
+                                    ajoutEau(jeu,num,tabChateauEauPlusProche[k].numero_batiment,CAPACITE_CHATEAU_EAU-eauDistribueParLeChateau);
+                                    parcoursMaison->stadeEvolution++;
+                                }
                             }
                         }
                         break;
@@ -704,8 +710,10 @@ void evolutionBatiment(Jeu* jeu,int num) {
                                 parcoursMaison->stadeEvolution++;
                                 ajoutEau(jeu,num,tabChateauEauPlusProche[k].numero_batiment,HABITANT_NIVEAU_MAISON1);
                             } else {
-                                parcoursMaison->stadeEvolution++;
-                                //appel fonction recalcul distrib eau
+                                if(eauDispoParLesChateauxConnexes >= HABITANT_NIVEAU_MAISON4){
+                                    ajoutEau(jeu,num,tabChateauEauPlusProche[k].numero_batiment,CAPACITE_CHATEAU_EAU-eauDistribueParLeChateau);
+                                    parcoursMaison->stadeEvolution++;
+                                }
                             }
                         }
                         break;
