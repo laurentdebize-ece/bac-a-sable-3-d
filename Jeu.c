@@ -1,5 +1,4 @@
 #include "Jeu.h"
-#include "time.h"
 
 Jeu* initialisation(){
     Jeu* j;
@@ -428,7 +427,7 @@ bool verifier_batiment_a_cote_route(Jeu *jeu, int type_de_batiment, int co_x, in
                     nb_connexion++;
                 }
             }
-            return (nb_connexion != 0) ? 1 : 0;
+            return (nb_connexion != 0) ? true : false;
         }
         case chateau_deau :
         case usine_electrique : {
@@ -436,7 +435,7 @@ bool verifier_batiment_a_cote_route(Jeu *jeu, int type_de_batiment, int co_x, in
                 if (co_x != 0 && (jeu->terrain[co_y + i][co_x - 1] == 1)) {
                     nb_connexion++;
                 }
-                if (co_x != ORDRE_EN_X && (jeu->terrain[co_y + i][co_x + LARGEUR_BATIMENTS] == 1)) {
+                if (co_x != ORDRE_EN_X && (jeu->terrain[co_y + i][co_x + LONGUEUR_BATIMENTS] == 1)) {
                     nb_connexion++;
                 }
             }
@@ -444,11 +443,11 @@ bool verifier_batiment_a_cote_route(Jeu *jeu, int type_de_batiment, int co_x, in
                 if (co_y != 0 && (jeu->terrain[co_y - 1][co_x + i] == 1)) {
                     nb_connexion++;
                 }
-                if (co_y != ORDRE_EN_Y && (jeu->terrain[co_y + LONGUEUR_BATIMENTS][co_x + i] == 1)) {
+                if (co_y != ORDRE_EN_Y && (jeu->terrain[co_y + LARGEUR_BATIMENTS][co_x + i] == 1)) {
                     nb_connexion++;
                 }
             }
-            return (nb_connexion != 0) ? 1 : 0;
+            return (nb_connexion != 0) ? true : false;
         }
         default: {
             break;
