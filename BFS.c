@@ -200,6 +200,13 @@ void BFS_connexite(Jeu* jeu, Vector2 tuile, int num_connexite_teste){
         }
     }
 }*/
+/*
+void BFS_PCC_ajout_batiment(Jeu* jeu){
+
+}
+void BFS_PCC_modification_route(Jeu* jeu){
+
+}*/
 int** init_conexite_route(Jeu* jeu){
     Batiment* batiment = calloc(1, sizeof(Batiment));
 
@@ -303,8 +310,26 @@ void connexite_route_ajout_route(Jeu* jeu, Vector2 route){
             route_connexe = 1;
         }
     }
-    for (int i = 0; i < nb_coordonnee; i++) {
+    if (route_connexe == 0){
+        for (int i = 0; i < nb_coordonnee; i++) {
+            if (jeu->matrice_connexite_route[(int)coordonnee_adjacente[i].y][(int)coordonnee_adjacente[i].x] > 1){
+                jeu->matrice_connexite_route[(int)route.y][(int)route.x] = jeu->num_connexite;
+                batiment_connexe = 1;
+            }
 
+        }
+        if(batiment_connexe != 0){
+            jeu->num_connexite++;
+        }
+    }
+    if(route_connexe || batiment_connexe){
+        for (int i = 0; i < nb_coordonnee ; i++) {
+            if(jeu->matrice_connexite_route[(int)coordonnee_adjacente[i].y][(int)coordonnee_adjacente[i].x] == 1){
+                BFS_connexite(jeu,coordonnee_adjacente[i],jeu->matrice_connexite_route[(int)route.y][(int)route.x]);
+            }
+        }
+    } else{
+        jeu->matrice_connexite_route[(int)route.y][(int)route.x] = 1;
     }
 }
 
@@ -315,14 +340,16 @@ void connexite_route_destruction_batiment(Jeu* jeu, Vector2 coordonnee_batiment)
             jeu->matrice_connexite_route[(int)coordonnee_batiment.y][(int)coordonnee_batiment.x] = 0;
         }
         else{
-            Vector2* cases_adjacentes;
-            nb_cases_adjacentes = initialisation_cases_adjacentes(cases_adjacentes, coordonnee_batiment, 1, 1);
+            Vector2* cases_adjacentes = NULL;
+            nb_cases_adjacentes = initialisation_cases_adjacentes(cases_adjacentes, jeu->terrain[(int)coordonnee_batiment.y][(int)coordonnee_batiment.x], coordonnee_batiment);
             jeu->matrice_connexite_route[(int)coordonnee_batiment.y][(int)coordonnee_batiment.x] = 0;
             for (int i = 0; i < nb_cases_adjacentes; i++) {
                 if (jeu->matrice_connexite_route[(int)cases_adjacentes[i].y][(int)cases_adjacentes[i].x]>4){
                     BFS_connexite(jeu,cases_adjacentes[i],jeu->matrice_connexite_route[(int)cases_adjacentes[i].y][(int)cases_adjacentes[i].x]);
                 }
             }
+            free(cases_adjacentes);
+            cases_adjacentes = NULL;
         }
     }
     else{
@@ -332,4 +359,19 @@ void connexite_route_destruction_batiment(Jeu* jeu, Vector2 coordonnee_batiment)
             }
         }
     }
+}
+
+void connexite_route_destruction_route(Jeu* jeu,Vector2 route){
+    if(jeu->matrice_connexite_route[(int)route.y][(int)route.x] != 1) {
+        Vector2 *cases_adjacentes = NULL;
+        int nb_cases_adjacentes = initialisation_cases_adjacentes(cases_adjacentes, 1, route);
+        jeu->matrice_connexite_route[(int)route.y][(int)route.x] = 0;
+        for (int i = 0; i < nb_cases_adjacentes; i++) {
+            if(jeu->matrice_connexite_route[(int)cases_adjacentes[i].y][(int)cases_adjacentes[i].y]> 5) {
+                BFS_connexite(jeu, cases_adjacentes[i], jeu->num_connexite);
+                jeu->num_connexite++;
+            }
+        }
+    }
+    jeu->matrice_connexite_route[(int)route.y][(int)route.x] = 0;
 }
