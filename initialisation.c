@@ -25,6 +25,15 @@ void initialisation_Images(Jeu* jeu){
     jeu->tabImages[en_jeu][img_fondJeu4].texture2D = LoadTexture("fond_jeu4.png");
     jeu->tabImages[en_jeu][img_fondJeu4].charge = 1;
 
+    jeu->tabImages[en_jeu][img_logo_warning].texture2D = LoadTexture("logo_warning.png");
+    jeu->tabImages[en_jeu][img_logo_warning].charge = 1;
+
+    jeu->tabImages[regles][img_fond_panneau_affichage].texture2D = LoadTexture("affichage.png");
+    jeu->tabImages[regles][img_fond_panneau_affichage].charge = 1;
+
+    jeu->tabImages[credis][img_fond_credits].texture2D = LoadTexture("fond_credits.png");
+    jeu->tabImages[credis][img_fond_credits].charge = 1;
+
     jeu->tabImages[en_jeu][img_logosJeu].texture2D = LoadTexture("logoJeu.png");
     jeu->tabImages[en_jeu][img_logosJeu].charge = 1;
     jeu->tabImages[en_jeu][img_logosJeu].frame_longueur = 90;

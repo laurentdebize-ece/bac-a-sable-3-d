@@ -8,10 +8,11 @@ void affichage_Boucle_G(Jeu* jeu){
     jeu->onClickSouris =false;
     jeu->niveau = 0;
     jeu->mode_de_selection = mode_neutre;
+    jeu->timer_message_error = 0;
     initialisation_Images(jeu);
     initialisation_Sons(jeu);
     ini_fond_jeu(jeu);
-    //ToggleFullscreen();
+    ToggleFullscreen();
 
     int ballPositionX = -100;
     int ballRadius = 20;
@@ -34,6 +35,12 @@ void affichage_Boucle_G(Jeu* jeu){
             case menu_principale:
                 afficher_fenetre_menu(jeu, pos_Souris, &timer,&fade, &fadeson);
                 break;
+            case regles:
+                afficher_REGLES(jeu);
+                break;
+            case credis:
+                afficher_CREDITS(jeu);
+                break;
             case selection_choix_jeu:
                 afficher_choix_communisme(jeu, pos_Souris, &timer);
                 break;
@@ -44,6 +51,7 @@ void affichage_Boucle_G(Jeu* jeu){
         timer++;
         jeu->timer_jeu++;
         jeu->timer_affichage++;
+        jeu->timer_message_error++;
         maj_batiment_timer(jeu);
     }
     print_terrain_console(jeu); //TODO: retirer avant rendu juste pour test
@@ -52,9 +60,10 @@ void affichage_Boucle_G(Jeu* jeu){
     CloseAudioDevice();
     CloseWindow();
 }
-void afficher_message(char* message){
-    Vector2 pos = {LARGEUR_FENETRE -500, LONGUEUR_FENETRE/2};
-    DrawRectangle(pos.x, pos.y, 400, 35, WHITE);
+void afficher_message(Jeu* jeu, char* message){
+    Vector2 pos = {LARGEUR_FENETRE -610, (LONGUEUR_FENETRE/2)-80};
+    DrawTexture(jeu->tabImages[en_jeu][img_logo_warning].texture2D, pos.x+205, pos.y-120, WHITE);
+    DrawRectangle(pos.x-10, pos.y, 520, 80, Fade(RED, 0.75f));
     DrawText(message, pos.x, pos.y, 30, BLACK);
 }
 
@@ -80,6 +89,39 @@ void afficher_fenetre_menu(Jeu* jeu, Vector2 pos_Souris, int* timer, float* rect
         DrawRectangle(0, 0, RESOLUTION_X, RESOLUTION_Y, Fade(BLACK, *rectAplha));
     }
 
+    EndDrawing();
+}
+
+void afficher_REGLES(Jeu* jeu){
+    BeginDrawing();
+    DrawTexture(jeu->tabImages[regles][img_fond_panneau_affichage].texture2D, 0, 0, WHITE);
+    DrawRectangle(100, 100, LARGEUR_FENETRE-200, LONGUEUR_FENETRE-200, Fade(BLACK, 0.3f));
+    DrawText("Dans ce jeu, vous êtes le maire de la ville ECE-city, en charge du bien-être de ses citoyens. \n"
+             "Vous avez le pouvoir de construire des infrastructures (routes, lignes électriques, \n"
+             "canalisation d’eau potable) et des bâtiments (châteaux d'eau, centrales électriques, \n"
+             "caserne de pompiers,...). \n"
+             "Toutes ces tâches seront à réaliser en gérant un budget serré qui doit équilibrer les \n"
+             "dépenses liées à ces constructions et les recettes liées aux impôts et taxes.\n\n"
+             "L'objectif pour le joueur est de favoriser le développement automatique de sa population.\n"
+             "- Pour que la population se développe, il faut donner aux gens une habitation.\n"
+             "- Pour qu'une habitation se construise, il faut la connecter au réseau routier (qu'il \n"
+             "faut donc construire au préalable) et l'alimenter en eau et en électricité.\n"
+             "- Pour distribuer de l’électricité et de l'eau aux maisons, il faut construire des usines \n"
+             "électriques et des châteaux d'eau.\n"
+             "- La banque centrale de la ville dispose d'une certaine somme pour construire les \n"
+             "infrastructures (routes, lignes électriques, canalisation d’eau potable), les usines \n"
+             "électriques, les châteaux d'eau, les maisons, les casernes de pompiers... \n"
+             "- Les habitants payent automatiquement des impôts à la banque centrale.\n"
+             "- Les constructions évoluent individuellement au rythme de « cycles » de 15\n"
+             "secondes représentant 1 mois de la vie réelle.", 120, 120, 30, WHITE);
+    affi_bouton(jeu, en_jeu, img_boutonRetourMenu, GetMousePosition(), "MENU", &jeu->timer_jeu);
+    EndDrawing();
+}
+
+void afficher_CREDITS(Jeu* jeu){
+    BeginDrawing();
+    DrawTexture(jeu->tabImages[credis][img_fond_credits].texture2D, 0, 0, WHITE);
+    affi_bouton(jeu, en_jeu, img_boutonRetourMenu, GetMousePosition(), "MENU", &jeu->timer_jeu);
     EndDrawing();
 }
 
@@ -187,6 +229,12 @@ void affi_bouton(Jeu* jeu, int page, int image, Vector2 pos_souris, char* nom, i
             case img_boutonSauvegarder:
                 enregistrer_Grille(jeu);
                 printf("enregistrement effectue");
+                break;
+            case img_boutonRegles:
+                jeu->page_actuel = regles;
+                break;
+            case img_boutonCredits:
+                jeu->page_actuel = credis;
                 break;
             case img_bouton_suppSave:
                 printf("Destruction de votre ancien fichier de sauvegarde (si vous en aviez un)\n");
@@ -318,26 +366,26 @@ void afficher_construction_batiment(Jeu* jeu, Vector2 pos_souris){
             break;
         case mode_reseau:
             if (jeu->timer_affichage < 120){
-                afficher_message("erreur de construction de ROUTE");
+                afficher_message(jeu, "\t\t\terreur de construction:\n\t\t\t\t\t\t\t\t\t\t\tROUTE");
             }
             DrawTexture(jeu->tabImages[en_jeu][img_route].texture2D, (int)pos_souris.x-TAILLE_CASE_GRILLE/2, (int)pos_souris.y-TAILLE_CASE_GRILLE/2, color_construction);
             break;
         case mode_maison:
             if (jeu->timer_affichage < 120){
-                afficher_message("erreur de construction");
+                afficher_message(jeu, "\t\t\terreur de construction:\n\t\t\t\t\t\t\t\t\t\tMAISON");
             }
             jeu->tabImages[en_jeu][img_maison].source_Rec.x = 0 * jeu->tabImages[en_jeu][img_maison].frame_longueur; //c normal c pour me souvenir qu'il faut utiliser la mm structure de code pour augmenter les niv
             DrawTextureRec(jeu->tabImages[en_jeu][img_maison].texture2D, jeu->tabImages[en_jeu][img_maison].source_Rec, pos_souris_maison, color_construction);
             break;
         case mode_usine:
             if (jeu->timer_affichage < 120){
-                afficher_message("erreur de construction");
+                afficher_message(jeu, "\t\t\terreur de construction:\n\t\t\t\t\t\t\t\t\t\t\tUSINE");
             }
             DrawTexture(jeu->tabImages[en_jeu][img_usine].texture2D, (int)pos_souris.x-(TAILLE_CASE_GRILLE/2)+((-3/2)*(TAILLE_CASE_GRILLE)), (int)pos_souris.y-(TAILLE_CASE_GRILLE/2)+((-3/2)*(TAILLE_CASE_GRILLE)), color_construction);
             break;
         case mode_chateauDO:
             if (jeu->timer_affichage < 120){
-                afficher_message("erreur de construction");
+                afficher_message(jeu, "\t\t\terreur de construction:\n\t\t\t\t\t\t\tCHATEAU D'EAU");
             }
             DrawTexture(jeu->tabImages[en_jeu][img_chateauDO].texture2D, (int)pos_souris.x-(TAILLE_CASE_GRILLE/2)+((-3/2)*(TAILLE_CASE_GRILLE)), (int)pos_souris.y-(TAILLE_CASE_GRILLE/2)+((-3/2)*(TAILLE_CASE_GRILLE)), color_construction);
             break;
@@ -423,7 +471,7 @@ void afficher_batiment_Raylib(Jeu* jeu){
         } while (listeMaison != jeu->batiments[maison]);
 
     }
-    else DrawText("ERROR LISTE MAISON VIDE", LONGUEUR_FENETRE + 100, LONGUEUR_FENETRE-100, 10, WHITE);
+    //else DrawText("ERROR LISTE MAISON VIDE", LONGUEUR_FENETRE + 100, LONGUEUR_FENETRE-100, 10, WHITE);
 
     if(listeChateau != NULL) {
         do {
@@ -434,7 +482,7 @@ void afficher_batiment_Raylib(Jeu* jeu){
             listeChateau = listeChateau->next;
         } while (listeChateau != jeu->batiments[chateau_deau]);
     }
-    else DrawText("ERROR LISTE CHATEAU VIDE", LONGUEUR_FENETRE + 100, LONGUEUR_FENETRE-110, 10, WHITE);
+    //else DrawText("ERROR LISTE CHATEAU VIDE", LONGUEUR_FENETRE + 100, LONGUEUR_FENETRE-110, 10, WHITE);
 
     if(listeUsine != NULL) {
         do {
@@ -447,7 +495,7 @@ void afficher_batiment_Raylib(Jeu* jeu){
             listeUsine = listeUsine->next;
         } while (listeUsine != jeu->batiments[usine_electrique]);
     }
-    else DrawText("ERROR LISTE USINE VIDE", LONGUEUR_FENETRE + 100, LONGUEUR_FENETRE-120, 10, WHITE);
+    //else DrawText("ERROR LISTE USINE VIDE", LONGUEUR_FENETRE + 100, LONGUEUR_FENETRE-120, 10, WHITE);
 }
 
 void affichage_defilement_fond(Jeu* jeu, int *timer){
@@ -521,6 +569,17 @@ void afficherJeu(Jeu* jeu, Vector2 pos_souris, int* timer){
     DrawText(TextFormat("%d ", jeu->nb_habitants_tot), ORDRE_EN_X*TAILLE_CASE_GRILLE+100, 130, 50, Fade(WHITE, 0.85f));
     DrawText(TextFormat("%d ", jeu->production_eau_restante), ORDRE_EN_X*TAILLE_CASE_GRILLE+100, 230, 50, Fade(WHITE, 0.85f));
     DrawText(TextFormat("%d ", jeu->production_elec_restante), ORDRE_EN_X*TAILLE_CASE_GRILLE+100, 330, 50, Fade(WHITE, 0.85f));
+    //Message erreur
+    if (jeu->timer_message_error < 120) {
+        afficher_message(jeu, "\t\t\terreur de construction\nVous n'avez pas assez d'argent");
+    }
+
+    DrawRectangle((TAILLE_CASE_GRILLE*ORDRE_EN_X)+30, (LONGUEUR_FENETRE/2)+30, 600, 250, Fade(BLUE, 0.6f));
+    DrawText("\n Prix MAISON : 1000$\n Prix ROUTE : 10$\n Prix USINE ELECTRIQUE : 100 000$\n Prix CHATEAU D'EAU : 100 000$",(TAILLE_CASE_GRILLE*ORDRE_EN_X)+40, (LONGUEUR_FENETRE/2)+50, 30,
+             Fade(WHITE, 0.8f));
+    DrawText("\t\t\t\t\t\t\tPRIX UNITE", (TAILLE_CASE_GRILLE*ORDRE_EN_X)+40, (LONGUEUR_FENETRE/2)+50, 30,
+             Fade(YELLOW, 0.8f));
+
 
     DrawRectangle(450, ORDRE_EN_Y*TAILLE_CASE_GRILLE, 500, 40,Fade(BLUE, 0.7f));
     DrawText(TextFormat("Année Numéro: %d\t Mois Numéro: %d", jeu->annee, jeu->mois), 460, (ORDRE_EN_Y*TAILLE_CASE_GRILLE)+10, 25,

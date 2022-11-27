@@ -5,9 +5,12 @@
 void affichage_Boucle_G(Jeu* jeu);
 
 
+void afficher_message(Jeu* jeu, char* message);
 
 
 void afficher_fenetre_menu(Jeu* jeu, Vector2 pos_Souris, int* timer, float* rectAplha, float* sonAlpha);
+void afficher_REGLES(Jeu* jeu);
+void afficher_CREDITS(Jeu* jeu);
 void afficher_animation(Jeu* jeu, int* ballPositionX, int* ballRadius, float* ballAlpha, int* state, int* framesCounter);
 void afficher_choix_communisme(Jeu* jeu, Vector2 pos_Souris, int* timer);
 

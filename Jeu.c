@@ -482,7 +482,6 @@ int conditionAchatBatiment(Jeu* jeu,int choix){
             break;
         }
     }
-    printf("Vous n'avez pas assez d'argent pour poser ce batiment") ;
     return 0;
 }
 

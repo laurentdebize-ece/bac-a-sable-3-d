@@ -7,7 +7,10 @@ bool verif_achat_route(Jeu* jeu){
     if (jeu->argent >= COUT_ROUTE){
         jeu->argent -= COUT_ROUTE;
         return 1;
-    }else return 0;
+    }else {
+
+        return 0;
+    }
 }
 
 bool verification_colision_batiment(Jeu* jeu, int nomDuBatiment){
@@ -146,7 +149,7 @@ void poser_batiment(Jeu* jeu){
                     if (verification_batiment_peut_se_placer(jeu, reseau, jeu->selection) == 1) {
                         if (verif_achat_route(jeu) == true){
                             ajout_batiment_terrain(jeu, reseau, jeu->selection);
-                        }
+                        }else jeu->timer_message_error = 0;
                     } else jeu->timer_affichage = 0;
                 }
                 break;
@@ -160,7 +163,7 @@ void poser_batiment(Jeu* jeu){
                             if (conditionAchatBatiment(jeu, maison) == true){
                                 ajouterBatiment_ListeChainee(jeu, (int) posBatiment.x, (int) posBatiment.y, maison);
                                 ajout_batiment_terrain(jeu, maison, posBatiment);
-                            }
+                            }else jeu->timer_message_error = 0;
                         }
                     } else {
                         jeu->timer_affichage = 0;
@@ -175,7 +178,7 @@ void poser_batiment(Jeu* jeu){
                             if (conditionAchatBatiment(jeu, usine_electrique) == true) {
                                 ajouterBatiment_ListeChainee(jeu, (int) posBatiment.x, (int) posBatiment.y,usine_electrique);
                                 ajout_batiment_terrain(jeu, usine_electrique, posBatiment);
-                            }
+                            }else jeu->timer_message_error = 0;
                         }
                     } else {
                         jeu->timer_affichage = 0;
@@ -190,7 +193,7 @@ void poser_batiment(Jeu* jeu){
                             if (conditionAchatBatiment(jeu, chateau_deau) == true) {
                                 ajouterBatiment_ListeChainee(jeu, (int) posBatiment.x, (int) posBatiment.y,chateau_deau);
                                 ajout_batiment_terrain(jeu, chateau_deau, posBatiment);
-                            }
+                            }else jeu->timer_message_error = 0;
                         }
                     } else {
                         jeu->timer_affichage = 0;
