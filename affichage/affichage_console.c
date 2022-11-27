@@ -110,7 +110,7 @@ void afficher_choix_joueur(Jeu* jeu) {
                     if (co_x < 0 || co_y < 0 || co_x > ORDRE_EN_X || co_y > ORDRE_EN_Y) {
                         break;
                     }
-                    co_batiment = position_batiment(*jeu, co_x,co_y);
+                    co_batiment = position_batiment(jeu, co_x,co_y);
                     if ((co_batiment.x == -1 && co_batiment.y == -1)|| jeu->terrain[(int)co_batiment.y][(int)co_batiment.x] != maison){
                         printf("La destruction n'est pas possible : coordonnees invalides\n");
                     }
@@ -128,7 +128,7 @@ void afficher_choix_joueur(Jeu* jeu) {
                     if (co_x < 0 || co_y < 0 || co_x > ORDRE_EN_X || co_y > ORDRE_EN_Y) {
                         break;
                     }
-                    co_batiment = position_batiment(*jeu, co_x,co_y);
+                    co_batiment = position_batiment(jeu, co_x,co_y);
                     if ((co_batiment.x == -1 && co_batiment.y == -1) || jeu->terrain[(int)co_batiment.y][(int)co_batiment.x] != chateau_deau){
                         printf("La destruction n'est pas possible : coordonnees invalides\n");
                     }
@@ -146,7 +146,7 @@ void afficher_choix_joueur(Jeu* jeu) {
                     if (co_x < 0 || co_y < 0 || co_x > ORDRE_EN_X || co_y > ORDRE_EN_Y) {
                         break;
                     }
-                    co_batiment = position_batiment(*jeu, co_x,co_y);
+                    co_batiment = position_batiment(jeu, co_x,co_y);
                     if ((co_batiment.x == -1 && co_batiment.y == -1)|| jeu->terrain[(int)co_batiment.y][(int)co_batiment.x] != usine_electrique) {
                         printf("La destruction n'est pas possible : coordonnees invalides\n");
                     }
@@ -169,7 +169,7 @@ void afficher_choix_joueur(Jeu* jeu) {
                 int a = 0, b = 0;
                 printf("Coordonnee:\n");
                 scanf("%d  %d", &a, &b);
-                position_batiment(*jeu, a, b); //retourne les coordonnées
+                position_batiment(jeu, a, b); //retourne les coordonnées
                 break;
             }
             case 11:{
@@ -247,5 +247,14 @@ void afficherMatriceConnexiteRoute(Jeu* jeu){
         for(int j = 0;j < ORDRE_EN_X;j++) {
             printf("%d", jeu->matrice_connexite_route[i][j]);
         }
+    }
+}
+
+void print_terrain_console(Jeu* jeu){
+    for (int i = 0; i < jeu->ordre.y; i++) {
+        for (int j = 0; j < jeu->ordre.x ;j++) {
+            printf(" %d",jeu->terrain[i][j]);
+        }
+        printf("\n");
     }
 }

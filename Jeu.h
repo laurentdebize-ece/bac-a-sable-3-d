@@ -10,7 +10,7 @@
 
 enum {communisme, capitalisme};
 enum {animation_Lancement, menu_principale, selection_choix_jeu,en_jeu, regles, credis, nb_pages};
-enum {img_menu, img_boutonoff, img_boutonJouer, img_boutonSauvegarder, img_boutonRegles, img_boutonCredits, img_bouton_suppSave, img_bouton_Communisme, img_bouton_Capitalisme, img_fond_ChoixJeu, img_fondJeu1, img_fondJeu2, img_fondJeu3, img_fondJeu4, img_logosJeu, img_boutonRetourMenu, img_route, img_maison, img_usine, img_chateauDO, img_niveau_0, img_niveau_1, img_niveau_2, nb_img};
+enum {img_menu, img_boutonoff, img_boutonJouer, img_boutonSauvegarder, img_boutonRegles, img_boutonCredits, img_bouton_suppSave, img_bouton_Communisme, img_bouton_Capitalisme, img_fond_ChoixJeu, img_fondJeu1, img_fondJeu2, img_fondJeu3, img_fondJeu4, img_logosJeu, img_boutonRetourMenu, img_route, img_maison, img_usine, img_chateauDO, img_niveau_0, img_niveau_1, img_niveau_2, img_demolition, nb_img};
 enum {mode_neutre, mode_reseau ,mode_maison, mode_usine, mode_chateauDO, mode_demolition, nb_modes};
 enum {vide, reseau, maison, chateau_deau, usine_electrique, demolition, nb_type_batiments};
 enum {son_Bouton, son_menu, nb_sons};
@@ -66,6 +66,7 @@ typedef struct Jeu{
     bool onClickSouris;
     bool en_cours;
     bool quitter;
+    int numero_maillon_supprime;
     int niveau;
     int choix_politique;
     int page_actuel;
@@ -113,6 +114,7 @@ bool verifier_batiment_a_cote_route(Jeu* jeu, int type_de_batiment, int co_x, in
 //void initialisation_case_ajacentes(Vector2* case_adjacente, Vector2 coordonnee_batiment, int longueur, int hauteur );
 int initialisation_cases_adjacentes(Vector2* case_adjacente, int type_de_batiment, Vector2 co_bat);
 void compteurNbBatimentListe(Jeu* jeu,int choix);
+void decompteurNbBatimentListe(Jeu* jeu,int choix);
 //
 
 #endif //TEMPLATE_RAYLIB_JEU_H

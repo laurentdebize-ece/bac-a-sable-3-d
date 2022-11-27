@@ -77,21 +77,61 @@ void ajout_batiment_terrain(Jeu* jeu, int nomDuBatiment, Vector2 pos1) {
     }
 }
 
+void suppression_batiment_terrain(Jeu* jeu, Vector2 pos1, int typeDeBatiment){
+    switch (typeDeBatiment) {
+        case vide:
+            break;
+        case reseau:
+            jeu->terrain[(int)pos1.y][(int)pos1.x] = vide;
+            printf("DESTRUCTION\n");
+            break;
+        case maison:
+            for (int i = 0; i < TAILLE_MAISON; i++) {
+                for (int j = 0; j < TAILLE_MAISON; j++) {
+                    jeu->terrain[(int)pos1.y + i][(int)pos1.x + j] = vide;
+                }
+            }
+            break;
+        case chateau_deau:
+            detruireBatiment(jeu, (int)pos1.x, (int)pos1.y, chateau_deau);
+            for (int i = 0; i < LARGEUR_BATIMENTS; i++) {
+                for (int j = 0; j < LONGUEUR_BATIMENTS; j++) {
+                    jeu->terrain[(int)pos1.y + i][(int)pos1.x + j] = vide;
+                }
+            }
+            break;
+        case usine_electrique:
+            detruireBatiment(jeu, (int)pos1.x, (int)pos1.y, usine_electrique);
+            for (int i = 0; i < LARGEUR_BATIMENTS; i++) {
+                for (int j = 0; j < LONGUEUR_BATIMENTS; j++) {
+                    jeu->terrain[((int)pos1.y + i)][((int)pos1.x + j)] = vide;
+                }
+            }
+            break;
+        default:
+            break;
+    }
+}
+void verif_batiment_suppression(Jeu* jeu){
+    Vector2 pos_batiment = position_batiment(jeu, jeu->selection.x, jeu->selection.y);
+    if (pos_batiment.x != -1 && pos_batiment.y != -1) {
+        int type_de_batiment = jeu->terrain[(int)pos_batiment.y][(int)pos_batiment.x];
+        suppression_batiment_terrain(jeu, pos_batiment, type_de_batiment);
+    }
+}
+
 void poser_batiment(Jeu* jeu){
     Vector2 posBatiment = jeu->selection;
     posBatiment.x -= 1;
     posBatiment.y -= 1;
+    Vector2 pos_souris = GetMousePosition();
     if (jeu->page_actuel == en_jeu) {
         switch (jeu->mode_de_selection) {
             case mode_neutre:
                 break;
             case mode_reseau:
-                if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-                    jeu->onClickSouris = true;
-                }
-                if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)){
-                    jeu->onClickSouris = false;
-                }
+                if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) jeu->onClickSouris = true;
+                if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) jeu->onClickSouris = false;
                 if (jeu->onClickSouris == true){
                     if (verification_batiment_peut_se_placer(jeu, reseau, jeu->selection) == 1) {
                         ajout_batiment_terrain(jeu, reseau, jeu->selection);
@@ -135,8 +175,12 @@ void poser_batiment(Jeu* jeu){
                 }
                 break;
             case demolition:
-                if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
-
+                if (pos_souris.x>0 && pos_souris.y>0 && pos_souris.x<TAILLE_CASE_GRILLE*jeu->ordre.x && pos_souris.y<TAILLE_CASE_GRILLE*jeu->ordre.y){
+                    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) jeu->onClickSouris = true;
+                    if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) jeu->onClickSouris = false;
+                    if (jeu->onClickSouris == true){
+                        verif_batiment_suppression(jeu);
+                    }
                 }
                 break;
             default:

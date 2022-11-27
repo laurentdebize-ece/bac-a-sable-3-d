@@ -2,6 +2,7 @@
 
 void affichage_Boucle_G(Jeu* jeu){
     InitWindow(RESOLUTION_X, RESOLUTION_Y, "ECE-CITY BETA/ALPHA de L'OMEGA");
+    SetWindowPosition(0, 15);
     InitAudioDevice();      // Initialise le haut-parleur
     jeu->quitter = 0;
     jeu->onClickSouris =false;
@@ -10,7 +11,7 @@ void affichage_Boucle_G(Jeu* jeu){
     initialisation_Images(jeu);
     initialisation_Sons(jeu);
     ini_fond_jeu(jeu);
-    ToggleFullscreen();
+    //ToggleFullscreen();
 
     int ballPositionX = -100;
     int ballRadius = 20;
@@ -45,12 +46,7 @@ void affichage_Boucle_G(Jeu* jeu){
         jeu->timer_affichage++;
         maj_batiment_timer(jeu);
     }
-    for (int i = 0; i < jeu->ordre.y; i++) {
-        for (int j = 0; j < jeu->ordre.x ;j++) {
-            printf(" %d",jeu->terrain[i][j]);
-        }
-        printf("\n");
-    }
+    print_terrain_console(jeu); //TODO: retirer avant rendu juste pour test
     liberationListe(jeu);
     unload_all(jeu);
     CloseAudioDevice();
@@ -249,9 +245,6 @@ void afficher_jeu_logo_interactionAvecClick(Jeu* jeu, Vector2 pos_souris){
     }
     if (selection != -1){
         switch (selection) {
-            case 0:
-                jeu->mode_de_selection = mode_neutre;
-                break;
             case reseau:
                 DrawTextureRec(jeu->tabImages[en_jeu][img_logosJeu].texture2D, logo_reseau, (Vector2){0, TAILLE_CASE_GRILLE*(jeu->ordre.y)}, Fade(PURPLE, alphalogojeu1));
                 if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)){
@@ -297,7 +290,7 @@ void afficher_construction_batiment(Jeu* jeu, Vector2 pos_souris){
     Vector2 pos_souris_maison = pos_souris;
     pos_souris_maison.x -= TAILLE_CASE_GRILLE*3/2;
     pos_souris_maison.y -= TAILLE_CASE_GRILLE*3/2;
-    Color color_construction = Fade(WHITE, 0.5f);
+    Color color_construction = Fade(WHITE, 0.6f);
     switch (jeu->mode_de_selection) {
         case mode_neutre:
             break;
@@ -325,6 +318,9 @@ void afficher_construction_batiment(Jeu* jeu, Vector2 pos_souris){
                 afficher_message("erreur de construction");
             }
             DrawTexture(jeu->tabImages[en_jeu][img_chateauDO].texture2D, (int)pos_souris.x-(TAILLE_CASE_GRILLE/2)+((-3/2)*(TAILLE_CASE_GRILLE)), (int)pos_souris.y-(TAILLE_CASE_GRILLE/2)+((-3/2)*(TAILLE_CASE_GRILLE)), color_construction);
+            break;
+        case mode_demolition:
+            DrawTexture(jeu->tabImages[en_jeu][img_demolition].texture2D, (int)pos_souris.x-TAILLE_CASE_GRILLE, (int)pos_souris.y-TAILLE_CASE_GRILLE, color_construction);
             break;
         default:
             break;
@@ -360,11 +356,8 @@ void afficher_batiment_Raylib(Jeu* jeu){
             if (jeu->terrain[(int)listeMaison->co.y][(int)listeMaison->co.x] == maison){
                 jeu->tabImages[en_jeu][img_maison].source_Rec.x = listeMaison->stadeEvolution * jeu->tabImages[en_jeu][img_maison].frame_longueur;
                 DrawTextureRec(jeu->tabImages[en_jeu][img_maison].texture2D, jeu->tabImages[en_jeu][img_maison].source_Rec, (Vector2){listeMaison->co.x*TAILLE_CASE_GRILLE, listeMaison->co.y*TAILLE_CASE_GRILLE}, WHITE); //TODO : DOIS CHANGER CAR PAS EVOLUTION LA
-                nbmaison++;
-                listeMaison = listeMaison->next;
             } else printf("ERROR tu peux pas dessinner une maison alors que le terrain n'a pas de maison\n");
-
-
+            listeMaison = listeMaison->next;
         } while (listeMaison != jeu->batiments[maison]);
     }
     else DrawText("ERROR LISTE MAISON VIDE", LONGUEUR_FENETRE + 100, 30, 10, WHITE);
@@ -374,9 +367,8 @@ void afficher_batiment_Raylib(Jeu* jeu){
             if (jeu->terrain[(int)listeChateau->co.y][(int)listeChateau->co.x] == chateau_deau) {
                 DrawTexture(jeu->tabImages[en_jeu][img_chateauDO].texture2D, listeChateau->co.x * TAILLE_CASE_GRILLE,
                             listeChateau->co.y * TAILLE_CASE_GRILLE, WHITE); //TODO : DOIS CHANGER CAR PAS EVOLUTION LA
-                nbchateau++;
-                listeChateau = listeChateau->next;
             } else printf("ERROR tu peux pas dessinner un chateauDO alors que le terrain n'a pas de chateauDO\n");
+            listeChateau = listeChateau->next;
         } while (listeChateau != jeu->batiments[chateau_deau]);
     }
     else DrawText("ERROR LISTE CHATEAU VIDE", LONGUEUR_FENETRE + 100, 10, 10, WHITE);
@@ -385,9 +377,11 @@ void afficher_batiment_Raylib(Jeu* jeu){
         do {
             if (jeu->terrain[(int)listeUsine->co.y][(int)listeUsine->co.x] == usine_electrique) {
                 DrawTexture(jeu->tabImages[en_jeu][img_usine].texture2D, listeUsine->co.x*TAILLE_CASE_GRILLE, listeUsine->co.y*TAILLE_CASE_GRILLE, WHITE); //TODO : DOIS CHANGER CAR PAS EVOLUTION LA
-                nbusine++;
-                listeUsine = listeUsine->next;
-            } else printf("ERROR tu peux pas dessinner un usine alors que le terrain n'a pas d usine\n");
+            } else {
+                print_terrain_console(jeu);
+                printf("ERROR tu peux pas dessinner un usine alors que le terrain n'a pas d usine\n");
+            }
+            listeUsine = listeUsine->next;
         } while (listeUsine != jeu->batiments[usine_electrique]);
     }
     else DrawText("ERROR LISTE USINE VIDE", LONGUEUR_FENETRE + 100, 20, 10, WHITE);
@@ -456,9 +450,7 @@ void afficherJeu(Jeu* jeu, Vector2 pos_souris, int* timer){
     afficher_jeu_logo_interactionAvecClick(jeu, pos_souris);
     afficher_construction_batiment(jeu, pos_souris);
 
-
-
-    DrawText(TextFormat("Case Actuelle: [%i,%i]", playerTileX, playerTileY), RESOLUTION_X-220, 0, 20, WHITE);
+    DrawText(TextFormat("Case Actuelle: [%i,%i]", playerTileX, playerTileY), RESOLUTION_X-220, 25, 20, WHITE);
     jeu->selection.x = playerTileX;
     jeu->selection.y = playerTileY;
     EndDrawing();

@@ -161,8 +161,6 @@ void ajout_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y, int 
                 y_temporaire++;
             }else y_temporaire--;
         }
-        x_temporaire = co_x;
-        y_temporaire = co_y;
         if (obstacle == FALSE){
             for (int i = 0; i < x_distance ; i++) {
                 if (jeu->argent - COUT_ROUTE >= 0){
@@ -242,8 +240,6 @@ void suppression_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y
                 y_temporaire++;
             }else y_temporaire--;
         }
-        x_temporaire = co_x;
-        y_temporaire = co_y;
         if (obstacle == TRUE){
             for (int i = 0; i < x_distance ; i++) {
                 jeu->terrain[co_y][co_x] = 0;
@@ -289,83 +285,83 @@ void suppression_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y
 
 
 
-Vector2 position_maison(Jeu jeu, int x, int y){
-    Vector2 position_maison;
-    position_maison.x = -1;
-    position_maison.y = -1;
+Vector2 position_maison(Jeu* jeu, int x, int y){
+    Vector2 pos_maison;
+    pos_maison.x = -1;
+    pos_maison.y = -1;
     bool batiment_trouve = FALSE;
-    Batiment* batiment_actuel = jeu.batiments[maison];
+    Batiment* batiment_actuel = jeu->batiments[maison];
     while(batiment_trouve == FALSE){
         for(int i = 0; i < TAILLE_MAISON; i++){
             if (x - i == batiment_actuel->co.x){
-                position_maison.x = batiment_actuel->co.x;
+                pos_maison.x = batiment_actuel->co.x;
             }
             if (y - i == batiment_actuel->co.y){
-                position_maison.y = batiment_actuel->co.y;
+                pos_maison.y = batiment_actuel->co.y;
             }
         }
-        if (position_maison.x != -1 && position_maison.y != -1){
+        if (pos_maison.x != -1 && pos_maison.y != -1){
             batiment_trouve = TRUE;
         }
         batiment_actuel = batiment_actuel->next;
     }
-    return position_maison;
+    return pos_maison;
 }
 
-Vector2 position_usine(Jeu jeu, int x, int y, int type_usine){
-    Vector2 position_usine;
-    position_usine.x = -1;
-    position_usine.y = -1;
+Vector2 position_usine(Jeu* jeu, int x, int y, int type_usine){
+    Vector2 pos_usine;
+    pos_usine.x = -1;
+    pos_usine.y = -1;
     bool batiment_trouve = FALSE;
-    Batiment* batiment_actuel = jeu.batiments[type_usine];
+    Batiment* batiment_actuel = jeu->batiments[type_usine];
     while(batiment_trouve == FALSE){
         for(int i = 0; i < LONGUEUR_BATIMENTS; i++) {
             if (x - i == batiment_actuel->co.x) {
-                position_usine.x = batiment_actuel->co.x;
+                pos_usine.x = batiment_actuel->co.x;
             }
         }
         for(int i = 0; i < LARGEUR_BATIMENTS; i++) {
             if (y - i == batiment_actuel->co.y) {
-                position_usine.y = batiment_actuel->co.y;
+                pos_usine.y = batiment_actuel->co.y;
             }
         }
-        if (position_usine.x != -1 && position_usine.y != -1){
+        if (pos_usine.x != -1 && pos_usine.y != -1){
             batiment_trouve = TRUE;
         }
         batiment_actuel = batiment_actuel->next;
     }
-    return position_usine;
+    return pos_usine;
 }
 
-Vector2 position_batiment(Jeu jeu, int x, int y){
-    Vector2 postion_batiment;
-    int type_batiment = jeu.terrain[y][x];
+Vector2 position_batiment(Jeu* jeu, int x, int y){
+    Vector2 pos_batiment;
+    int type_batiment = jeu->terrain[y][x];
     switch (type_batiment) {
         case vide : {
             printf("Cette case est vide\n");
-            postion_batiment.x = -1;
-            postion_batiment.y = -1;
+            pos_batiment.x = -1;
+            pos_batiment.y = -1;
             break;
         }
         case reseau : {
-            postion_batiment.x = x;
-            postion_batiment.y = y;
+            pos_batiment.x = x;
+            pos_batiment.y = y;
             printf("Cette case est une route placée en (%d,%d)\n", x, y);
             break;
         }
         case maison : {
-            postion_batiment = position_maison(jeu, x, y);
-            printf("Cette case correspond a une maison placee en (%d,%d)\n", postion_batiment.x, postion_batiment.y);
+            pos_batiment = position_maison(jeu, x, y);
+            printf("Cette case correspond a une maison placee en (%d,%d)\n", pos_batiment.x, pos_batiment.y);
             break;
         }
         case chateau_deau : {
-            postion_batiment = position_usine(jeu, x, y, chateau_deau);
-            printf("Cette case correspond a un chateau d'eau place en (%d,%d)\n", postion_batiment.x, postion_batiment.y);
+            pos_batiment = position_usine(jeu, x, y, chateau_deau);
+            printf("Cette case correspond a un chateau d'eau place en (%d,%d)\n", pos_batiment.x, pos_batiment.y);
             break;
         }
         case usine_electrique : {
-            postion_batiment = position_usine(jeu, x, y, usine_electrique);
-            printf("Cette case correspond a une centrale electrique placee en (%d,%d)\n", postion_batiment.x, postion_batiment.y);
+            pos_batiment = position_usine(jeu, x, y, usine_electrique);
+            printf("Cette case correspond a une centrale electrique placee en (%d,%d)\n", pos_batiment.x, pos_batiment.y);
             break;
         }
         default : {
@@ -373,5 +369,5 @@ Vector2 position_batiment(Jeu jeu, int x, int y){
         }
 
     }
-    return postion_batiment;
+    return pos_batiment;
 }
