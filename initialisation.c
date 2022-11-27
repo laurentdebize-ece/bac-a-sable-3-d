@@ -148,7 +148,7 @@ void ini_bouton(Jeu* jeu){
     jeu->tabImages[en_jeu][img_boutonRetourMenu].frame_hauteur = frame_hauteur;
     jeu->tabImages[en_jeu][img_boutonRetourMenu].source_Rec = sourceRec;
     // Definie l emplacement du boutton sur ecran (la ou l'on veut l afficher)
-    Rectangle pos7 = {0, RESOLUTION_Y + 20 - bouton_texture.height / NB_FRAMES_BOUTON, (float)bouton_texture.width, frame_hauteur };
+    Rectangle pos7 = {-10, (RESOLUTION_Y + 10) - bouton_texture.height / NB_FRAMES_BOUTON, (float)bouton_texture.width, frame_hauteur };
     jeu->tabImages[en_jeu][img_boutonRetourMenu].pos_Rec = pos7;
 
     //Bouton Communisme
@@ -257,7 +257,12 @@ void initialisation_Grille(){
     FILE *ifs = fopen(NOM_DU_FICHIER, "w");
     fprintf(ifs, "%d\n", ORDRE_EN_X);
     fprintf(ifs, "%d\n", ORDRE_EN_Y);
+    fprintf(ifs, "%d\n", 2777);
+    fprintf(ifs, "%d\n", 0);
     fprintf(ifs, "%d\n", ARGENT_DE_DEBUT);
+    fprintf(ifs, "%d\n", 0);
+    fprintf(ifs, "%d\n", 0);
+    fprintf(ifs, "%d\n", 0);
     fprintf(ifs,"%d\n", -1);
     for (int i = 0; i <= ORDRE_EN_Y; i++) {
         for (int j = 0; j <= ORDRE_EN_X; j++) {
