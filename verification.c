@@ -86,6 +86,7 @@ void suppression_batiment_terrain(Jeu* jeu, Vector2 pos1, int typeDeBatiment){
             printf("DESTRUCTION\n");
             break;
         case maison:
+            detruireBatiment(jeu, (int)pos1.x, (int)pos1.y, maison);
             for (int i = 0; i < TAILLE_MAISON; i++) {
                 for (int j = 0; j < TAILLE_MAISON; j++) {
                     jeu->terrain[(int)pos1.y + i][(int)pos1.x + j] = vide;
@@ -141,9 +142,10 @@ void poser_batiment(Jeu* jeu){
             case mode_maison:
                 if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)){
                     if (verification_batiment_peut_se_placer(jeu, maison, posBatiment) == 1) {
-                        //ajout batiment
-                        ajouterBatiment_ListeChainee(jeu, (int)posBatiment.x, (int)posBatiment.y, maison);
-                        ajout_batiment_terrain(jeu, maison, posBatiment);
+                        if(verifier_batiment_a_cote_route(jeu, maison, posBatiment.x, posBatiment.y) == true) {
+                            ajouterBatiment_ListeChainee(jeu, (int) posBatiment.x, (int) posBatiment.y, maison);
+                            ajout_batiment_terrain(jeu, maison, posBatiment);
+                        }
                     } else {
                         jeu->timer_affichage = 0;
                     }
@@ -153,10 +155,10 @@ void poser_batiment(Jeu* jeu){
             case mode_usine:
                 if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
                     if (verification_batiment_peut_se_placer(jeu, usine_electrique, posBatiment) == 1) {
-                        //ajout batiment
-                        ajouterBatiment_ListeChainee(jeu, (int)posBatiment.x, (int)posBatiment.y, usine_electrique);
-                        ajout_batiment_terrain(jeu, usine_electrique, posBatiment);
-
+                        if(verifier_batiment_a_cote_route(jeu, usine_electrique, posBatiment.x, posBatiment.y) == true) {
+                            ajouterBatiment_ListeChainee(jeu, (int) posBatiment.x, (int) posBatiment.y,usine_electrique);
+                            ajout_batiment_terrain(jeu, usine_electrique, posBatiment);
+                        }
                     } else {
                         jeu->timer_affichage = 0;
                     }
@@ -166,9 +168,10 @@ void poser_batiment(Jeu* jeu){
             case mode_chateauDO:
                 if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
                     if (verification_batiment_peut_se_placer(jeu, chateau_deau, posBatiment) == 1) {
-                        //ajout batiment
-                        ajouterBatiment_ListeChainee(jeu, (int)posBatiment.x, (int)posBatiment.y, chateau_deau);
-                        ajout_batiment_terrain(jeu, chateau_deau, posBatiment);
+                        if(verifier_batiment_a_cote_route(jeu, chateau_deau, posBatiment.x, posBatiment.y) == true) {
+                            ajouterBatiment_ListeChainee(jeu, (int) posBatiment.x, (int) posBatiment.y, chateau_deau);
+                            ajout_batiment_terrain(jeu, chateau_deau, posBatiment);
+                        }
                     } else {
                         jeu->timer_affichage = 0;
                     }

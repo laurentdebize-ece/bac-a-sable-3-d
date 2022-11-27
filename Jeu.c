@@ -1,5 +1,4 @@
 #include "Jeu.h"
-#include "time.h"
 
 Jeu* initialisation(){
     Jeu* j;
@@ -203,7 +202,7 @@ void decompteurNbBatimentListe(Jeu* jeu,int choix) {
     }
 }
 
-Batiment* maj_destruction_maillon(Batiment* liste,int x,int y,Jeu* jeu) {
+/*Batiment* maj_destruction_maillon(Batiment* liste,int x,int y,Jeu* jeu) {
     if (liste != NULL) {
         Batiment *parcour = liste;
         Batiment *prev = liste;
@@ -214,8 +213,10 @@ Batiment* maj_destruction_maillon(Batiment* liste,int x,int y,Jeu* jeu) {
                 printf("Coordonnees invalides\n");
             }
         }
-        while (prev->numero != (parcour->numero-1)) {
-            prev = prev->next;
+        if (liste->next != liste){
+            while (prev->numero != (parcour->numero-1)) {
+                prev = prev->next;
+            }
         }
         if (prev->numero == parcour->numero-1) printf("OUI prev est bien au numero-1 du next\n");
         if (parcour == liste) {
@@ -232,8 +233,8 @@ Batiment* maj_destruction_maillon(Batiment* liste,int x,int y,Jeu* jeu) {
     else{printf("Liste vide.\n");}
 
     return liste;
-}
-
+}*/
+/*
 void detruireBatiment(Jeu* jeu,int x,int y,int choix) {
     Batiment *liste = NULL;
     switch (choix) {
@@ -261,6 +262,63 @@ void detruireBatiment(Jeu* jeu,int x,int y,int choix) {
                 liste = maj_destruction_maillon(liste,x,y,jeu);
                 jeu->batiments[usine_electrique] = liste;
                 decompteurNbBatimentListe(jeu,usine_electrique);
+            }
+            break;
+        }
+        default :{
+            break;
+        }
+    }
+}*/
+Batiment* maj_destruction_maillon(Batiment* liste,int x,int y,Jeu* jeu) {
+    if (liste != NULL) {
+        Batiment *parcour = liste;
+        Batiment *prev = liste;
+
+        while (parcour->co.x != x && parcour->co.y != y) {
+            parcour = parcour->next;
+            if (parcour->next == liste) {
+                printf("Coordonnees invalides\n");
+            }
+        }
+        while (prev->next != parcour) {
+            prev = prev->next;
+        }
+        if (parcour == liste) {
+            liste = liste->next;
+        }
+        prev->next = parcour->next;
+        if (liste == parcour) {
+            liste = NULL;
+        }
+        free(parcour);
+    }
+    else{printf("Liste vide.\n");}
+
+    return liste;
+}
+void detruireBatiment(Jeu* jeu,int x,int y,int choix) {
+    Batiment *liste = NULL;
+    switch (choix) {
+        case maison: {
+            if (jeu->batiments[maison] != NULL) {
+                liste = jeu->batiments[maison];
+                liste = maj_destruction_maillon(liste,x,y,jeu);
+                jeu->batiments[maison] = liste;
+            }
+            break;
+        }
+        case chateau_deau: {
+            if (jeu->batiments[chateau_deau] != NULL) {
+                liste = maj_destruction_maillon(liste,x,y,jeu);
+                jeu->batiments[chateau_deau] = liste;
+            }
+            break;
+        }
+        case usine_electrique: {
+            if (jeu->batiments[usine_electrique] != NULL) {
+                liste = maj_destruction_maillon(liste,x,y,jeu);
+                jeu->batiments[usine_electrique] = liste;
             }
             break;
         }
@@ -427,7 +485,7 @@ bool verifier_batiment_a_cote_route(Jeu *jeu, int type_de_batiment, int co_x, in
                     nb_connexion++;
                 }
             }
-            return (nb_connexion != 0) ? 1 : 0;
+            return (nb_connexion != 0) ? true : false;
         }
         case chateau_deau :
         case usine_electrique : {
@@ -435,7 +493,7 @@ bool verifier_batiment_a_cote_route(Jeu *jeu, int type_de_batiment, int co_x, in
                 if (co_x != 0 && (jeu->terrain[co_y + i][co_x - 1] == 1)) {
                     nb_connexion++;
                 }
-                if (co_x != ORDRE_EN_X && (jeu->terrain[co_y + i][co_x + LARGEUR_BATIMENTS] == 1)) {
+                if (co_x != ORDRE_EN_X && (jeu->terrain[co_y + i][co_x + LONGUEUR_BATIMENTS] == 1)) {
                     nb_connexion++;
                 }
             }
@@ -443,11 +501,11 @@ bool verifier_batiment_a_cote_route(Jeu *jeu, int type_de_batiment, int co_x, in
                 if (co_y != 0 && (jeu->terrain[co_y - 1][co_x + i] == 1)) {
                     nb_connexion++;
                 }
-                if (co_y != ORDRE_EN_Y && (jeu->terrain[co_y + LONGUEUR_BATIMENTS][co_x + i] == 1)) {
+                if (co_y != ORDRE_EN_Y && (jeu->terrain[co_y + LARGEUR_BATIMENTS][co_x + i] == 1)) {
                     nb_connexion++;
                 }
             }
-            return (nb_connexion != 0) ? 1 : 0;
+            return (nb_connexion != 0) ? true : false;
         }
         default: {
             break;
