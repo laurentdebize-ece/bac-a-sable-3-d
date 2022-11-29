@@ -17,367 +17,345 @@
     fscanf(ifs, "%d", &ordre_y);
     fscanf(ifs, "%d", &argent);
 
-    if(jeu->en_cours ==0)jeu->terrain = (int**) malloc(ordre_y * sizeof(int*));
-
-    for (int i = 0; i <= ordre_y; i++) {
-        if (jeu->en_cours == 0) jeu->terrain[i] = (int*) malloc(ordre_x * sizeof(int));
+    for (int i = 0; i < ordre_y; i++) {
+        grille->terrain[i] = (int*) malloc(ordre_x * sizeof(int));
     }
-    jeu->en_cours = 1;
-    for (int i = 0; i <= ordre_y; i++) {
-        for (int j = 0; j <= ordre_x; j++) {
-            fscanf(ifs, " %d", &jeu->terrain[i][j]);
+    for (int i = 0; i < ordre_y; i++) {
+        for (int j = 0; j < ordre_x; j++) {
+            fscanf(ifs, " %d", &grille->terrain[i][j]);
         }
-
     }
-    if(grille->terrain[0][0] == NULL){
-        color(5, 0);
-        printf("Vous n'avez pas encore de graphe\n");
-        color(14, 0);
-        printf("Creation d'un graphe ... ...\n");
-        color(15, 0);
-        initialisation_Grille();
-        ifs = fopen(NOM_DU_FICHIER, "r");
-    }
-    jeu->ordre.x = ordre_x;
-    jeu->ordre.y = ordre_y;
-    jeu->argent = argent;
-    fclose(ifs);
+    grille->fichier = nomFichier;
+    grille->ordre.x = ordre_x;
+    grille->ordre.y = ordre_y;
     return grille;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////CREATION MATRICE//////////////////////////////////////////////////////////////
+
+void creer_matrice_centrale(int nb_centrale, int nb_maison){
+    if (nb_centrale != 0 && nb_maison != 0){
+        int** matrice_centrale = (int**) calloc(nb_maison,sizeof(int*));
+        for (int i = 0; i < nb_maison; i++) {
+            matrice_centrale[i] = (int*) calloc(nb_centrale, sizeof(int));
+        }
+    }
+}
+
+/*Coordonnee* cases_adjacentes(Coordonnee case_actuelle){
+    Coordonnee tab_adjacence_case[4];
+    tab_adjacence_case[0].x = case_actuelle.x - 1;
+    tab_adjacence_case[1].x = case_actuelle.x;
+    tab_adjacence_case[2].x = case_actuelle.x + 1;
+    tab_adjacence_case[3].x = case_actuelle.x;
+    tab_adjacence_case[0].y = case_actuelle.y;
+    tab_adjacence_case[1].y = case_actuelle.y + 1;
+    tab_adjacence_case[2].y = case_actuelle.y;
+    tab_adjacence_case[3].y = case_actuelle.y - 1;
+    return tab_adjacence_case;
 }*/
-void lire_graphe(Jeu* jeu) {
-    FILE *ifs = fopen(NOM_DU_FICHIER, "r");
-    int ordre_x;
-    int ordre_y;
-    int argent;
-    int politique;
 
-    if (!ifs) {
-        printf("Vous n'avez pas encore de graphe\n");
-        initialisation_Grille();
-        ifs = fopen(NOM_DU_FICHIER, "r");
-    }
+void actualiser_matrice_adjacence_centrale_construction_maison(Jeu jeu, int** matrice_centrale, int nb_maison){
+    Coordonnee case_actuelle;
+    Coordonnee* tab_adjacence_case = initialisation_case_ajacentes(case_actuelle,1,1);
 
-    fscanf(ifs, "%d", &ordre_x);
-    fscanf(ifs, "%d", &ordre_y);
-    fscanf(ifs, "%d", &jeu->annee);
-    fscanf(ifs, "%d", &jeu->mois);
-    fscanf(ifs, "%d", &argent);
-    fscanf(ifs, "%d", &jeu->nb_habitants_tot);
-    fscanf(ifs, "%d", &jeu->production_eau_restante);
-    fscanf(ifs, "%d", &jeu->production_elec_restante);
-    fscanf(ifs, "%d", &politique);
-
-    if(jeu->en_cours ==0)jeu->terrain = (int**) malloc(ordre_y * sizeof(int*));
-
-    for (int i = 0; i <= ordre_y; i++) {
-        jeu->terrain[i] = (int*) malloc(ordre_x * sizeof(int));
-    }
-
-    for (int i = 0; i < nb_type_batiments; i++){
-        jeu->batiments[i] = (Batiment*) malloc(sizeof (Batiment));
-    }
-    jeu->batiments[maison] = NULL;
-    jeu->batiments[chateau_deau] = NULL;
-    jeu->batiments[usine_electrique] = NULL;
-
-    for (int i = 0; i <= ordre_y; i++) {
-        for (int j = 0; j <= ordre_x; j++) {
-            fscanf(ifs, " %d", &jeu->terrain[i][j]);
-        }
-    }
-
-    for (int y = 0; y <= ordre_y; y++) {
-        for (int x = 0; x <= ordre_x; x++) {
-            int stadeEvo = 0;
-            if(jeu->terrain[y][x] == 2 || jeu->terrain[y][x] == 3 || jeu->terrain[y][x] == 4 || jeu->terrain[y][x] >= 20){
-                if(jeu->terrain[y][x] >= 20){
-                    stadeEvo = jeu->terrain[y][x] - 20;
-                    jeu->terrain[y][x] = 2;
-                }
-                chargementListe(jeu, jeu->terrain[y][x], y, &x, &ifs, stadeEvo);
+}
+// BFS pour les composantes connexes des routes
+// matrices d'adjacences entre les composantes connexe des routes, les centrales, les chateaux d'eaux
+// et les maisons
+void BFS_connexite(int** matrice_connexite_route, int** matrice_centrale, int** matrice_chateau_eau, Coordonnee tuile, int num_connexite){
+    Coordonnee* cases_adjacentes = initialisation_case_ajacentes(tuile, 1, 1 );
+    Coordonnee** new_cases_adjacentes;// pour switch
+    matrice_connexite_route[tuile.y][tuile.x] = num_connexite; //route parcouru, route marqué
+    // nombre d'adjacences théorique si on prend en comptes toutes les adjacences possiles des cases marquées (même celles avec des coordonnées négatives)
+    int nb_adjacence_theorique = 4; // 4 fois le nombre de cases marquées car chaque cases ont 4 adjacences
+    int nb_adjacence = 0; // nombre de routes découvertes
+    int new_nb_adjacence;
+    int* valeur_adjacence = calloc(nb_adjacence_theorique,sizeof(int));// valeurs des cases adjacentes découvertes initialisé à 0
+    for (int i = 0; i < nb_adjacence_theorique; i++){
+        // si case adjacente = route pas marquée, valeur_adjacence prend la valeur de la route et on incrémente le nombre de routes découvertes
+        if((cases_adjacentes[i].y >= 0) && (cases_adjacentes[i].x) ) {
+            if (matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x] != 0
+                && matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x] != 2
+                && matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x] != 3
+                && matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x] != 4
+                && matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x] != num_connexite) {
+                valeur_adjacence[i] = matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x];
+                nb_adjacence++;
             }
         }
     }
-    jeu->ordre.x = ordre_x;
-    jeu->ordre.y = ordre_y;
-    jeu->argent = argent;
-    jeu->choix_politique = politique;
-    fclose(ifs);
-}
+    new_cases_adjacentes = (Coordonnee**) malloc(nb_adjacence * sizeof(Coordonnee*));
+    int y = 0;
+    for (int i = 0; i < nb_adjacence_theorique ; i++){
 
+        if (valeur_adjacence[i] != 0){
+            new_cases_adjacentes[y] = initialisation_case_ajacentes(cases_adjacentes[i], 1, 1);
+            y++;
+            if (valeur_adjacence[i] == 1){
+                valeur_adjacence[i] = num_connexite;
 
+            }
+            else {
+                if (valeur_adjacence[i] < num_connexite){
 
-void enregistrer_Grille(Jeu* jeu){
-    Batiment* parcoursMaison = jeu->batiments[maison];
-    FILE *ifs = fopen(NOM_DU_FICHIER, "w");
-    if(ifs==NULL){
-        printf("Erreur lors de l'ouverture d'un fichier");
-        exit(1);
-    }
-    fprintf(ifs, "%d\n",(int)jeu->ordre.x);
-    fprintf(ifs, "%d\n",(int)jeu->ordre.y);
-    fprintf(ifs, "%d\n",(int)jeu->annee);
-    fprintf(ifs, "%d\n",(int)jeu->mois);
-    fprintf(ifs, "%d\n",jeu->argent);
-    fprintf(ifs, "%d\n", jeu->nb_habitants_tot);
-    fprintf(ifs, "%d\n", jeu->production_eau_restante);
-    fprintf(ifs, "%d\n", jeu->production_elec_restante);
-    fprintf(ifs,"%d\n",jeu->choix_politique);
-    for (int y = 0; y <= (int)jeu->ordre.y; y++) {
-        for (int x = 0; x <= (int)jeu->ordre.x; x++) {
-            bool passe = FALSE;
-            if(jeu->terrain[y][x] == 2 && jeu->batiments[maison] != NULL){
-                do{
-                    if(y == (int)parcoursMaison->co.y && x == (int)parcoursMaison->co.x){
-                        fprintf(ifs, "%d ", jeu->terrain[y][x] + 18 + parcoursMaison->stadeEvolution);
-                        passe = TRUE;
+                    for(int k = 0; k < LARGEUR ; k++){
+                        for(int l = 0; l < LONGUEUR ; l++){
+                            if (matrice_connexite_route[k][l] == num_connexite){
+                                matrice_connexite_route[k][l] = valeur_adjacence[i];
+                            }
+                        }
                     }
-                    parcoursMaison = parcoursMaison->next;
-                    if (jeu->batiments[maison]->nb_batiment == 1) break;
-                }while(parcoursMaison != jeu->batiments[maison]);
-                if(passe == FALSE){
-                    fprintf(ifs, "%d ", jeu->terrain[y][x]);
+                    num_connexite = valeur_adjacence[i];
+                }
+                else{
+                    for(int k = 0; k < LARGEUR ; k++){
+                        for(int l = 0; l < LONGUEUR ; l++){
+                            if (matrice_connexite_route[k][l] == valeur_adjacence[i]){
+                                matrice_connexite_route[k][l] = num_connexite;
+                            }
+                        }
+                    }
                 }
             }
-            else{fprintf(ifs, "%d ", jeu->terrain[y][x]);}
         }
-        fprintf(ifs, "\n");
+
     }
-    fclose(ifs);
-}
+    new_nb_adjacence = nb_adjacence;
+    free (cases_adjacentes);
+    cases_adjacentes = NULL;
+    free(valeur_adjacence);
+    valeur_adjacence = NULL;
 
-void ajout_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y, int co_xroute, int co_yroute){
-    bool obstacle = FALSE;
-    int y_temporaire = co_y;
+    while (new_cases_adjacentes != NULL) {
+        if (nb_adjacence != 0) {
 
-    if (co_xroute !=-1 || co_yroute != -1){
-        int x_temporaire = co_x;
-        int x_distance=difference_entre_2_nombres_VALEURABSOLUE(co_x, co_xroute), y_distance=difference_entre_2_nombres_VALEURABSOLUE(co_y, co_yroute);
-        for (int i = 0; i < x_distance ; i++) {
-            if (jeu->terrain[co_y][x_temporaire] != 0){
-                obstacle = TRUE;
-                break;
+
+            cases_adjacentes = calloc(nb_adjacence_theorique * nb_adjacence, sizeof(Coordonnee));
+            int x = 0;
+            for (int i = 0; i < nb_adjacence; i++) {
+                for (int j = 0; j < nb_adjacence_theorique; j++) {
+                    cases_adjacentes[x].y = new_cases_adjacentes[i][j].y;
+                    cases_adjacentes[x].x = new_cases_adjacentes[i][j].x;
+                    x++;
+                }
             }
-            if (co_x < co_xroute){
-                x_temporaire++;
-            }else x_temporaire--;
-        }
-        for (int i = 0; i <= y_distance ; i++) {
-            if (jeu->terrain[y_temporaire][co_x] != 0){
-                obstacle = TRUE;
-                break;
+            for (int i = 0; i < nb_adjacence_theorique; i++) {
+                free(new_cases_adjacentes[i]);
+                new_cases_adjacentes[i] = NULL;
             }
-            if (co_y < co_yroute){
-                y_temporaire++;
-            }else y_temporaire--;
-        }
-        if (obstacle == FALSE){
-            for (int i = 0; i < x_distance ; i++) {
-                if (jeu->argent - COUT_ROUTE >= 0){
-                    jeu->terrain[co_y][co_x] = nomDuBatiment;
-                    jeu->argent-= COUT_ROUTE;
-                    if (co_x < co_xroute){
-                        co_x++;
-                    }else co_x--;
+            free(new_cases_adjacentes);
+            new_cases_adjacentes = NULL;
+            nb_adjacence = new_nb_adjacence;
+            new_nb_adjacence = 0;
+            valeur_adjacence = calloc(nb_adjacence_theorique * nb_adjacence,
+                                      sizeof(int));// valeurs des cases adjacentes découvertes initialisé à 0
+            for (int i = 0; i < nb_adjacence_theorique * nb_adjacence; i++) {
+                // si case adjacente = route pas marquée, valeur_adjacence prend la valeur de la route et on incrémente le nombre de routes découvertes
+                if ((cases_adjacentes[i].y >= 0) && (cases_adjacentes[i].x)) {
+                    if (matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x] != 0
+                        && matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x] != 2
+                        && matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x] != 3
+                        && matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x] != 4
+                        && matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x] != num_connexite) {
+                        valeur_adjacence[i] = matrice_connexite_route[cases_adjacentes[i].y][cases_adjacentes[i].x];
+                        new_nb_adjacence++;
+                    }
+                }
+            }
+            new_cases_adjacentes = (Coordonnee **) malloc(nb_adjacence * sizeof(Coordonnee *));
+            y = 0;
+            for (int i = 0; i < nb_adjacence_theorique; i++) {
+
+                if (valeur_adjacence[i] != 0) {
+                    new_cases_adjacentes[y] = initialisation_case_ajacentes(cases_adjacentes[i], 1, 1);
+                    y++;
+                    if (valeur_adjacence[i] == 1) {
+                        valeur_adjacence[i] = num_connexite;
+
+                    } else {
+                        if (valeur_adjacence[i] < num_connexite) {
+
+                            for (int k = 0; k < LARGEUR; k++) {
+                                for (int l = 0; l < LONGUEUR; l++) {
+                                    if (matrice_connexite_route[k][l] == num_connexite) {
+                                        matrice_connexite_route[k][l] = valeur_adjacence[i];
+                                    }
+                                }
+                            }
+                            num_connexite = valeur_adjacence[i];
+                        } else {
+                            for (int k = 0; k < LARGEUR; k++) {
+                                for (int l = 0; l < LONGUEUR; l++) {
+                                    if (matrice_connexite_route[k][l] == valeur_adjacence[i]) {
+                                        matrice_connexite_route[k][l] = num_connexite;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
 
             }
-            for (int i = 0; i <= y_distance ; i++) {
-                if (jeu->argent - COUT_ROUTE >= 0){
-                    jeu->terrain[co_y][co_x] = nomDuBatiment;
-                    jeu->argent-= COUT_ROUTE;
-                    if (co_y < co_yroute){
-                        co_y++;
-                    }else co_y--;
-                }
+            new_nb_adjacence = nb_adjacence;
+            free(cases_adjacentes);
+            cases_adjacentes = NULL;
+            free(valeur_adjacence);
+            valeur_adjacence = NULL;
 
+        } else{
+            for (int i = 0; i < nb_adjacence_theorique; i++) {
+                free(new_cases_adjacentes[i]);
+                new_cases_adjacentes[i] = NULL;
             }
-            printf("La construction : route, est un succes !\n");
-        } else {
-            printf("Vous ne pouvez pas construire ici, un obstacle vous en empeche !\n");
-            detruireBatiment(jeu,co_x,co_y,nomDuBatiment);
-        }
-    }else{
-        for (int i = 0; i < jeu->batiments[nomDuBatiment]->taille.y ; i++) {
-            for (int j = 0; j < jeu->batiments[nomDuBatiment]->taille.x; j++) {
-                if (jeu->terrain[co_y][co_x + j] != 0){
-                    obstacle = TRUE;
-                    break;
-                }
-            }
-            if (obstacle == TRUE){
-                break;
-            }
-            y_temporaire ++;
-        }
-        if (obstacle == FALSE){
-            for (int i = 0; i < jeu->batiments[nomDuBatiment]->taille.y ; i++) {
-                for (int j = 0; j < jeu->batiments[nomDuBatiment]->taille.x; j++) {
-                    jeu->terrain[co_y][co_x + j] = nomDuBatiment;
-                }co_y ++;
-            }
-            printf("La construction : %s, est un succes !\n", jeu->batiments[nomDuBatiment]->nom);
-        } else {
-            printf("Vous ne pouvez pas construire ici, un obstacle vous en empeche !\n");
-            detruireBatiment(jeu,co_x,co_y,nomDuBatiment);
+            free(new_cases_adjacentes);
+            new_cases_adjacentes = NULL;
         }
     }
+ }
+
+/* BFS_PCC(batiment, matrice_chateau_eau){
+ for (i, i < (LONGUEUR*LARGEUR); i++){
+    if(batiment.adjacence[i]==
+*/
+int** init_conexite_route(Jeu* jeu){
+    int** matrice_connexite_route = (int**) malloc(LARGEUR * sizeof(int*));
+    for (int i = 0; i < LARGEUR; ++i) {
+        matrice_connexite_route[i] = (int*) malloc(LONGUEUR * sizeof(int));
+    }
+    if (Batiment!= NULL){
+        int num_connexite = 50;
+        for ( batiment->next; batiment!=NULL; batiment->next){
+            for(int i; i<(longueur*largeur batiment) ; i++){
+                if(matrice_connexite_route[batiment.adjacence[i].y][batiment.adjacence[i].x] == 1){
+                BFS_connexite(matrice_connexite_route, batiment.adjacence[i], num_connexite);
+                num_connexite++;
+            }
+
+        }
+    }
+    return matrice_connexite_route;
+}
+//
+void actualiser_matrice_connexite_route(int**);
+
+void actualiser_matrice_adjacence(Jeu jeu, int** matrice_centrale, int batiment_action){
+    //BFS POUR rechercher les plus courts chemin entre les chateaux d'eaux et les maisons
+    /*  M1 M2 M3
+     C1
+     C2
+     C3
+     */
 }
 
 
-void suppression_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y, int co_xroute, int co_yroute){
-    bool obstacle = FALSE;
-    int y_temporaire = co_y;
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////MODIFICATION TAILLE MATRICE///////////////////////////////////////////////////
 
-    if (co_xroute !=-1 || co_yroute != -1){
-        int x_temporaire = co_x;
-        int x_distance=difference_entre_2_nombres_VALEURABSOLUE(co_x, co_xroute), y_distance=difference_entre_2_nombres_VALEURABSOLUE(co_y, co_yroute);
-        for (int i = 0; i < x_distance ; i++) {
-            if (jeu->terrain[co_y][x_temporaire] != 0){
-                obstacle = TRUE;
-                break;
+
+int** destruction_centrale_matrice(Jeu jeu, int** matrice_centrale, int nb_maison, int nb_centrale, int num_centrale){
+    int** new_matrice_centrale = (int**) calloc(nb_maison, sizeof(int*));
+    for (int i = 0; i < nb_maison; i++) {
+        new_matrice_centrale[i] = (int*) calloc(nb_centrale - 1, sizeof(int));
+    }
+
+    for (int i = 0; i < nb_maison; i++){
+        for (int j = 0; j < nb_centrale; j++) {
+            if ( j < num_centrale) {
+                new_matrice_centrale[i][j] = matrice_centrale[i][j];
             }
-            if (co_x < co_xroute){
-                x_temporaire++;
-            }else x_temporaire--;
-        }
-        for (int i = 0; i <= y_distance ; i++) {
-            if (jeu->terrain[y_temporaire][co_x] != 0){
-                obstacle = TRUE;
-                break;
+            else if  (j > num_centrale){
+                new_matrice_centrale[i][j-1] = matrice_centrale[i][j];
             }
-            if (co_y < co_yroute){
-                y_temporaire++;
-            }else y_temporaire--;
-        }
-        if (obstacle == TRUE){
-            for (int i = 0; i < x_distance ; i++) {
-                jeu->terrain[co_y][co_x] = 0;
-                if (co_x < co_xroute){
-                    co_x++;
-                }else co_x--;
-            }
-            for (int i = 0; i <= y_distance ; i++) {
-                jeu->terrain[co_y][co_x] = 0;
-                if (co_y < co_yroute){
-                    co_y++;
-                }else co_y--;
-            }
-            printf("La destruction : route, est un succes !\n");
-        } else {
-            printf("Il n'y a pas de route a detruire !\n");
-        }
-    }else{
-        for (int i = 0; i < jeu->batiments[nomDuBatiment]->taille.y ; i++) {
-            for (int j = 0; j < jeu->batiments[nomDuBatiment]->taille.x; j++) {
-                if (jeu->terrain[co_y][co_x + j] != 0){
-                    obstacle = TRUE;
-                    break;
-                }
-            }
-            if (obstacle == TRUE){
-                break;
-            }
-            y_temporaire ++;
-        }
-        if (obstacle == TRUE){
-            for (int i = 0; i < jeu->batiments[nomDuBatiment]->taille.y ; i++) {
-                for (int j = 0; j < jeu->batiments[nomDuBatiment]->taille.x; j++) {
-                    jeu->terrain[co_y][co_x + j] = 0;
-                }co_y ++;
-            }
-            printf("La destruction : %s, est un succes !\n", jeu->batiments[nomDuBatiment]->nom);
-        } else {
-            printf("Il n'y a rien a detruire ici !\n");
         }
     }
+    for (int i = 0; i < nb_maison; i++) {
+        free(matrice_centrale[i]);
+    }
+    free(matrice_centrale);
+    return new_matrice_centrale;
+}
+
+int** construction_centrale_matrice(Jeu jeu, int** matrice_centrale, int nb_maison, int nb_centrale){
+    int** new_matrice_centrale = (int**) calloc(nb_maison, sizeof(int*));
+    for (int i = 0; i < nb_maison; i++) {
+        new_matrice_centrale[i] = (int*) calloc(nb_centrale + 1, sizeof(int));
+    }
+
+    for (int i = 0; i < nb_maison; i++){
+        for (int j = 0; j < nb_centrale; j++) {
+            new_matrice_centrale[i][j] = matrice_centrale[i][j];
+        }
+    }
+    for (int i = 0; i < nb_maison; i++) {
+        free(matrice_centrale[i]);
+    }
+    free(matrice_centrale);
+    return new_matrice_centrale;
+}
+
+int** destruction_maison_matrice(Jeu jeu, int** matrice_centrale, int nb_maison, int nb_centrale, int num_maison){
+    int** new_matrice_centrale = (int**) calloc(nb_maison - 1, sizeof(int*));
+    for (int i = 0; i < nb_maison; i++) {
+        new_matrice_centrale[i] = (int*) calloc(nb_centrale, sizeof(int));
+    }
+
+    for (int i = 0; i < nb_maison; i++){
+        for (int j = 0; j < nb_centrale; j++) {
+            if ( i < num_maison) {
+                new_matrice_centrale[i][j] = matrice_centrale[i][j];
+            }
+            else if  (i > num_maison){
+                new_matrice_centrale[i-1][j] = matrice_centrale[i][j];
+            }
+        }
+    }
+    for (int i = 0; i < nb_maison; i++) {
+        free(matrice_centrale[i]);
+    }
+    free(matrice_centrale);
+    return new_matrice_centrale;
+}
+
+int** construction_maison_matrice(Jeu jeu, int** matrice_centrale, int nb_maison, int nb_centrale){
+    int** new_matrice_centrale = (int**) calloc(nb_maison + 1, sizeof(int*));
+    for (int i = 0; i < nb_maison; i++) {
+        new_matrice_centrale[i] = (int*) calloc(nb_centrale, sizeof(int));
+    }
+
+    for (int i = 0; i < nb_maison; i++){
+        for (int j = 0; j < nb_centrale; j++) {
+            new_matrice_centrale[i][j] = matrice_centrale[i][j];
+        }
+    }
+    for (int i = 0; i < nb_maison; i++) {
+        free(matrice_centrale[i]);
+    }
+    free(matrice_centrale);
+    return new_matrice_centrale;
 }
 
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////MODIFICATION CONTENU MATRICE///////////////////////////////////////////////////
 
-Vector2 position_maison(Jeu* jeu, int x, int y){
-    Vector2 pos_maison;
-    pos_maison.x = -1;
-    pos_maison.y = -1;
-    bool batiment_trouve = FALSE;
-    Batiment* batiment_actuel = jeu->batiments[maison];
-    while(batiment_trouve == FALSE){
-        for(int i = 0; i < TAILLE_MAISON; i++){
-            if (x - i == batiment_actuel->co.x){
-                pos_maison.x = batiment_actuel->co.x;
-            }
-            if (y - i == batiment_actuel->co.y){
-                pos_maison.y = batiment_actuel->co.y;
-            }
-        }
-        if (pos_maison.x != -1 && pos_maison.y != -1){
-            batiment_trouve = TRUE;
-        }
-        batiment_actuel = batiment_actuel->next;
-    }
-    return pos_maison;
-}
 
-Vector2 position_usine(Jeu* jeu, int x, int y, int type_usine){
-    Vector2 pos_usine;
-    pos_usine.x = -1;
-    pos_usine.y = -1;
-    bool batiment_trouve = FALSE;
-    Batiment* batiment_actuel = jeu->batiments[type_usine];
-    while(batiment_trouve == FALSE){
-        for(int i = 0; i < LONGUEUR_BATIMENTS; i++) {
-            if (x - i == batiment_actuel->co.x) {
-                pos_usine.x = batiment_actuel->co.x;
-            }
-        }
-        for(int i = 0; i < LARGEUR_BATIMENTS; i++) {
-            if (y - i == batiment_actuel->co.y) {
-                pos_usine.y = batiment_actuel->co.y;
-            }
-        }
-        if (pos_usine.x != -1 && pos_usine.y != -1){
-            batiment_trouve = TRUE;
-        }
-        batiment_actuel = batiment_actuel->next;
-    }
-    return pos_usine;
-}
 
-Vector2 position_batiment(Jeu* jeu, int x, int y){
-    Vector2 pos_batiment;
-    int type_batiment = jeu->terrain[y][x];
-    switch (type_batiment) {
-        case vide : {
-            printf("Cette case est vide\n");
-            pos_batiment.x = -1;
-            pos_batiment.y = -1;
-            break;
-        }
-        case reseau : {
-            pos_batiment.x = x;
-            pos_batiment.y = y;
-            printf("Cette case est une route placée en (%d,%d)\n", x, y);
-            break;
-        }
-        case maison : {
-            pos_batiment = position_maison(jeu, x, y);
-            printf("Cette case correspond a une maison placee en (%d,%d)\n", pos_batiment.x, pos_batiment.y);
-            break;
-        }
-        case chateau_deau : {
-            pos_batiment = position_usine(jeu, x, y, chateau_deau);
-            printf("Cette case correspond a un chateau d'eau place en (%d,%d)\n", pos_batiment.x, pos_batiment.y);
-            break;
-        }
-        case usine_electrique : {
-            pos_batiment = position_usine(jeu, x, y, usine_electrique);
-            printf("Cette case correspond a une centrale electrique placee en (%d,%d)\n", pos_batiment.x, pos_batiment.y);
-            break;
-        }
-        default : {
-            break;
-        }
 
-    }
-    return pos_batiment;
-}
+
+
+
+// bfs pour chercher les chemins entre usine et habitation (en utilisant les routes (reseau))   cherche la distance entre les deux
+//a partir du fichier texte
+
+//creer matrice d'adjacence
+
+// pour les centrales pas de poids
+
+// pour les chateau deau avec poids = distance
+
+
+
+
+

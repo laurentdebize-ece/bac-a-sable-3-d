@@ -9,10 +9,13 @@ void enregistrer_Grille(Jeu* jeu);
 void ajout_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y, int co_xroute, int co_yroute);
 void suppression_Batiment_Grille(Jeu* jeu, int nomDuBatiment, int co_x, int co_y, int co_xroute, int co_yroute);
 
+Jeu *lire_graphe(char *nomFichier);
 
-Vector2 position_maison(Jeu* jeu, int x, int y);
-Vector2 position_usine(Jeu* jeu, int x, int y, int type_usine);
+void creer_matrice_centrale(int nb_centrale, int nb_maison);
+int** init_conexite_route(Jeu* jeu);
+int** destruction_centrale_matrice(Jeu jeu, int** matrice_centrale, int nb_maison, int nb_centrale, int num_centrale);
+int** destruction_maison_matrice(Jeu jeu, int** matrice_centrale, int nb_maison, int nb_centrale, int num_maison);
+int** construction_maison_matrice(Jeu jeu, int** matrice_centrale, int nb_maison, int nb_centrale);
 
-Vector2 position_batiment(Jeu* jeu, int x, int y);
 
 #endif //TEMPLATE_RAYLIB_GRAPHE_H

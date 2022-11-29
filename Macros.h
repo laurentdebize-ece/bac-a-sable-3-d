@@ -7,6 +7,10 @@
 
 #define TRUE 1
 #define FALSE 0
+#define LARGEUR_FENETRE 920
+#define LONGUEUR_FENETRE 780
+#define LONGUEUR 45
+#define LARGEUR 35
 
 #define TEMPS_DEFILEMENT_FOND 7
 #define TEMPS_FONDU_FOND 2
@@ -21,26 +25,19 @@
 #define NB_FRAMES_MAISON 6
 #define MOUSE_SCALE_MARK_SIZE   12
 
-#define TAILLE_CASE_GRILLE    25      // taille des cases
+#define MAP_TILE_SIZE    32         // Tiles size 32x32 pixels
 #define PLAYER_SIZE      16         // Taille du carre rouge
 #define PLAYER_TILE_VISIBILITY  2   // Player can see 2 tiles around its position
 
 
-//PARAMETRAGE DU JEU
-
-#define ORDRE_EN_X 46
-#define ORDRE_EN_Y 36
-
-#define NOM_DU_FICHIER "Grille_de_jeu.txt"
-
-#define ARGENT_DE_DEBUT 500000
-
-
-
 // dimensions batiments
-#define TAILLE_MAISON 3
+#define TAILLE_TERRAIN_VAGUE 3
 #define TAILLE_ROUTE 1
 #define TAILLE_VIDE 1
+#define LONGUEUR_USINE 6
+#define LARGEUR_USINE 4
+#define CASE_ADJACENTE_MAISON 12
+#define CASE_ADJACENTE_USINE 20
 #define LONGUEUR_BATIMENTS 6
 #define LARGEUR_BATIMENTS 4
 
@@ -61,5 +58,12 @@
 #define COUT_ROUTE 10
 
 #define IMPOTS_PAR_HABITANT 10
+
+
+// prix
+#define PRIX_TERRAIN_VAGUE 1000
+#define PRIX_CENTRALE 100000
+#define PRIX_CHATEAU_EAU 100000
+#define PRIX_ROUTE 10
 
 #endif //TEMPLATE_RAYLIB_MACROS_H
